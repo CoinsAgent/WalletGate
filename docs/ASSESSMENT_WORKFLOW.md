@@ -1,4 +1,6 @@
-# Reusable Codex assessment workflow
+# WalletGate — Reusable Codex assessment workflow
+
+WalletGate is an OpenID Connect provider for signing in to applications with your Ethereum wallet.
 
 This repository separates **requirements**, **review procedures**, and **results**:
 

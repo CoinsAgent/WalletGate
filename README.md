@@ -1,8 +1,35 @@
-# Better Auth Demo App
+# WalletGate
 
-Welcome to the Better Auth demo app!
-This project is built with [Next.js](https://nextjs.org) using
-[`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+**Your wallet. Your way in.**
+
+An OpenID Connect provider for signing in to applications with your Ethereum wallet.
+
+WalletGate is a self-hosted identity provider built on Better Auth and Next.js.
+Users authenticate with Sign-In with Ethereum (SIWE); applications integrate
+through standard OAuth 2.0 / OpenID Connect endpoints without adopting wallet
+frontend libraries.
+
+## Product direction and current status
+
+WalletGate is under development. The approved product requirements are defined
+in the [Product Understanding Contract](docs/PRODUCT_UNDERSTANDING_CONTRACT.md):
+
+- SIWE-only end-user authentication.
+- A verified Ethereum wallet address as the public OIDC subject (`sub`).
+- One wallet owner can manage multiple applications with distinct OAuth client IDs.
+- Wallet-authorized client registration and management.
+- Standard OAuth/OIDC integration for third-party applications.
+
+These are product requirements, not a claim that every feature is implemented.
+The current code retains Better Auth demo features, including email/password
+and passkey login. Their presence does not make them approved WalletGate login
+methods. Wallet-only session enforcement and address-based OIDC subjects still
+require implementation and verification; production readiness is not established.
+
+See [AGENTS.md](AGENTS.md) for contributor instructions and the
+[assessment workflow](docs/ASSESSMENT_WORKFLOW.md) for repeatable contract
+compliance and technical feasibility reviews. Historical reports in
+[`docs/assessments/`](docs/assessments/) are dated evidence, not current validation.
 
 ## Getting Started
 
@@ -14,7 +41,7 @@ Here’s how you can get the app running locally:
 
    ```bash
    git clone https://github.com/CoinsAgent/better-auth.git
-   cd better-auth
+   cd better-auth # Repository directory; the product/package name is WalletGate
    ```
 
 2. **Install the dependencies**:
@@ -35,7 +62,9 @@ Here’s how you can get the app running locally:
      connection.
 
 Social sign-in providers and Google One Tap are disabled in this demo.
-Use email/password or passkey sign-in; social provider credentials are not needed.
+The retained demo supports email/password and passkey sign-in for development
+testing; these are not approved WalletGate end-user login methods. Social
+provider credentials are not needed.
 
 This demo runs without Better Auth hosted Infrastructure services or an
 Infrastructure API key. Dashboard tracking, Sentinel security checks, and
@@ -178,9 +207,10 @@ frontend origins, add their full URLs to the existing `trustedOrigins` array in
 See the [Better Auth trusted origins documentation](https://www.better-auth.com/docs/reference/options#trustedorigins)
 for more details.
 
-## Features
+## Retained demo capabilities
 
-Here’s what this app supports out of the box:
+The inherited demo includes the following capabilities. This list is not the
+WalletGate product specification or a production-readiness guarantee:
 
 * **[Email & Password][]**: Sign up and sign in immediately without sending
   verification emails.
@@ -207,7 +237,7 @@ Here are some helpful links if you want to dive deeper:
 ***
 
 If you run into issues or have suggestions, feel free to open an issue or submit
-a pull request on the [GitHub repo](https://github.com/better-auth/better-auth).
+a pull request on the [WalletGate GitHub repo](https://github.com/CoinsAgent/better-auth).
 
 Happy coding!
 

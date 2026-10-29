@@ -1,6 +1,10 @@
-# Repository instructions — Wallet-Centric Identity Provider
+# Repository instructions — WalletGate
 
-This repository is building a self-hosted, Ethereum-wallet-centric OpenID Connect Identity Provider (IdP) for third-party applications. It is **not** merely a SIWE demo or a general-purpose username/password IdP.
+WalletGate — **Your wallet. Your way in.**
+
+An OpenID Connect provider for signing in to applications with your Ethereum wallet.
+
+This repository is building WalletGate, a self-hosted, Ethereum-wallet-centric OpenID Connect Identity Provider (IdP) for third-party applications. It is **not** merely a SIWE demo or a general-purpose username/password IdP.
 
 ## Product authority
 

@@ -1,11 +1,15 @@
-# Product Understanding Contract
+# WalletGate — Product Understanding Contract
 
 **Version:** 1.1  
 **Status:** Approved product requirements; implementation details identified below remain open  
-**Project:** Wallet-Centric Identity Provider  
+**Project:** WalletGate<br>
 **Repository:** `CoinsAgent/better-auth`
 
 ## 1. Product vision
+
+**Your wallet. Your way in.**
+
+An OpenID Connect provider for signing in to applications with your Ethereum wallet.
 
 Build a self-hosted, Ethereum-wallet-centric OpenID Connect Identity Provider for third-party applications. Ethereum wallet addresses are the primary external identities for human users and application owners. The long-term vision includes human-to-human, human-to-agent, and agent-to-agent identity and authorization, but those capabilities are **outside the current implementation scope**.
 

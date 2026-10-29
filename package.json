@@ -1,5 +1,6 @@
 {
-  "name": "@better-auth/nextjs-demo",
+  "name": "walletgate",
+  "description": "An OpenID Connect provider for signing in to applications with your Ethereum wallet.",
   "version": "0.1.0",
   "private": true,
   "type": "module",
