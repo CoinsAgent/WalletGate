@@ -60,15 +60,35 @@ codex --sandbox workspace-write
 
 Then ask Codex, for example:
 
-> Use `$contract-compliance` to review SIWE-only login against the Product Contract. Save a timestamped Markdown report using the shared publisher. Change no source files.
+> Use `$contract-compliance` to review SIWE-only login against the Product Contract. Change no source files.
+
+Interactive `$contract-compliance` and `$technical-feasibility` runs save one timestamped Markdown report in `docs/assessments/` by default after completing the assessment and return only a brief confirmation and file link. The report body is not printed in the terminal or chat. No separate save request is needed. With no question or baseline, interactive `$technical-feasibility` selects the latest saved `*-contract-compliance.md` by its filename's UTC timestamp and investigates its conflicts, partial requirements, and material unknowns. It records the selected baseline and rechecks findings against current evidence. Explicit questions and baselines take precedence. If no valid report exists, it requests scope without launching a compliance scan. The unattended `OUTPUT_MODE=BODY_ONLY` protocol remains unchanged; the CLI runner still requires `--question` or `--baseline`.
 
 Or:
 
-> Use `$technical-feasibility` to analyze `OIDC sub = verified wallet address`. Use `docs/assessments/2026-10-28-contract-compliance.md` as historical context and publish the report. Change no source files.
+> Use `$technical-feasibility` to analyze `OIDC sub = verified wallet address`. Use `docs/assessments/2026-10-28-contract-compliance.md` as historical context. Change no source files.
 
 The skill conducts the analysis, then uses **`scripts/run-assessment.sh publish` with the Markdown body on stdin**. It must never call `run` from within a Codex session: `run` itself launches Codex and would recurse.
 
 `workspace-write` grants write access to more than the final report at the sandbox level; the skill restricts itself by instruction, **not** by filesystem permissions. For security-sensitive reviews, prefer the read-only unattended mode above.
+
+## Phase proposals — Top 1 phase and all tasks
+
+Invoke `$phase-planner` interactively, or run the same proposal generator directly:
+
+```bash
+python3 scripts/run-phase-planner.py
+
+# Optional explicit reports and focus
+python3 scripts/run-phase-planner.py \
+  --compliance docs/assessments/2026-10-30T01-23-40.381602Z-aeb940c4-contract-compliance.md \
+  --feasibility docs/assessments/2026-10-30T02-12-49.882089Z-6b47ae5b-technical-feasibility.md \
+  --focus 'Highest-priority wallet identity prerequisite'
+```
+
+The skill routes interactive proposal generation through this script. The script launches read-only Codex analysis and publishes one timestamped proposal under `docs/plans/proposals/`, with source hashes and `approved: false`. The proposal contains only the highest-priority unfinished phase and its complete dependency-ordered task list, including acceptance criteria, verification, and decision gates. It does not produce a Top 3 roadmap.
+
+The analysis worker receives `OUTPUT_MODE=BODY_ONLY` and returns Markdown without invoking the script again. Interactive responses provide a brief confirmation and file link. Failed analysis or report validation publishes no proposal. Existing proposals remain historical artifacts; the runner does not modify them, approve work, or promote proposals to `docs/PLANS.md`.
 
 ## Publishing an already-reviewed Markdown body
 

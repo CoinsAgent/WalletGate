@@ -46,11 +46,12 @@ Do not invent file paths, line numbers, package versions, test results, or fixes
 
 There are **two** supported execution contexts:
 
-- **Unattended runner:** When the invoking prompt says `OUTPUT_MODE=BODY_ONLY`, return only the complete Markdown body as your final answer. **Do not run any publishing script** or write files. The outer runner will save it using `scripts/run-assessment.sh`.
-- **Interactive Codex:** When explicitly asked to persist the result, analyze first and invoke `scripts/run-assessment.sh publish contract-compliance [--scope "..."] [--baseline docs/assessments/<file>.md]` with the finished report body on standard input (for example, a shell here-document). This command is the **only** authorized workspace write for a report task. If not asked to persist, just show the report without writing files.
+- **Unattended runner:** When the invoking prompt says `OUTPUT_MODE=BODY_ONLY`, return only the complete Markdown body as your final answer for the runner to capture. **Do not run any publishing script** or write files. The outer runner will save it using `scripts/run-assessment.sh`. This machine-output mode is the exception to the interactive response rule below.
+- **Interactive Codex:** Save the completed assessment by default; invoking this skill authorizes creation of one new report in `docs/assessments/`. After analyzing, invoke `bash scripts/run-assessment.sh publish contract-compliance [--scope "..."] [--baseline docs/assessments/<file>.md]` with the finished report body on standard input (for example, a shell here-document). No separate save request or confirmation is needed. This command is the **only** authorized workspace write for a report task.
+- **Interactive response:** Do not print the report body in the terminal or chat, or echo it through tools. After successful publication, return only a brief confirmation and a link to the generated Markdown file. If publication fails, report the failure concisely without claiming the report was saved or dumping its body. An explicit user instruction to avoid saving takes precedence over the default.
 
 The script handles timestamps, metadata, unique names, and no-overwrite behavior. Do not write a report directly into `docs/assessments/`, assign metadata, alter past reports, or invoke the script's `run` mode from this skill.
 
 ## Restrictions
 
-Read-only investigation: no code/config/dependency changes, migrations, Git mutations, or implementation roadmap. No tests that write to the workspace unless explicitly authorized. If publishing, only the new report file may be written.
+Read-only investigation: no code/config/dependency changes, migrations, Git mutations, or implementation roadmap. No tests that write to the workspace unless explicitly authorized. Interactive runs may write only the one new report through the shared publisher; unattended `OUTPUT_MODE=BODY_ONLY` runs must not write files.
