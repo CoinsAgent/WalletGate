@@ -2,7 +2,7 @@ import { createAuthEndpoint } from "better-auth/api";
 import * as z from "zod";
 import { siwe } from "better-auth/plugins";
 import { getAddress, isHex, verifyMessage } from "viem";
-import { parseSiweMessage } from "viem/siwe";
+import { validSIWEMessage } from "./siwe-validation";
 
 /** Configure wallet sign-in for the demo's public origin without RPC requests. */
 export function createDemoSIWEPlugin(publicURL: string) {
@@ -17,10 +17,8 @@ export function createDemoSIWEPlugin(publicURL: string) {
 		},
 		async verifyMessage({ address, message, signature }) {
 			try {
-				const { uri } = parseSiweMessage(message);
 				if (
-					!uri ||
-					new URL(uri).origin !== origin ||
+					!validSIWEMessage(message, address, publicURL) ||
 					!isHex(signature, { strict: true })
 				) {
 					return false;

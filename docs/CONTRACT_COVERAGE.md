@@ -76,16 +76,19 @@ Statuses: MISSING, PARTIAL, IMPLEMENTED (acceptance pending), VERIFIED, BLOCKED,
       ],
       "acceptance_description": "Product rejects invalid signatures, wrong domain/URI, malformed fields, expired messages and sequential/concurrent replay.",
       "code": [
-        "lib/siwe.ts"
+        "lib/siwe.ts",
+        "lib/siwe-validation.ts"
       ],
       "tests": [
-        "experiments/c01/security.test.ts",
-        "app/(auth)/sign-in/siwe-login.test.ts"
+        "lib/siwe-validation.test.ts",
+        "lib/siwe-concurrency.mysql.test.ts",
+        "lib/auth-safety.test.ts"
       ],
       "evidence": [
-        "docs/plans/progress/PH-001.md"
+        "docs/plans/progress/PH-001.md",
+        "docs/plans/progress/PH-003.md"
       ],
-      "reason": "Static baseline and bounded PH-001 research only; no product acceptance claimed. Contract §5 decisions remain unapproved."
+      "reason": "PH-003 amended scoped acceptance passes: strict production callback validation, SQLite sequential replay and disposable MySQL independent-instance concurrency [200,401], one session, zero nonces. User explicitly deferred the Better Auth 1.7.11 statement/Expiration Time parsing edge case. SQLite concurrency remains unresolved; Turso, other adapters, multiple processes and exhaustive standards edge cases are not certified. Full WG-003-A1 is not fulfilled; preserve PARTIAL."
     },
     {
       "id": "WG-004",
@@ -107,13 +110,15 @@ Statuses: MISSING, PARTIAL, IMPLEMENTED (acceptance pending), VERIFIED, BLOCKED,
       "tests": [
         "lib/auth-safety.test.ts",
         "lib/auth.test.ts",
-        "lib/wallet-login.test.ts"
+        "lib/wallet-login.test.ts",
+        "lib/siwe-validation.test.ts"
       ],
       "evidence": [
         "docs/plans/progress/PH-001.md",
-        "docs/plans/progress/PH-002.md"
+        "docs/plans/progress/PH-002.md",
+        "docs/plans/progress/PH-003.md"
       ],
-      "reason": "Production non-SIWE entry denials, valid SIWE, wallet-only login, real signed-query continuations (default, prompt=login, max_age=0), tamper rejection and retry pass. Parent full regression 115/115, CLI 30/30, targeted 62/62, SIWE 18/18 and final typecheck pass. This verifies new independent login only; session provenance/lifecycle and full mobile discovery remain outside scope."
+      "reason": "PH-003 revalidation after SIWE integration changes: 111 combined acceptance tests, 164 root tests, 18 sign-in and 30 CLI tests pass. Production independent non-SIWE routes remain denied with no access/session side effects; valid SIWE login and signed OAuth continuation succeed. This does not approve session lifecycle/provenance policy."
     },
     {
       "id": "WG-005",
@@ -186,15 +191,17 @@ Statuses: MISSING, PARTIAL, IMPLEMENTED (acceptance pending), VERIFIED, BLOCKED,
       ],
       "acceptance_description": "Every exposed unauthenticated client creation endpoint denies registration.",
       "code": [
-        "lib/auth.ts"
+        "lib/auth.ts",
+        "lib/auth-entry-policy.ts"
       ],
       "tests": [
         "lib/auth-safety.test.ts"
       ],
       "evidence": [
-        "docs/plans/progress/PH-002.md"
+        "docs/plans/progress/PH-002.md",
+        "docs/plans/progress/PH-003.md"
       ],
-      "reason": "Anonymous creation denied across handler and Next HTTP boundary with missing/invalid credentials and forged identity fields, no new client state/credentials; server-only admin creation denied without authentication. Configured-client code/token/UserInfo and UI/CLI regressions pass; parent full suite 115/115 and CLI 30/30. Wallet-owner authorization for authenticated management is not certified."
+      "reason": "PH-003 production-configured anonymous registration denials pass through handler, Next wrapper and server API with no client state/credentials. Combined acceptance 111/111 and root 164/164 pass after shared SIWE changes. Authenticated wallet-owner registration policy remains unresolved under WG-009."
     },
     {
       "id": "WG-009",

@@ -1,0 +1,39 @@
+diff --git a/experiments/c01/README.md b/experiments/c01/README.md
+index ae15f1b..d60c544 100644
+--- a/experiments/c01/README.md
++++ b/experiments/c01/README.md
+@@ -100,7 +100,7 @@ pnpm --version
+ pnpm list better-auth @better-auth/core @better-auth/oauth-provider viem --depth 0
+ pnpm exec tsc --noEmit --skipLibCheck --module esnext --moduleResolution bundler --target es2022 --esModuleInterop experiments/c01/*.ts
+ pnpm exec vitest run --config experiments/c01/vitest.config.ts --reporter=verbose
+-pnpm exec vitest run --config app/client-test-siwe/vitest.config.ts
++pnpm exec vitest run --config "app/(auth)/sign-in/vitest.config.ts"
+ pnpm exec vitest run --config app/client-test/vitest.config.ts
+ pnpm exec vitest run --config experiments/c01/vitest.config.ts --reporter=verbose
+ ```
+diff --git a/experiments/c01/harness.ts b/experiments/c01/harness.ts
+index 24b2766..8129fdf 100644
+--- a/experiments/c01/harness.ts
++++ b/experiments/c01/harness.ts
+@@ -13,7 +13,7 @@ import { createAuthMiddleware, getAuthoritativeSessionFromCtx, APIError } from "
+ import { privateKeyToAccount } from "viem/accounts";
+ import { createSiweMessage } from "viem/siwe";
+ import { createDemoSIWEPlugin } from "../../lib/siwe";
+-import { startAuthorization, submitConsent, exchangeCode, fetchUserInfo, registerTestClient } from "../../app/client-test-siwe/oauth-flow";
++import { startAuthorization, submitConsent, exchangeCode, fetchUserInfo, registerTestClient } from "../../app/(auth)/sign-in/oauth-flow";
+ import { createLocalJWKSet, jwtVerify } from "jose";
+ import { getCurrentAuthEndpointContext } from "@better-auth/core/context";
+ import { siwe } from "better-auth/plugins";
+diff --git a/experiments/c01/provenance.test.ts b/experiments/c01/provenance.test.ts
+index 3e54467..e8babb7 100644
+--- a/experiments/c01/provenance.test.ts
++++ b/experiments/c01/provenance.test.ts
+@@ -1,7 +1,7 @@
+ import { createHash, generateKeyPairSync, sign } from "node:crypto";
+ import { expect, it } from "vitest";
+ import { setup, wallets } from "./harness";
+-import { exchangeCode } from "../../app/client-test-siwe/oauth-flow";
++import { exchangeCode } from "../../app/(auth)/sign-in/oauth-flow";
+ 
+ it.each([false, true])("persists trusted provenance and rejects forged or legacy sessions with cookie cache=%s", async (cookieCache) => {
+   const h = await setup(true, { provenance: true, enforce: true, cookieCache });

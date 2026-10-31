@@ -10,15 +10,18 @@ export const testOrigin = "http://localhost:3000";
 export const testWallet = privateKeyToAccount(`0x${"1".padStart(64, "0")}`);
 
 /** Production configuration, persistent disposable SQLite, no reduced plugin list. */
-export async function productionFixture() {
-  const directory = mkdtempSync(join(tmpdir(), "ph002-"));
-  process.env.DEMO_SQLITE_PATH = join(directory, "auth.sqlite");
+export async function productionFixture(options: { databasePath?: string; migrate?: boolean } = {}) {
+  const directory = mkdtempSync(join(tmpdir(), "walletgate-acceptance-"));
+  const databasePath = options.databasePath ?? join(directory, "auth.sqlite");
+  process.env.DEMO_SQLITE_PATH = databasePath;
   process.env.BETTER_AUTH_URL = testOrigin;
   process.env.BETTER_AUTH_SECRET = "ph002-disposable-test-secret-at-least-32-characters";
   process.env.SCIM_DEMO_ENABLED = "false";
   const { auth } = await import("./auth");
-  const migration = await getMigrations(auth.options);
-  await migration.runMigrations();
+  if (options.migrate !== false) {
+    const migration = await getMigrations(auth.options);
+    await migration.runMigrations();
+  }
   const ctx = await auth.$context;
   const db = new DatabaseSync(process.env.DEMO_SQLITE_PATH);
   const request = (path: string, init?: RequestInit) => {
@@ -36,7 +39,7 @@ export async function productionFixture() {
     const response = await post("/api/auth/siwe/verify", { message, signature: await testWallet.signMessage({ message }) });
     return { response, cookie: response.headers.getSetCookie().map(c => c.split(";")[0]).join("; "), body: await response.json() };
   };
-  return { auth, ctx, db, request, post, count, login, async close() {
+  return { auth, ctx, db, databasePath, request, post, count, login, async close() {
     db.close();
     // Migration and production auth share the configured DatabaseSync handle.
     const driver = auth.options.database.dialect.createDriver();

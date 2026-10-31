@@ -4,6 +4,7 @@ export default defineConfig({
 	resolve: { alias: { "@": new URL(".", import.meta.url).pathname } },
 	test: {
 		include: ["lib/**/*.test.ts", "app/**/*.test.ts"],
+		exclude: ["lib/**/*.mysql.test.ts"],
 		environment: "node",
 		testTimeout: 10_000,
 	},

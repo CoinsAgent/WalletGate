@@ -73,9 +73,22 @@ two-factor codes are printed as `[Demo email preview]` messages in the server
 console during development. No email is delivered. Configure an email sender in
 `lib/email/send.ts` before using these email flows in production.
 
-Make sure `TURSO_DATABASE_URL=your_turso_url` and
-`TURSO_AUTH_TOKEN=your_turso_token` is set or `USE_MYSQL=true` and
-`MYSQL_DATABASE_URL=your_mysql_url` is set.
+Configure MySQL in the ignored `.env` file:
+
+```dotenv
+USE_MYSQL=true
+MYSQL_DATABASE_URL=mysql://walletgate:your-password@127.0.0.1:3306/walletgate
+DEMO_SQLITE_PATH=
+```
+
+Use a dedicated database and database user. The MySQL connection pool uses UTC
+for timestamp conversion. `USE_MYSQL` must be exactly `true` to enable MySQL.
+A nonempty `DEMO_SQLITE_PATH` selects SQLite first, including in isolated tests.
+Alternatively, disable MySQL and configure both `TURSO_DATABASE_URL` and
+`TURSO_AUTH_TOKEN` to use Turso.
+
+Changing the database connection does not copy existing SQLite/Turso accounts,
+sessions, OAuth clients, or keys. A newly initialized MySQL database starts empty.
 
 ### Start the Development Server
 
@@ -104,7 +117,7 @@ starting the development server:
 ```bash
 # Create or update the tables required by your auth configuration.
 # Run on first setup and after changing the auth schema or enabled plugins.
-npx auth@latest migrate --config ./lib/auth.ts
+pnpm dlx auth@1.7.11 migrate --config ./lib/auth.ts
 
 # Start the development server.
 pnpm dev
@@ -112,6 +125,40 @@ pnpm dev
 
 The app will be live at [http://localhost:3000](http://localhost:3000).
 Open it in your browser, and you’re good to go!
+
+### MySQL replay concurrency test
+
+The PH-003 independent-instance replay test runs against MySQL in
+`lib/siwe-concurrency.mysql.test.ts`. Create a separate test user with privileges
+limited to disposable databases (run as a MySQL administrator, replacing the
+password):
+
+```sql
+CREATE USER 'walletgate_test'@'127.0.0.1' IDENTIFIED BY 'your-test-password';
+GRANT ALL PRIVILEGES ON `walletgate\_test\_%`.* TO 'walletgate_test'@'127.0.0.1';
+```
+
+Save the connection URL in the ignored `.env.test` file (or provide the variable
+through the environment):
+
+```dotenv
+TEST_MYSQL_DATABASE_URL=mysql://walletgate_test:your-test-password@127.0.0.1:3306/walletgate_test
+```
+
+`/walletgate_test` is a required safety marker, not an existing database to
+modify. Each run creates, migrates, and drops a randomly named
+`walletgate_test_*` database. It never falls back to `MYSQL_DATABASE_URL`.
+
+```bash
+pnpm test:mysql
+```
+
+This integration suite requires a running MySQL server and fails if credentials
+are missing or connection/setup fails. It checks two independent auth instances
+with separate pools: one success, one rejected duplicate, exactly one usable
+session, and subsequent replay rejection by both instances. The default Vitest
+suite keeps the SQLite validation/sequential-replay tests and excludes the
+MySQL integration file; run both suites when checking PH-003 acceptance.
 
 Feel free to jump in and edit the app by modifying `app/page.tsx`.
 Any changes you make will update automatically in the browser.

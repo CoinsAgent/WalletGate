@@ -6,6 +6,7 @@
   "type": "module",
   "packageManager": "pnpm@11.1.1",
   "scripts": {
+    "test:mysql": "vitest run --config vitest.mysql.config.ts",
     "dev": "next dev",
     "dev:secure": "next dev --experimental-https",
     "typecheck": "next typegen && tsc --noEmit --incremental false",

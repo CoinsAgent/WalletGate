@@ -1,0 +1,9 @@
+
+ RUN  v5.0.0 /home/ubuntu/WalletGate
+
+
+ Test Files  2 passed (2)
+      Tests  18 passed (18)
+   Start at  07:30:40
+   Duration  3.64s (tests 48%, import 45%, transform 7%)
+

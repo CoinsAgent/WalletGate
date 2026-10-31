@@ -1,0 +1,234 @@
+
+SOURCE READ ONLY: node_modules/better-auth/dist/plugins/siwe/parse-message.mjs sha256: d3de7382ef018fb3c0bde00db0649006f25b39457202cc3407079d9f10f4a360
+1: //#region src/plugins/siwe/parse-message.ts
+2: const HEADER_REGEX = /^(?:([a-zA-Z][a-zA-Z0-9+.-]*):\/\/)?(\S+) wants you to sign in with your Ethereum account:$/;
+3: const ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/;
+4: const FIELD_REGEX = /^([A-Za-z ]+): (.*)$/;
+5: function parseSiweMessage(message) {
+6: 	const result = {};
+7: 	const lines = message.split(/\r?\n/);
+8: 	const headerMatch = lines[0]?.match(HEADER_REGEX);
+9: 	if (headerMatch) {
+10: 		if (headerMatch[1]) result.scheme = headerMatch[1];
+11: 		result.domain = headerMatch[2];
+12: 	}
+13: 	const addressLine = lines[1]?.trim();
+14: 	if (addressLine && ADDRESS_REGEX.test(addressLine)) result.address = addressLine;
+15: 	for (const line of lines) {
+16: 		const match = line.match(FIELD_REGEX);
+17: 		if (!match) continue;
+18: 		const [, key, value] = match;
+19: 		switch (key) {
+20: 			case "URI":
+21: 				result.uri = value;
+22: 				break;
+23: 			case "Version":
+24: 				result.version = value;
+25: 				break;
+26: 			case "Chain ID": {
+27: 				const parsed = Number(value);
+28: 				if (Number.isInteger(parsed)) result.chainId = parsed;
+29: 				break;
+30: 			}
+31: 			case "Nonce":
+32: 				result.nonce = value;
+33: 				break;
+34: 			case "Issued At":
+35: 				result.issuedAt = value;
+36: 				break;
+37: 			case "Expiration Time":
+38: 				result.expirationTime = value;
+39: 				break;
+40: 			case "Not Before":
+41: 				result.notBefore = value;
+42: 				break;
+43: 			case "Request ID":
+44: 				result.requestId = value;
+45: 				break;
+46: 		}
+47: 	}
+48: 	return result;
+49: }
+50: /**
+51: * Normalizes a SIWE `domain` (RFC 3986 authority) for comparison: strips any
+52: * scheme and path, lowercases, leaving `host[:port]`.
+53: */
+54: function normalizeSiweDomain(domain) {
+55: 	const withoutScheme = domain.trim().toLowerCase().replace(/^[a-z][a-z0-9+.-]*:\/\//, "");
+56: 	const pathStart = withoutScheme.indexOf("/");
+57: 	return pathStart === -1 ? withoutScheme : withoutScheme.slice(0, pathStart);
+58: }
+59: //#endregion
+60: export { normalizeSiweDomain, parseSiweMessage };
+
+SOURCE READ ONLY: node_modules/better-auth/dist/plugins/siwe/index.mjs sha256: 7213cd98c9c1689c49ef82c2ee9c1b801dc35bf4ef43981ae1e926d778c4b86a
+53: 				}),
+54: 				requireRequest: true
+55: 			}, async (ctx) => {
+56: 				const { message, signature, email } = ctx.body;
+57: 				const isAnon = options.anonymous ?? true;
+58: 				if (!isAnon && !email) throw APIError.fromStatus("BAD_REQUEST", {
+59: 					message: "Email is required when anonymous is disabled.",
+60: 					status: 400
+61: 				});
+62: 				try {
+63: 					const parsedMessage = parseSiweMessage(message);
+64: 					if (!isValidSiweNonce(parsedMessage.nonce)) throw APIError.fromStatus("UNAUTHORIZED", {
+65: 						message: "Unauthorized: SIWE message does not match the expected nonce, domain, address, or chain ID",
+66: 						status: 401,
+67: 						code: "UNAUTHORIZED_SIWE_MESSAGE_MISMATCH"
+68: 					});
+69: 					if (!await ctx.context.internalAdapter.consumeVerificationValue(`${SIWE_VERIFICATION_IDENTIFIER_PREFIX}${parsedMessage.nonce}`)) throw APIError.fromStatus("UNAUTHORIZED", {
+70: 						message: "Unauthorized: Invalid or expired nonce",
+71: 						status: 401,
+72: 						code: "UNAUTHORIZED_INVALID_OR_EXPIRED_NONCE"
+73: 					});
+74: 					const nonce = parsedMessage.nonce;
+75: 					const parsedWalletAddress = signedWalletAddressSchema.safeParse(parsedMessage.address);
+76: 					const walletAddress = parsedWalletAddress.success ? toChecksumAddress(parsedWalletAddress.data) : null;
+77: 					const chainId = parsedMessage.chainId;
+78: 					const domainMatches = !!parsedMessage.domain && normalizeSiweDomain(parsedMessage.domain) === normalizeSiweDomain(options.domain);
+79: 					if (!walletAddress || typeof chainId !== "number" || chainId <= 0 || !domainMatches) throw APIError.fromStatus("UNAUTHORIZED", {
+80: 						message: "Unauthorized: SIWE message does not match the expected nonce, domain, address, or chain ID",
+81: 						status: 401,
+82: 						code: "UNAUTHORIZED_SIWE_MESSAGE_MISMATCH"
+83: 					});
+84: 					const now = Date.now();
+85: 					if (parsedMessage.expirationTime) {
+86: 						const expiresAt = Date.parse(parsedMessage.expirationTime);
+87: 						if (!Number.isNaN(expiresAt) && now >= expiresAt) throw APIError.fromStatus("UNAUTHORIZED", {
+88: 							message: "Unauthorized: SIWE message has expired",
+89: 							status: 401,
+90: 							code: "UNAUTHORIZED_SIWE_MESSAGE_EXPIRED"
+91: 						});
+92: 					}
+93: 					if (parsedMessage.notBefore) {
+94: 						const notBefore = Date.parse(parsedMessage.notBefore);
+95: 						if (!Number.isNaN(notBefore) && now < notBefore) throw APIError.fromStatus("UNAUTHORIZED", {
+96: 							message: "Unauthorized: SIWE message is not yet valid",
+97: 							status: 401,
+98: 							code: "UNAUTHORIZED_SIWE_MESSAGE_NOT_YET_VALID"
+99: 						});
+100: 					}
+101: 					if (!await options.verifyMessage({
+102: 						message,
+103: 						signature,
+104: 						address: walletAddress,
+105: 						chainId,
+106: 						cacao: {
+107: 							h: { t: "caip122" },
+108: 							p: {
+109: 								domain: options.domain,
+110: 								aud: options.domain,
+111: 								nonce,
+112: 								iss: options.domain,
+113: 								version: "1"
+114: 							},
+115: 							s: {
+116: 								t: "eip191",
+117: 								s: signature
+118: 							}
+119: 						}
+120: 					})) throw APIError.fromStatus("UNAUTHORIZED", {
+121: 						message: "Unauthorized: Invalid SIWE signature",
+122: 						status: 401
+123: 					});
+124: 					let user = null;
+
+SOURCE READ ONLY: node_modules/better-auth/dist/plugins/siwe/index.d.mts sha256: 960ca873f46fec3166c22ccd1198094ef53a5071852f69264f5731b99dc7ceeb
+16:   domain: string;
+17:   emailDomainName?: string | undefined;
+18:   anonymous?: boolean | undefined;
+19:   getNonce: () => Promise<string>;
+20:   verifyMessage: (args: SIWEVerifyMessageArgs) => Promise<boolean>;
+21:   ensLookup?: ((args: ENSLookupArgs) => Promise<ENSLookupResult>) | undefined;
+22:   schema?: InferOptionSchema<typeof schema> | undefined;
+23: }
+24: declare const siwe: (options: SIWEPluginOptions) => {
+25:   id: "siwe";
+26:   version: string;
+27:   schema: WalletAddressSchema;
+28:   endpoints: {
+29:     getSiweNonce: _$better_call0.StrictEndpoint<"/siwe/nonce" | "/siwe/get-nonce", {
+30:       method: "POST";
+
+SOURCE READ ONLY: node_modules/better-auth/dist/db/internal-adapter.mjs sha256: f9c5e9c8faa058a19ec73690b6faa5331e49ca8f9057cdb16307b064a017b1b6
+830: 				const consumeByIdentifier = async (id) => withVerificationConsumeLock(`verification:${id}`, () => runWithTransaction(adapter, async () => {
+831: 					const txAdapter = await getCurrentAdapter(adapter);
+832: 					const where = [{
+833: 						field: "identifier",
+834: 						value: id
+835: 					}];
+836: 					const latest = (await txAdapter.findMany({
+837: 						model: "verification",
+838: 						where,
+839: 						sortBy: {
+840: 							field: "createdAt",
+841: 							direction: "desc"
+842: 						},
+843: 						limit: 1
+844: 					}))[0] ?? null;
+845: 					if (!latest) return null;
+846: 					return consumeOneWithHooks("verification", [{
+847: 						field: "id",
+848: 						value: latest.id
+849: 					}], async () => {
+850: 						const row = await txAdapter.consumeOne({
+851: 							model: "verification",
+852: 							where: [{
+853: 								field: "id",
+854: 								value: latest.id
+855: 							}]
+856: 						});
+857: 						if (!row) return null;
+858: 						await txAdapter.deleteMany({
+859: 							model: "verification",
+860: 							where
+861: 						});
+862: 						return row;
+863: 					}, latest);
+864: 				}));
+865: 				for (const stored of identifiersToTry) {
+866: 					consumed = await consumeByIdentifier(stored);
+867: 					if (consumed) break;
+868: 				}
+869: 				if (consumed && secondaryStorage) await Promise.all(identifiersToTry.map((stored) => secondaryStorage.delete(`verification:${stored}`)));
+870: 			}
+871: 			if (!consumed || consumed.expiresAt < /* @__PURE__ */ new Date()) return null;
+872: 			return consumed;
+
+SOURCE READ ONLY: node_modules/@better-auth/kysely-adapter/dist/index.mjs sha256: b5f033d42be5c229089639a83a25d2bf42d26273a3181abba0f558205e797dfa
+613: 				async consumeOne({ model, modelKey = model, where }) {
+614: 					const { and, or } = convertWhereClause(model, modelKey, where);
+615: 					const applyWhere = (query) => {
+616: 						if (and) query = query.where((eb) => eb.and(and.map((expr) => expr(eb))));
+617: 						if (or) query = query.where((eb) => eb.or(or.map((expr) => expr(eb))));
+618: 						return query;
+619: 					};
+620: 					const idField = getFieldName({
+621: 						model: modelKey,
+622: 						field: "id"
+623: 					});
+624: 					const deleteSelectedRow = async (db, row) => {
+625: 						const targetId = row[idField] ?? row.id;
+626: 						if (targetId === void 0 || targetId === null) return null;
+627: 						const query = db.deleteFrom(model).where(`${model}.${idField}`, "=", targetId);
+628: 						if (config?.type === "mysql") {
+629: 							const result = await query.executeTakeFirst();
+630: 							return Number(result.numDeletedRows) > 0 ? row : null;
+631: 						}
+632: 						if (config?.type === "mssql") return await query.outputAll("deleted").executeTakeFirst() ?? null;
+633: 						return await query.returningAll().executeTakeFirst() ?? null;
+634: 					};
+635: 					const deleteWithReturning = async (query) => {
+636: 						if (config?.type === "mssql") return await query.outputAll("deleted").executeTakeFirst() ?? null;
+637: 						return await query.returningAll().executeTakeFirst() ?? null;
+638: 					};
+639: 					if (config?.type === "mysql") {
+640: 						const claimFromTransaction = async (trx) => {
+641: 							const row = await applyWhere(trx.selectFrom(model).selectAll().forUpdate()).limit(1).executeTakeFirst();
+642: 							if (!row) return null;
+643: 							return deleteSelectedRow(trx, row);
+644: 						};
+645: 						return inTransaction ? claimFromTransaction(db) : db.transaction().execute(claimFromTransaction);
+646: 					}

@@ -1,0 +1,29 @@
+$ vitest run --config vitest.mysql.config.ts --reporter=verbose
+
+ RUN  v5.0.0 /home/ubuntu/WalletGate
+
+ ↓ lib/siwe-concurrency.mysql.test.ts > independent auth instances share durable MySQL nonce consumption and create exactly one session
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  lib/siwe-concurrency.mysql.test.ts [ lib/siwe-concurrency.mysql.test.ts ]
+Error: connect EPERM 127.0.0.1:3306 - Local (undefined:undefined)
+ ❯ lib/siwe-concurrency.mysql.test.ts:36:15
+     34|   url.pathname = "/";
+     35|   admin = createPool({ uri: url.href, timezone: "Z" });
+     36|   await admin.query(`CREATE DATABASE \`${database}\` CHARACTER SET utf…
+       |               ^
+     37|   databaseCreated = true;
+     38|   url.pathname = `/${database}`;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { errno: -1, code: 'EPERM', syscall: 'connect', address: '127.0.0.1', port: 3306, fatal: true }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 skipped (1)
+   Start at  07:29:10
+   Duration  873ms (import 85%, transform 12%, tests 2%, worker 1%)
+
+[ELIFECYCLE] Command failed with exit code 1.

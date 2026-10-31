@@ -1,0 +1,480 @@
+
+ RUN  v5.0.0 /home/ubuntu/WalletGate
+
+stderr | lib/siwe-validation.test.ts > rejects wrongDomain without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/auth-safety.test.ts
+2026-10-31T23:29:04.178Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > rejects domainPath without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/auth-safety.test.ts > denies password signup without creating a session 36ms
+ ✓ lib/auth-safety.test.ts > denies anonymous valid dynamic registration without persisting credentials 17ms
+stderr | lib/siwe-validation.test.ts > rejects wrongURI without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/siwe-validation.test.ts > rejects wrongDomain without identity or access state (WG-003-A1) 1111ms
+ ✓ lib/siwe-validation.test.ts > rejects domainPath without identity or access state (WG-003-A1) 64ms
+stderr | lib/siwe-validation.test.ts > rejects wrongVersion without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > rejects missingAddress without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/auth-safety.test.ts > valid signed SIWE establishes a usable session 106ms
+ ✓ lib/siwe-validation.test.ts > rejects wrongURI without identity or access state (WG-003-A1) 53ms
+ ✓ lib/siwe-validation.test.ts > rejects wrongVersion without identity or access state (WG-003-A1) 53ms
+stderr | lib/siwe-validation.test.ts > rejects addressWhitespace without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > rejects missingURI without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/auth-safety.test.ts > otherwise valid stored password credentials cannot authenticate 118ms
+ ✓ lib/auth-safety.test.ts > POST /sign-in/social cannot create access even with an existing SIWE session 38ms
+ ✓ lib/auth-safety.test.ts > GET /callback/github?code=valid-code&state=state cannot create access even with an existing SIWE session 35ms
+ ✓ lib/auth-safety.test.ts > GET /passkey/generate-authenticate-options cannot create access even with an existing SIWE session 27ms
+ ✓ lib/siwe-validation.test.ts > rejects missingAddress without identity or access state (WG-003-A1) 52ms
+ ✓ lib/siwe-validation.test.ts > rejects addressWhitespace without identity or access state (WG-003-A1) 61ms
+stderr | lib/siwe-validation.test.ts > rejects missingVersion without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > rejects missingChain without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/auth-safety.test.ts > POST /passkey/verify-authentication cannot create access even with an existing SIWE session 26ms
+ ✓ lib/auth-safety.test.ts > POST /passkey/verify-registration cannot create access even with an existing SIWE session 23ms
+ ✓ lib/auth-safety.test.ts > POST /sign-in/sso cannot create access even with an existing SIWE session 26ms
+ ✓ lib/auth-safety.test.ts > GET /sso/callback/sso?code=valid-code&state=state cannot create access even with an existing SIWE session 22ms
+ ✓ lib/siwe-validation.test.ts > rejects missingURI without identity or access state (WG-003-A1) 56ms
+ ✓ lib/siwe-validation.test.ts > rejects missingVersion without identity or access state (WG-003-A1) 59ms
+stderr | lib/siwe-validation.test.ts > rejects invalidChain without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/auth-safety.test.ts > GET /sso/callback?code=valid-code&state=state cannot create access even with an existing SIWE session 20ms
+ ✓ lib/auth-safety.test.ts > POST /sso/saml2/sp/acs/sso cannot create access even with an existing SIWE session 25ms
+ ✓ lib/auth-safety.test.ts > POST /two-factor/verify-totp cannot create access even with an existing SIWE session 30ms
+ ✓ lib/auth-safety.test.ts > POST /two-factor/verify-otp cannot create access even with an existing SIWE session 27ms
+stderr | lib/siwe-validation.test.ts > rejects missingNonce without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/siwe-validation.test.ts > rejects missingChain without identity or access state (WG-003-A1) 76ms
+ ✓ lib/siwe-validation.test.ts > rejects invalidChain without identity or access state (WG-003-A1) 60ms
+stderr | lib/siwe-validation.test.ts > rejects invalidNonce without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/auth-safety.test.ts > POST /two-factor/verify-backup-code cannot create access even with an existing SIWE session 22ms
+ ✓ lib/auth-safety.test.ts > POST /admin/impersonate-user cannot create access even with an existing SIWE session 26ms
+ ✓ lib/auth-safety.test.ts > POST /electron/token cannot create access even with an existing SIWE session 22ms
+ ✓ lib/auth-safety.test.ts > POST /electron/transfer-user cannot create access even with an existing SIWE session 19ms
+ ✓ lib/auth-safety.test.ts > POST /device/token cannot create access even with an existing SIWE session 24ms
+stderr | lib/siwe-validation.test.ts > rejects missingIssuedAt without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/siwe-validation.test.ts > rejects missingNonce without identity or access state (WG-003-A1) 59ms
+ ✓ lib/siwe-validation.test.ts > rejects invalidNonce without identity or access state (WG-003-A1) 51ms
+stderr | lib/siwe-validation.test.ts > rejects invalidIssuedAt without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/auth-safety.test.ts > GET /verify-email?token=signed-email-token&callbackURL=/dashboard cannot create access even with an existing SIWE session 18ms
+ ✓ lib/auth-safety.test.ts > server API calls use the same independent-login enforcement 3ms
+ ✓ lib/auth-safety.test.ts > denies anonymous /oauth2/register through handler and Next HTTP wrapper 77ms
+stderr | lib/siwe-validation.test.ts > rejects dateOnly without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/siwe-validation.test.ts > rejects missingIssuedAt without identity or access state (WG-003-A1) 60ms
+ ✓ lib/siwe-validation.test.ts > rejects invalidIssuedAt without identity or access state (WG-003-A1) 62ms
+stderr | lib/siwe-validation.test.ts > rejects impossibleDate without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/auth-safety.test.ts > denies anonymous /oauth2/create-client through handler and Next HTTP wrapper 35ms
+ ✓ lib/auth-safety.test.ts > denies anonymous /admin/oauth2/create-client through handler and Next HTTP wrapper 10ms
+stderr | lib/siwe-validation.test.ts > rejects invalidExpiry without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > rejects invalidNotBefore without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/siwe-validation.test.ts > rejects dateOnly without identity or access state (WG-003-A1) 47ms
+ ✓ lib/siwe-validation.test.ts > rejects impossibleDate without identity or access state (WG-003-A1) 40ms
+ ✓ lib/siwe-validation.test.ts > rejects invalidExpiry without identity or access state (WG-003-A1) 44ms
+stderr | lib/siwe-validation.test.ts > rejects expired without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > rejects expiresNow without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/auth-safety.test.ts > existing configured client completes authorization code, tokens and UserInfo 126ms
+ ✓ lib/auth-safety.test.ts > server-only administrative client creation also denies missing authentication 5ms
+ ✓ lib/auth-safety.test.ts > rejects a real signed passkey assertion that succeeds in a labeled upstream control 57ms
+ ✓ lib/siwe-validation.test.ts > rejects invalidNotBefore without identity or access state (WG-003-A1) 46ms
+ ✓ lib/siwe-validation.test.ts > rejects expired without identity or access state (WG-003-A1) 38ms
+stderr | lib/siwe-validation.test.ts > rejects notYetValid without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > rejects duplicateVersion without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/auth-safety.test.ts > preserves signed OAuth authorization through the real wallet client ({}) 134ms
+ ✓ lib/auth-safety.test.ts > preserves signed OAuth authorization through the real wallet client ({"prompt":"login"}) 37ms
+stderr | lib/siwe-validation.test.ts > rejects duplicateIssuedAt without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/siwe-validation.test.ts > rejects expiresNow without identity or access state (WG-003-A1) 46ms
+ ✓ lib/siwe-validation.test.ts > rejects notYetValid without identity or access state (WG-003-A1) 40ms
+ ✓ lib/siwe-validation.test.ts > rejects duplicateVersion without identity or access state (WG-003-A1) 49ms
+ ✓ lib/auth-safety.test.ts > preserves signed OAuth authorization through the real wallet client ({"max_age":"0"}) 35ms
+stderr | lib/siwe-validation.test.ts > rejects reversedFields without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > rejects trailingJunk without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > rejects trailingNewline without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/siwe-validation.test.ts > rejects duplicateIssuedAt without identity or access state (WG-003-A1) 59ms
+ ✓ lib/siwe-validation.test.ts > rejects reversedFields without identity or access state (WG-003-A1) 36ms
+ ✓ lib/siwe-validation.test.ts > rejects trailingJunk without identity or access state (WG-003-A1) 35ms
+stderr | lib/siwe-validation.test.ts > rejects invalidRequestId without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > rejects badPercentRequestId without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > rejects invalidResource without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/siwe-validation.test.ts > rejects trailingNewline without identity or access state (WG-003-A1) 38ms
+ ✓ lib/siwe-validation.test.ts > rejects invalidRequestId without identity or access state (WG-003-A1) 32ms
+ ✓ lib/siwe-validation.test.ts > rejects badPercentRequestId without identity or access state (WG-003-A1) 35ms
+stderr | lib/siwe-validation.test.ts > rejects statementControl without identity or access state (WG-003-A1)
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > rejects an invalid signature and permits a fresh challenge retry
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/siwe-validation.test.ts > rejects invalidResource without identity or access state (WG-003-A1) 36ms
+ ✓ lib/siwe-validation.test.ts > rejects statementControl without identity or access state (WG-003-A1) 31ms
+stderr | lib/siwe-validation.test.ts > accepts minimal without a new freshness/chain policy
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > accepts optionalStatement without a new freshness/chain policy
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/siwe-validation.test.ts > rejects an invalid signature and permits a fresh challenge retry 66ms
+ ✓ lib/siwe-validation.test.ts > accepts minimal without a new freshness/chain policy 58ms
+stderr | lib/siwe-validation.test.ts > accepts explicitScheme without a new freshness/chain policy
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > accepts resourcesAndRequest without a new freshness/chain policy
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/siwe-validation.test.ts > accepts optionalStatement without a new freshness/chain policy 54ms
+ ✓ lib/siwe-validation.test.ts > accepts explicitScheme without a new freshness/chain policy 48ms
+stderr | lib/siwe-validation.test.ts > accepts emptyOptionals without a new freshness/chain policy
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > accepts offsetFraction without a new freshness/chain policy
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > accepts oldIssuedNoExpiry without a new freshness/chain policy
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/siwe-validation.test.ts > accepts resourcesAndRequest without a new freshness/chain policy 59ms
+ ✓ lib/siwe-validation.test.ts > accepts emptyOptionals without a new freshness/chain policy 45ms
+ ✓ lib/siwe-validation.test.ts > accepts offsetFraction without a new freshness/chain policy 40ms
+stderr | lib/siwe-validation.test.ts > accepts notBeforeNow without a new freshness/chain policy
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > accepts existingChainBehavior without a new freshness/chain policy
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/siwe-validation.test.ts > accepts oldIssuedNoExpiry without a new freshness/chain policy 45ms
+ ✓ lib/siwe-validation.test.ts > accepts notBeforeNow without a new freshness/chain policy 44ms
+stderr | lib/siwe-validation.test.ts > single-use sequential replay at handler boundary
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > single-use sequential replay at next boundary
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > single-use sequential replay at server boundary
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/siwe-validation.test.ts > accepts existingChainBehavior without a new freshness/chain policy 45ms
+ ✓ lib/siwe-validation.test.ts > single-use sequential replay at handler boundary 58ms
+ ✓ lib/siwe-validation.test.ts > single-use sequential replay at next boundary 38ms
+stderr | lib/siwe-validation.test.ts > rejects missing stored challenge and permits fresh retry
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > rejects expired stored challenge and permits fresh retry
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/siwe-validation.test.ts > single-use sequential replay at server boundary 42ms
+ ✓ lib/siwe-validation.test.ts > rejects missing stored challenge and permits fresh retry 47ms
+stderr | lib/siwe-validation.test.ts > rejects invalid signatures without side effects at next boundary
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > rejects invalid signatures without side effects at server boundary
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/siwe-validation.test.ts > preserves strict endpoint schema and prevents unsigned identity overrides
+2026-10-31T12:00:00.000Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/siwe-validation.test.ts > rejects expired stored challenge and permits fresh retry 51ms
+ ✓ lib/siwe-validation.test.ts > rejects invalid signatures without side effects at next boundary 31ms
+ ✓ lib/siwe-validation.test.ts > rejects invalid signatures without side effects at server boundary 31ms
+ ✓ lib/siwe-validation.test.ts > preserves strict endpoint schema and prevents unsigned identity overrides 37ms
+
+ Test Files  2 passed (2)
+      Tests  79 passed (79)
+   Start at  07:29:02
+   Duration  4.38s (tests 83%, import 13%, transform 4%)
+

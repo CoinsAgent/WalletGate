@@ -51,7 +51,7 @@ const database = (() => {
 			transaction: true,
 		};
 	}
-	if (process.env.USE_MYSQL) {
+	if (process.env.USE_MYSQL === "true") {
 		if (!process.env.MYSQL_DATABASE_URL) {
 			throw new Error(
 				"Using MySQL dialect without MYSQL_DATABASE_URL. Please set it in your environment variables.",
@@ -59,7 +59,10 @@ const database = (() => {
 		}
 		return {
 			dialect: new MysqlDialect(
-				createPool(process.env.MYSQL_DATABASE_URL || ""),
+				createPool({
+					uri: process.env.MYSQL_DATABASE_URL,
+					timezone: "Z",
+				}),
 			),
 			type: "mysql" as const,
 			transaction: true,
