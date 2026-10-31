@@ -1,0 +1,115 @@
+{
+  "timestamp_utc": "2026-10-31T11:21:17.733252+00:00",
+  "git_revision": "3f1151f",
+  "changes": [
+    {
+      "before": {
+        "path": "lib/auth-safety.test.ts",
+        "sha256": "ede089f4b9856db1076a0c5b5c8ba942053a141c20186922901bdbfdb849c9b7"
+      },
+      "after": {
+        "path": "lib/auth-safety.test.ts",
+        "sha256": "fa7a8b7f06c402aece87c0ec56f149f03e46892a6c01fbca8f1c5c95a9091766"
+      }
+    },
+    {
+      "before": {
+        "path": "lib/wallet-login.ts",
+        "sha256": "46e3f6f4fc3cc4ba511c1d336046dec10592d400eb5afacfd362ff9548c6642c"
+      },
+      "after": {
+        "path": "lib/wallet-login.ts",
+        "sha256": "ee36418dd794a9b2acda98ee6e245880fd97b3537ab3de5c3829ae29f94bfb7b"
+      }
+    },
+    {
+      "before": {
+        "path": "app/(auth)/sign-in/page.tsx",
+        "sha256": "6549599a808c42c72780503f2ce65b1c2be998f7e1f5f7dfec5f7d07a6df40d7"
+      },
+      "after": {
+        "path": "app/(auth)/sign-in/page.tsx",
+        "sha256": "6b8a9a24e27ef167982db4a0fcd91bf5382f739b61dc0b10153deff846f5da26"
+      }
+    },
+    {
+      "before": {
+        "path": "app/(auth)/sign-in/_components/sign-in.tsx",
+        "sha256": "32bbcc1aabb1ea577652a58f52da09ec44c2989890c4d107640a009bf36683a4"
+      },
+      "after": {
+        "path": "app/(auth)/sign-in/_components/sign-in.tsx",
+        "sha256": "fa8c3f62fca1990e5fbadde5a9c48c11ee2687cf1fded543b46eba558efe54a9"
+      }
+    },
+    {
+      "before": {
+        "path": "app/client-test/page.tsx",
+        "sha256": "44c1f0fec8899b3cba97e321e0add22cb8eea68021fe5c800b152be301af30c4"
+      },
+      "after": {
+        "path": "app/client-test/page.tsx",
+        "sha256": "5988f1bb50d5c2fe0c9ab3779479364ac210fe270e7514dce4012aea52ed410e"
+      }
+    },
+    {
+      "before": {
+        "path": "app/client-test-siwe/siwe-login.ts",
+        "sha256": "f2bbea7490fa367f6bfe9a480f88889091b401bdf624e3a77653bd025f431124"
+      },
+      "after": {
+        "path": "app/(auth)/sign-in/siwe-login.ts",
+        "sha256": "216335d514ecdb698e2bb61e2a319c04d3d0eeb0e663075652982f90699cad7d"
+      }
+    },
+    {
+      "before": {
+        "path": "app/client-test-siwe/wallet-client.tsx",
+        "sha256": "ce3b648675ea7a522f2b5396790d0f520b75e99b1858aae4a7e2140e6e48b98c"
+      },
+      "after": {
+        "path": "app/(auth)/sign-in/_components/sign-in.tsx",
+        "sha256": "fa8c3f62fca1990e5fbadde5a9c48c11ee2687cf1fded543b46eba558efe54a9"
+      }
+    },
+    {
+      "before": {
+        "path": "app/client-test-siwe/oauth-flow.ts",
+        "sha256": "33ea25a702e6979b965ce97134cefad1a402502d226d3629160e91aac20aa9fa"
+      },
+      "after": {
+        "path": "app/(auth)/sign-in/oauth-flow.ts",
+        "sha256": "33ea25a702e6979b965ce97134cefad1a402502d226d3629160e91aac20aa9fa"
+      }
+    },
+    {
+      "before": {
+        "path": "app/client-test-siwe/oauth-playground.tsx",
+        "sha256": "00b2107d7b1a98187c57b72e4c7618eb5c893893aa058a0eb44d1150c4665389"
+      },
+      "after": {
+        "path": "app/(auth)/sign-in/oauth-playground.tsx",
+        "sha256": "00b2107d7b1a98187c57b72e4c7618eb5c893893aa058a0eb44d1150c4665389"
+      }
+    },
+    {
+      "before": {
+        "path": "lib/wallet-login.test.ts",
+        "sha256": "ce673849f86f7409911e3c09c10e88dc336eb2efac5ac4f7fc976b7a2e2fc003"
+      },
+      "after": {
+        "path": "lib/wallet-login.test.ts",
+        "sha256": "0837147e0d016ab8795e2091e88afcaa60d5a73570527cef40fa956145959138"
+      }
+    }
+  ],
+  "initial_failed_run": {
+    "command": "pnpm exec vitest run --config vitest.config.ts",
+    "exit_code": 1,
+    "result": "97 passed, 19 failed: loopback listen EPERM; superseded by approved full run.",
+    "log": {
+      "path": "docs/plans/progress/PH-002-logs/reconcile-root-20261031.log",
+      "sha256": "624602fb6cf8dacf82b5116c9e684beb092783f219a5a07359a5c768088ec39f"
+    }
+  }
+}

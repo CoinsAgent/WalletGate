@@ -1,0 +1,58 @@
+
+ RUN  v5.0.0 /home/ubuntu/WalletGate
+
+ ❯ app/client-test/oauth-token.test.ts (19 tests | 19 failed) 46ms
+   ❯ OAuth token shell script (19)
+     × obtains tokens without stdin through the selection flow 19ms
+     × obtains tokens without stdin through the consent flow 3ms
+     × obtains tokens without stdin through the callback flow 1ms
+     × requires OAUTH_COOKIE_FILE before network access 1ms
+     × requires OAUTH_CLIENT_ID before network access 1ms
+     × rejects a callback with mismatched state before token exchange 1ms
+     × rejects a callback with duplicate state before token exchange 1ms
+     × rejects a callback with missing code before token exchange 0ms
+     × rejects a callback with duplicate code before token exchange 1ms
+     × rejects a callback with OAuth error before token exchange 1ms
+     × rejects the unsupported redirect https://untrusted.example/oauth/consent 1ms
+     × rejects the unsupported redirect /unsupported-step 1ms
+     × stops authorization loops after five continuation requests 1ms
+     × reports /api/auth/oauth2/authorize failures with HTTP 500 and stops the flow 1ms
+     × reports /api/auth/oauth2/token failures with HTTP 400 and stops the flow 0ms
+     × reports /api/auth/oauth2/userinfo failures with HTTP 401 and stops the flow 1ms
+     × reports invalid JSON-object responses: application/json 1ms
+     × reports invalid JSON-object responses: text/plain 0ms
+     × rejects a UserInfo response without a subject 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 19 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > obtains tokens without stdin through the selection flow
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > obtains tokens without stdin through the consent flow
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > obtains tokens without stdin through the callback flow
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > requires OAUTH_COOKIE_FILE before network access
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > requires OAUTH_CLIENT_ID before network access
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects a callback with mismatched state before token exchange
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects a callback with duplicate state before token exchange
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects a callback with missing code before token exchange
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects a callback with duplicate code before token exchange
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects a callback with OAuth error before token exchange
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects the unsupported redirect https://untrusted.example/oauth/consent
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects the unsupported redirect /unsupported-step
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > stops authorization loops after five continuation requests
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > reports /api/auth/oauth2/authorize failures with HTTP 500 and stops the flow
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > reports /api/auth/oauth2/token failures with HTTP 400 and stops the flow
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > reports /api/auth/oauth2/userinfo failures with HTTP 401 and stops the flow
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > reports invalid JSON-object responses: application/json
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > reports invalid JSON-object responses: text/plain
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects a UserInfo response without a subject
+Error: listen EPERM: operation not permitted 127.0.0.1
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/19]⎯
+
+
+ Test Files  1 failed | 8 passed (9)
+      Tests  19 failed | 97 passed (116)
+   Start at  19:19:49
+   Duration  8.17s (tests 59%, import 37%, transform 3%, worker 1%)
+
+    Isolate  9 workers spawned · ~423ms startup each (spawn + environment, per file)
+             at least ~845ms faster with isolate: false — reuses workers across files instead of one per file
+

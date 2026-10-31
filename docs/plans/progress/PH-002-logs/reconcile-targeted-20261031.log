@@ -1,0 +1,88 @@
+
+ RUN  v5.0.0 /home/ubuntu/WalletGate
+
+ ✓ lib/wallet-login.test.ts > renders Ethereum as the sole main login choice 397ms
+ ✓ lib/wallet-login.test.ts > rejects unsafe callback https://evil.example 1ms
+ ✓ lib/wallet-login.test.ts > rejects unsafe callback //evil.example 0ms
+ ✓ lib/wallet-login.test.ts > rejects unsafe callback /dashboard?next=https://evil.example 0ms
+ ✓ lib/wallet-login.test.ts > rejects unsafe callback javascript:alert(1) 0ms
+ ✓ lib/wallet-login.test.ts > rejects unsafe callback /unknown 0ms
+ ✓ lib/wallet-login.test.ts > rejects unsafe callback /\evil.example 0ms
+ ✓ lib/wallet-login.test.ts > preserves approved local callback /dashboard 13ms
+ ✓ lib/wallet-login.test.ts > preserves approved local callback /device 5ms
+ ✓ lib/wallet-login.test.ts > preserves approved local callback /client-test 2ms
+ ✓ lib/wallet-login.test.ts > preserves approved local callback /sign-in 2ms
+ ✓ lib/wallet-login.test.ts > preserves the exact server authorization continuation query 2ms
+ ✓ lib/wallet-login.test.ts > allows the server's immediate RP callback only for the signed requested redirect URI 2ms
+ ✓ lib/wallet-login.test.ts > does not discard an authorization request when continuation is missing 3ms
+ ✓ lib/wallet-login.test.ts > reports missing wallets and rejected signatures 2ms
+ ✓ lib/wallet-login.test.ts > retries verification failure with a fresh nonce and signature 3ms
+ ✓ lib/wallet-login.test.ts > registration denial in ../app/client-test/oauth-flow > reports authorization required for HTTP 401 77ms
+ ✓ lib/wallet-login.test.ts > registration denial in ../app/client-test/oauth-flow > reports authorization required for HTTP 403 4ms
+ ✓ lib/wallet-login.test.ts > registration denial in ../app/(auth)/sign-in/oauth-flow > reports authorization required for HTTP 401 2ms
+ ✓ lib/wallet-login.test.ts > registration denial in ../app/(auth)/sign-in/oauth-flow > reports authorization required for HTTP 403 2ms
+ ✓ lib/wallet-login.test.ts > passes the signed message to the login page inspector 3ms
+stderr | lib/auth-safety.test.ts
+2026-10-31T11:20:37.768Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/auth.test.ts
+2026-10-31T11:20:37.799Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/auth-safety.test.ts > denies password signup without creating a session 34ms
+ ✓ lib/auth-safety.test.ts > denies anonymous valid dynamic registration without persisting credentials 19ms
+ ✓ lib/auth.test.ts > production password authentication is disabled 3ms
+ ✓ lib/auth.test.ts > denies independent social login through facebook 31ms
+ ✓ lib/auth.test.ts > denies independent social login through github 6ms
+ ✓ lib/auth.test.ts > denies independent social login through google 7ms
+ ✓ lib/auth.test.ts > denies independent social login through discord 5ms
+ ✓ lib/auth.test.ts > denies independent social login through microsoft 5ms
+ ✓ lib/auth.test.ts > denies independent social login through twitch 4ms
+ ✓ lib/auth.test.ts > denies independent social login through twitter 6ms
+ ✓ lib/auth.test.ts > denies independent social login through paypal 10ms
+ ✓ lib/auth.test.ts > denies independent social login through vercel 15ms
+ ✓ lib/auth.test.ts > valid SIWE needs no hosted identity service 119ms
+ ✓ lib/auth-safety.test.ts > valid signed SIWE establishes a usable session 143ms
+ ✓ lib/auth-safety.test.ts > otherwise valid stored password credentials cannot authenticate 140ms
+ ✓ lib/auth-safety.test.ts > POST /sign-in/social cannot create access even with an existing SIWE session 50ms
+ ✓ lib/auth-safety.test.ts > GET /callback/github?code=valid-code&state=state cannot create access even with an existing SIWE session 53ms
+ ✓ lib/auth-safety.test.ts > GET /passkey/generate-authenticate-options cannot create access even with an existing SIWE session 46ms
+ ✓ lib/auth-safety.test.ts > POST /passkey/verify-authentication cannot create access even with an existing SIWE session 35ms
+ ✓ lib/auth-safety.test.ts > POST /passkey/verify-registration cannot create access even with an existing SIWE session 24ms
+ ✓ lib/auth-safety.test.ts > POST /sign-in/sso cannot create access even with an existing SIWE session 39ms
+ ✓ lib/auth-safety.test.ts > GET /sso/callback/sso?code=valid-code&state=state cannot create access even with an existing SIWE session 26ms
+ ✓ lib/auth-safety.test.ts > GET /sso/callback?code=valid-code&state=state cannot create access even with an existing SIWE session 36ms
+ ✓ lib/auth-safety.test.ts > POST /sso/saml2/sp/acs/sso cannot create access even with an existing SIWE session 30ms
+ ✓ lib/auth-safety.test.ts > POST /two-factor/verify-totp cannot create access even with an existing SIWE session 25ms
+ ✓ lib/auth-safety.test.ts > POST /two-factor/verify-otp cannot create access even with an existing SIWE session 26ms
+ ✓ lib/auth-safety.test.ts > POST /two-factor/verify-backup-code cannot create access even with an existing SIWE session 34ms
+ ✓ lib/auth-safety.test.ts > POST /admin/impersonate-user cannot create access even with an existing SIWE session 37ms
+ ✓ lib/auth-safety.test.ts > POST /electron/token cannot create access even with an existing SIWE session 32ms
+ ✓ lib/auth-safety.test.ts > POST /electron/transfer-user cannot create access even with an existing SIWE session 23ms
+ ✓ lib/auth-safety.test.ts > POST /device/token cannot create access even with an existing SIWE session 22ms
+ ✓ lib/auth-safety.test.ts > GET /verify-email?token=signed-email-token&callbackURL=/dashboard cannot create access even with an existing SIWE session 22ms
+ ✓ lib/auth-safety.test.ts > server API calls use the same independent-login enforcement 4ms
+ ✓ lib/auth-safety.test.ts > denies anonymous /oauth2/register through handler and Next HTTP wrapper 105ms
+ ✓ lib/auth-safety.test.ts > denies anonymous /oauth2/create-client through handler and Next HTTP wrapper 52ms
+ ✓ lib/auth-safety.test.ts > denies anonymous /admin/oauth2/create-client through handler and Next HTTP wrapper 17ms
+ ✓ lib/auth-safety.test.ts > existing configured client completes authorization code, tokens and UserInfo 142ms
+ ✓ lib/auth-safety.test.ts > server-only administrative client creation also denies missing authentication 5ms
+ ✓ lib/auth-safety.test.ts > rejects a real signed passkey assertion that succeeds in a labeled upstream control 55ms
+ ✓ lib/auth-safety.test.ts > preserves signed OAuth authorization through the real wallet client ({}) 95ms
+ ✓ lib/auth-safety.test.ts > preserves signed OAuth authorization through the real wallet client ({"prompt":"login"}) 48ms
+ ✓ lib/auth-safety.test.ts > preserves signed OAuth authorization through the real wallet client ({"max_age":"0"}) 35ms
+
+ Test Files  3 passed (3)
+      Tests  63 passed (63)
+   Start at  19:20:35
+   Duration  4.08s (tests 72%, import 24%, transform 4%)
+

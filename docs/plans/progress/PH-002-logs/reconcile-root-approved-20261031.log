@@ -1,0 +1,24 @@
+
+ RUN  v5.0.0 /home/ubuntu/WalletGate
+
+(node:2129239) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2129238) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2129549) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2129663) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2129817) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2129957) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+ Test Files  9 passed (9)
+      Tests  116 passed (116)
+   Start at  19:20:09
+   Duration  13.81s (tests 74%, import 23%, transform 2%)
+
+    Isolate  9 workers spawned · ~395ms startup each (spawn + environment, per file)
+             at least ~790ms faster with isolate: false — reuses workers across files instead of one per file
+
