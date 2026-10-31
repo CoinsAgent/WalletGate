@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Read-only Codex phase planner: Skill -> Codex -> timestamped proposal.
 
-This script never approves phases, writes PLANS.md, commits, or pushes.
+This low-level report generator never writes PLANS.md or executes tasks. Use phase-plan-exec.py for sprint orchestration.
 Run from any directory inside the WalletGate Git repository.
 """
 
@@ -79,7 +79,7 @@ def main() -> int:
 
     root = Path(cmd('git', 'rev-parse', '--show-toplevel', cwd=Path.cwd())).resolve()
     contract = root / 'docs/PRODUCT_UNDERSTANDING_CONTRACT.md'
-    skill = root / '.agents/skills/phase-planner/SKILL.md'
+    skill = root / '.agents/skills/phase-plan-exec/SKILL.md'
     reports = root / 'docs/assessments'
     if not contract.is_file() or not skill.is_file() or not reports.is_dir():
         raise ValueError('Missing Product Contract, phase-planner Skill or docs/assessments/')
@@ -91,8 +91,8 @@ def main() -> int:
     status = cmd('git', 'status', '--porcelain', '--untracked-files=normal', cwd=root)
 
     prompt = f'''OUTPUT_MODE=BODY_ONLY
-Use the $phase-planner skill in .agents/skills/phase-planner/SKILL.md.
-Read AGENTS.md, the approved Product Contract, existing PLANS.md and phase files if any,
+Use the $phase-plan-exec skill in .agents/skills/phase-plan-exec/SKILL.md.
+Read AGENTS.md, the approved Product Contract, existing PLANS.md and docs/plans/history/ files if any,
 and the current repository source.
 Use this compliance report: {compliance.relative_to(root).as_posix()}
 Use this technical feasibility report: {feasibility.relative_to(root).as_posix()}
@@ -140,7 +140,7 @@ Do not modify any files, generate YAML metadata, call the script, approve phases
             'compliance_sha256': sha256(compliance),
             'technical_feasibility_report': feasibility.relative_to(root).as_posix(),
             'technical_feasibility_sha256': sha256(feasibility),
-            'phase_planner_skill_sha256': sha256(skill),
+            'phase_plan_exec_skill_sha256': sha256(skill),
             'focus': args.focus or None,
         }
         header = '---\n' + ''.join(f'{k}: {json.dumps(v, ensure_ascii=False)}\n' for k, v in meta.items()) + '---\n\n'

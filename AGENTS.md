@@ -30,6 +30,8 @@ These statements are a quick index, not a replacement for the full Product Contr
 - `$contract-compliance`: inspect current code against approved requirements and produce a compliance report.
 - `$technical-feasibility`: investigate a **specific technical question** or specific findings from a compliance report; a previous compliance report is optional input, not a mandatory prerequisite.
 
+- `$phase-plan-exec`: plan one sprint (highest-priority unfinished Phase and **all** its Tasks), write `docs/PLANS.md`, and ask for explicit Yes/No before execution. No task execution without a current, explicit Yes. See `docs/SPRINT_WORKFLOW.md`.
+
 Skill manifests live at `.agents/skills/<skill-name>/SKILL.md`. For a requested assessment, use the relevant skill. Do not automatically run both skills for routine code changes.
 
 ### Report generation
@@ -48,3 +50,12 @@ Reports are generated under `docs/assessments/` with timestamped, immutable file
 - Keep assessments focused; do not repeat prior full audits when a narrow verification answers the question.
 - In read-only tasks, do not install packages, run migrations, edit code or configuration, alter Git history, or perform builds/tests that write into the project.
 - Never commit generated reports or change product decisions unless the current task expressly authorizes doing so.
+
+## Sprint execution boundary
+
+- The Product Contract governs product behavior; assessments and proposals are evidence, not permission to change it.
+- Invoke `$phase-plan-exec` for one sprint at a time; it invokes `scripts/phase-plan-exec.py` to persist the task list in `docs/PLANS.md`.
+- After planning, ask the human **Execute this sprint? (Yes/No)** and stop. A missing, ambiguous, or negative answer means **do not execute**.
+- A new explicit **Yes** for that specific sprint permits `python3 scripts/phase-plan-exec.py execute --yes`. Never infer Yes from prior preferences or the mere existence of `docs/PLANS.md`.
+- During execution, complete tasks within the sprint only, verify results, and write progress to `docs/plans/progress/`. Do not modify the approved Product Contract, commit/push, deploy, change production state, or begin the next Phase.
+- Stop at `BLOCKED` for unresolved product/security decisions; a `READY_FOR_REVIEW` status means evidence is ready, not proof of human acceptance.
