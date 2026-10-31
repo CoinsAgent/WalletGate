@@ -150,10 +150,10 @@ pnpm exec vitest run --config app/client-test/vitest.config.ts
 
 ### Sign in with Ethereum
 
-Open `/client-test-siwe` for the same OAuth walkthrough using an Ethereum wallet
-instead of email/password. Click **Sign in with Ethereum**, approve the sign-in
+Open `/sign-in` for the same OAuth walkthrough using an Ethereum wallet
+with session inspection and sign-out. Click **Sign in with Ethereum**, approve the sign-in
 message, then continue through consent, code exchange, and UserInfo. See the
-[SIWE walkthrough](app/client-test-siwe/README.md) for setup and testing.
+[SIWE walkthrough](app/(auth)/sign-in/README.md) for setup and testing.
 
 ### Accessing the Dev Server from a Remote Host
 

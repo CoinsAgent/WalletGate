@@ -1,0 +1,39 @@
+
+ RUN  v5.0.0 /home/ubuntu/WalletGate
+
+stderr | lib/auth-safety.test.ts
+2026-10-31T09:12:12.713Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/auth-safety.test.ts > valid signed SIWE establishes a usable session
+2026-10-31T09:12:12.921Z WARN [Better Auth]: [better-auth] Cookie integration plugin "next-cookies" should be placed last in the plugins array. Plugins with `hooks.after` running after it may set cookies that are not forwarded to the framework cookie store. Move your cookie integration plugin to the end of the `plugins` array to avoid missing `Set-Cookie` headers.
+
+ × lib/auth-safety.test.ts > denies password signup without creating a session 150ms
+   → expected 200 to be greater than or equal to 400
+ ✓ lib/auth-safety.test.ts > denies anonymous valid dynamic registration without persisting credentials 12ms
+ ✓ lib/auth-safety.test.ts > valid signed SIWE establishes a usable session 72ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  lib/auth-safety.test.ts > denies password signup without creating a session
+AssertionError: expected 200 to be greater than or equal to 400
+ ❯ lib/auth-safety.test.ts:10:27
+      8|   const before = f.count("session");
+      9|   const response = await f.post("/api/auth/sign-up/email", { name: "Co…
+     10|   expect(response.status).toBeGreaterThanOrEqual(400);
+       |                           ^
+     11|   expect(f.count("session")).toBe(before);
+     12| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  17:12:11
+   Duration  1.89s (tests 77%, import 20%, transform 3%)
+

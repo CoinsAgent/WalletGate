@@ -47,7 +47,7 @@ def frontmatter_fields(content: str) -> dict[str, str]:
     return fields
 
 
-def select_report(directory: Path, kind: str, contract_version: str, explicit: str | None, root: Path) -> Path:
+def select_report(directory: Path, kind: str, contract_version: str, explicit: str | None, root: Path) -> Path | None:
     base = directory.resolve()
     if explicit:
         candidate = (root / explicit).resolve()
@@ -65,7 +65,7 @@ def select_report(directory: Path, kind: str, contract_version: str, explicit: s
         date = metadata.get('created_at_utc') or metadata.get('assessment_date') or candidate.name
         ranked.append((contract_match, date, candidate))
     if not ranked:
-        raise ValueError(f'No {kind} reports found. Run the corresponding assessment skill first.')
+        return None
     ranked.sort(key=lambda entry: (entry[0], entry[1], entry[2].name), reverse=True)
     return ranked[0][2]
 
@@ -81,8 +81,8 @@ def main() -> int:
     contract = root / 'docs/PRODUCT_UNDERSTANDING_CONTRACT.md'
     skill = root / '.agents/skills/phase-plan-exec/SKILL.md'
     reports = root / 'docs/assessments'
-    if not contract.is_file() or not skill.is_file() or not reports.is_dir():
-        raise ValueError('Missing Product Contract, phase-planner Skill or docs/assessments/')
+    if not contract.is_file() or not skill.is_file() or not (root / 'docs/CONTRACT_COVERAGE.md').is_file():
+        raise ValueError('Missing Product Contract, phase-planner Skill or Contract Coverage')
     match = re.search(r'^\*\*Version:\*\*\s*(\S+)', contract.read_text(encoding='utf-8'), re.M)
     version = match.group(1) if match else 'unknown'
     compliance = select_report(reports, 'contract-compliance', version, args.compliance, root)
@@ -93,12 +93,18 @@ def main() -> int:
     prompt = f'''OUTPUT_MODE=BODY_ONLY
 Use the $phase-plan-exec skill in .agents/skills/phase-plan-exec/SKILL.md.
 Read AGENTS.md, the approved Product Contract, existing PLANS.md and docs/plans/history/ files if any,
-and the current repository source.
-Use this compliance report: {compliance.relative_to(root).as_posix()}
-Use this technical feasibility report: {feasibility.relative_to(root).as_posix()}
+docs/CONTRACT_COVERAGE.md, ALL previous docs/plans/progress/ evidence and Handoffs,
+docs/SPRINT_WORKFLOW.md (structured proposal schema), and current repository source.
+Resume unfinished work before generating a phase. Reuse PH-001's validated approaches;
+prefer production implementation over repeating feasibility. Research requires a specific
+documented blocker and fingerprinted changed relevant inputs when revisiting prior findings.
+Use this historical compliance report if available: {compliance.relative_to(root).as_posix() if compliance else 'None; do not require a new assessment'}
+Use this historical feasibility report if available: {feasibility.relative_to(root).as_posix() if feasibility else 'None; do not require a new assessment'}
 Optional focus: {args.focus or 'None'}
 Produce a candidate plan for ONLY the single highest-priority unfinished phase and ALL its tasks,
 including prerequisites, acceptance criteria, verifications and explicit approval gate.
+Include exactly one json sprint-plan fenced block with stable objective_key, kind,
+coverage requirement IDs, acceptance IDs, all Tasks in dependency order, and relevant inputs.
 Use '## Top 1 Phase'; do not output additional phase proposals or a Top 3 roadmap.
 Return only a complete Markdown report body beginning with '# Phase Priority Proposal'.
 Do not modify any files, generate YAML metadata, call the script, approve phases or implement tasks.
@@ -136,10 +142,11 @@ Do not modify any files, generate YAML metadata, call the script, approve phases
             'contract_sha256': sha256(contract),
             'repository_commit': commit,
             'worktree_dirty_at_start': bool(status),
-            'compliance_report': compliance.relative_to(root).as_posix(),
-            'compliance_sha256': sha256(compliance),
-            'technical_feasibility_report': feasibility.relative_to(root).as_posix(),
-            'technical_feasibility_sha256': sha256(feasibility),
+            'compliance_report': compliance.relative_to(root).as_posix() if compliance else None,
+            'compliance_sha256': sha256(compliance) if compliance else None,
+            'technical_feasibility_report': feasibility.relative_to(root).as_posix() if feasibility else None,
+            'technical_feasibility_sha256': sha256(feasibility) if feasibility else None,
+            'coverage_sha256': sha256(root / 'docs/CONTRACT_COVERAGE.md'),
             'phase_plan_exec_skill_sha256': sha256(skill),
             'focus': args.focus or None,
         }

@@ -17,7 +17,7 @@ import {
 const origin = "http://localhost:3000";
 const { getOpenIdConfig } = vi.hoisted(() => ({ getOpenIdConfig: vi.fn() }));
 
-vi.mock("../../lib/auth", () => ({
+vi.mock("../../../lib/auth", () => ({
 	auth: { api: { getOpenIdConfig } },
 }));
 

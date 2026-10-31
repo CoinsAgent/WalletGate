@@ -100,7 +100,7 @@ pnpm --version
 pnpm list better-auth @better-auth/core @better-auth/oauth-provider viem --depth 0
 pnpm exec tsc --noEmit --skipLibCheck --module esnext --moduleResolution bundler --target es2022 --esModuleInterop experiments/c01/*.ts
 pnpm exec vitest run --config experiments/c01/vitest.config.ts --reporter=verbose
-pnpm exec vitest run --config app/client-test-siwe/vitest.config.ts
+pnpm exec vitest run --config "app/(auth)/sign-in/vitest.config.ts"
 pnpm exec vitest run --config app/client-test/vitest.config.ts
 pnpm exec vitest run --config experiments/c01/vitest.config.ts --reporter=verbose
 ```

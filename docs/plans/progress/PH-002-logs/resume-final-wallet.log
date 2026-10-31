@@ -1,0 +1,29 @@
+
+ RUN  v5.0.0 /home/ubuntu/WalletGate
+
+ ✓ lib/wallet-login.test.ts > renders Ethereum as the sole main login choice 43ms
+ ✓ lib/wallet-login.test.ts > rejects unsafe callback https://evil.example 0ms
+ ✓ lib/wallet-login.test.ts > rejects unsafe callback //evil.example 0ms
+ ✓ lib/wallet-login.test.ts > rejects unsafe callback /dashboard?next=https://evil.example 0ms
+ ✓ lib/wallet-login.test.ts > rejects unsafe callback javascript:alert(1) 0ms
+ ✓ lib/wallet-login.test.ts > rejects unsafe callback /unknown 0ms
+ ✓ lib/wallet-login.test.ts > rejects unsafe callback /\evil.example 0ms
+ ✓ lib/wallet-login.test.ts > preserves approved local callback /dashboard 10ms
+ ✓ lib/wallet-login.test.ts > preserves approved local callback /device 4ms
+ ✓ lib/wallet-login.test.ts > preserves approved local callback /client-test 2ms
+ ✓ lib/wallet-login.test.ts > preserves approved local callback /client-test-siwe 1ms
+ ✓ lib/wallet-login.test.ts > preserves the exact server authorization continuation query 1ms
+ ✓ lib/wallet-login.test.ts > allows the server's immediate RP callback only for the signed requested redirect URI 2ms
+ ✓ lib/wallet-login.test.ts > does not discard an authorization request when continuation is missing 2ms
+ ✓ lib/wallet-login.test.ts > reports missing wallets and rejected signatures 1ms
+ ✓ lib/wallet-login.test.ts > retries verification failure with a fresh nonce and signature 3ms
+ ✓ lib/wallet-login.test.ts > registration denial in ../app/client-test/oauth-flow > reports authorization required for HTTP 401 52ms
+ ✓ lib/wallet-login.test.ts > registration denial in ../app/client-test/oauth-flow > reports authorization required for HTTP 403 5ms
+ ✓ lib/wallet-login.test.ts > registration denial in ../app/client-test-siwe/oauth-flow > reports authorization required for HTTP 401 15ms
+ ✓ lib/wallet-login.test.ts > registration denial in ../app/client-test-siwe/oauth-flow > reports authorization required for HTTP 403 3ms
+
+ Test Files  1 passed (1)
+      Tests  20 passed (20)
+   Start at  18:15:48
+   Duration  1.09s (import 66%, tests 21%, transform 12%, worker 1%)
+

@@ -1,5 +1,5 @@
 import { electronProxyClient } from "@better-auth/electron/proxy";
-import { oauthProviderClient } from "@better-auth/oauth-provider/client";
+import { walletOAuthProviderClient } from "./oauth-login-client";
 import { passkeyClient } from "@better-auth/passkey/client";
 import { ssoClient } from "@better-auth/sso/client";
 import { stripeClient } from "@better-auth/stripe/client";
@@ -30,7 +30,7 @@ export const authClient = createAuthClient({
 		passkeyClient(),
 		adminClient(),
 		multiSessionClient(),
-		oauthProviderClient(),
+		walletOAuthProviderClient(),
 		stripeClient({
 			subscription: true,
 		}),

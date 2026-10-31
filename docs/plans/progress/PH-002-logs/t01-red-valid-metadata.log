@@ -1,0 +1,70 @@
+
+ RUN  v5.0.0 /home/ubuntu/WalletGate
+
+stderr | lib/auth-safety.test.ts
+2026-10-31T09:12:26.652Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stdout | lib/auth-safety.test.ts > denies anonymous valid dynamic registration without persisting credentials
+registration control 201 {
+  client_id: 'rMfzPDePveppmRRWfadWJWfbTRtcCHuK',
+  scope: 'openid profile email offline_access read:organization',
+  client_id_issued_at: 1793437946,
+  client_name: 'Control',
+  redirect_uris: [ 'http://127.0.0.1:8765/callback' ],
+  token_endpoint_auth_method: 'none',
+  grant_types: [ 'authorization_code', 'refresh_token' ],
+  response_types: [ 'code' ],
+  application_type: 'native',
+  disabled: false,
+  dpop_bound_access_tokens: false,
+  resources: [ 'http://localhost:3000/api/mcp' ]
+}
+
+stderr | lib/auth-safety.test.ts > valid signed SIWE establishes a usable session
+2026-10-31T09:12:26.879Z WARN [Better Auth]: [better-auth] Cookie integration plugin "next-cookies" should be placed last in the plugins array. Plugins with `hooks.after` running after it may set cookies that are not forwarded to the framework cookie store. Move your cookie integration plugin to the end of the `plugins` array to avoid missing `Set-Cookie` headers.
+
+ × lib/auth-safety.test.ts > denies password signup without creating a session 148ms
+   → expected 200 to be greater than or equal to 400
+ × lib/auth-safety.test.ts > denies anonymous valid dynamic registration without persisting credentials 26ms
+   → expected 201 to be 401 // Object.is equality
+ ✓ lib/auth-safety.test.ts > valid signed SIWE establishes a usable session 78ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  lib/auth-safety.test.ts > denies password signup without creating a session
+AssertionError: expected 200 to be greater than or equal to 400
+ ❯ lib/auth-safety.test.ts:10:27
+      8|   const before = f.count("session");
+      9|   const response = await f.post("/api/auth/sign-up/email", { name: "Co…
+     10|   expect(response.status).toBeGreaterThanOrEqual(400);
+       |                           ^
+     11|   expect(f.count("session")).toBe(before);
+     12| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  lib/auth-safety.test.ts > denies anonymous valid dynamic registration without persisting credentials
+AssertionError: expected 201 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 201
+
+ ❯ lib/auth-safety.test.ts:17:27
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  17:12:24
+   Duration  1.95s (tests 78%, import 19%, transform 3%)
+

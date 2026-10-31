@@ -1,13 +1,19 @@
 # SIWE browser walkthrough
 
-Open `/client-test-siwe` on the running demo in a browser with an injected
+Open `/sign-in` on the running demo in a browser with an injected
 Ethereum wallet. This page uses Better Auth's SIWE plugin instead of an
-email/password form.
+email/password form. The wallet login, linked-wallet details, signed message,
+session, sign-out and complete OAuth walkthrough share this page.
+
+Opening `/sign-in` directly keeps you on the page after login so you can inspect
+the session and use the walkthrough. An OAuth authorization request or an explicit
+validated `callbackUrl` continues to its destination after signing in.
+`/client-test` reuses the same component; `/client-test-siwe` has been removed.
 
 1. Click **Sign in with Ethereum**, connect an account, and approve the sign-in
    message in your wallet.
-2. Inspect the authenticated wallet, Chain ID, and Better Auth session.
-3. Click **Start authorization**, review the OAuth permissions, and allow or deny
+2. Inspect the linked wallet, Chain ID, and Better Auth session.
+3. Enter an existing configured OAuth client ID, click **Start authorization**, review the OAuth permissions, and allow or deny
    consent.
 4. Exchange the authorization code for tokens, then fetch UserInfo.
 
@@ -25,7 +31,7 @@ The SIWE plugin requires a `walletAddress` table. On a new database or after
 adding this plugin to another checkout, migrate before starting the demo:
 
 ```bash
-npx auth@latest migrate --config ./lib/auth.ts
+pnpm dlx auth@1.7.11 migrate --config ./lib/auth.ts
 pnpm dev
 ```
 
@@ -36,5 +42,5 @@ creates a normal Better Auth session, which the OAuth flow then uses.
 Run the focused tests from the Next.js demo directory:
 
 ```bash
-pnpm exec vitest run --config app/client-test-siwe/vitest.config.ts
+pnpm exec vitest run --config "app/(auth)/sign-in/vitest.config.ts"
 ```

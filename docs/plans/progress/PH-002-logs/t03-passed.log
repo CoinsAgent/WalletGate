@@ -1,0 +1,63 @@
+
+ RUN  v5.0.0 /home/ubuntu/WalletGate
+
+stderr | lib/auth-safety.test.ts
+2026-10-31T09:14:26.393Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/auth.test.ts
+2026-10-31T09:14:26.393Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/auth.test.ts > production password authentication is disabled 2ms
+ ✓ lib/auth.test.ts > denies independent social login through facebook 24ms
+ ✓ lib/auth.test.ts > denies independent social login through github 5ms
+ ✓ lib/auth.test.ts > denies independent social login through google 3ms
+ ✓ lib/auth.test.ts > denies independent social login through discord 4ms
+ ✓ lib/auth.test.ts > denies independent social login through microsoft 4ms
+ ✓ lib/auth.test.ts > denies independent social login through twitch 3ms
+ ✓ lib/auth.test.ts > denies independent social login through twitter 3ms
+ ✓ lib/auth.test.ts > denies independent social login through paypal 4ms
+ ✓ lib/auth.test.ts > denies independent social login through vercel 7ms
+ ✓ lib/auth.test.ts > valid SIWE needs no hosted identity service 58ms
+ ✓ lib/auth-safety.test.ts > denies password signup without creating a session 27ms
+ ✓ lib/auth-safety.test.ts > denies anonymous valid dynamic registration without persisting credentials 13ms
+ ✓ lib/auth-safety.test.ts > valid signed SIWE establishes a usable session 111ms
+ ✓ lib/auth-safety.test.ts > otherwise valid stored password credentials cannot authenticate 108ms
+ ✓ lib/auth-safety.test.ts > POST /sign-in/social cannot create access even with an existing SIWE session 24ms
+ ✓ lib/auth-safety.test.ts > GET /callback/github?code=valid-code&state=state cannot create access even with an existing SIWE session 25ms
+ ✓ lib/auth-safety.test.ts > GET /passkey/generate-authenticate-options cannot create access even with an existing SIWE session 22ms
+ ✓ lib/auth-safety.test.ts > POST /passkey/verify-authentication cannot create access even with an existing SIWE session 20ms
+ ✓ lib/auth-safety.test.ts > POST /passkey/verify-registration cannot create access even with an existing SIWE session 16ms
+ ✓ lib/auth-safety.test.ts > POST /sign-in/sso cannot create access even with an existing SIWE session 18ms
+ ✓ lib/auth-safety.test.ts > GET /sso/callback/sso?code=valid-code&state=state cannot create access even with an existing SIWE session 16ms
+ ✓ lib/auth-safety.test.ts > GET /sso/callback?code=valid-code&state=state cannot create access even with an existing SIWE session 19ms
+ ✓ lib/auth-safety.test.ts > POST /sso/saml2/sp/acs/sso cannot create access even with an existing SIWE session 17ms
+ ✓ lib/auth-safety.test.ts > POST /two-factor/verify-totp cannot create access even with an existing SIWE session 15ms
+ ✓ lib/auth-safety.test.ts > POST /two-factor/verify-otp cannot create access even with an existing SIWE session 14ms
+ ✓ lib/auth-safety.test.ts > POST /two-factor/verify-backup-code cannot create access even with an existing SIWE session 17ms
+ ✓ lib/auth-safety.test.ts > POST /admin/impersonate-user cannot create access even with an existing SIWE session 17ms
+ ✓ lib/auth-safety.test.ts > POST /electron/token cannot create access even with an existing SIWE session 13ms
+ ✓ lib/auth-safety.test.ts > POST /electron/transfer-user cannot create access even with an existing SIWE session 15ms
+ ✓ lib/auth-safety.test.ts > POST /device/token cannot create access even with an existing SIWE session 12ms
+ ✓ lib/auth-safety.test.ts > GET /verify-email?token=signed-email-token&callbackURL=/dashboard cannot create access even with an existing SIWE session 13ms
+ ✓ lib/auth-safety.test.ts > server API calls use the same independent-login enforcement 3ms
+ ✓ lib/auth-safety.test.ts > denies anonymous /oauth2/register through handler and Next HTTP wrapper 52ms
+ ✓ lib/auth-safety.test.ts > denies anonymous /oauth2/create-client through handler and Next HTTP wrapper 25ms
+ ✓ lib/auth-safety.test.ts > denies anonymous /admin/oauth2/create-client through handler and Next HTTP wrapper 10ms
+ ✓ lib/auth-safety.test.ts > existing configured client completes authorization code, tokens and UserInfo 84ms
+ ✓ lib/auth-safety.test.ts > server-only administrative client creation also denies missing authentication 4ms
+
+ Test Files  2 passed (2)
+      Tests  38 passed (38)
+   Start at  17:14:24
+   Duration  2.63s (tests 77%, import 18%, transform 4%)
+

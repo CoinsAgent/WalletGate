@@ -1,0 +1,56 @@
+
+ RUN  v5.0.0 /home/ubuntu/WalletGate
+
+(node:2085278) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2085280) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2085482) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+stderr | lib/auth-safety.test.ts
+2026-10-31T09:20:11.275Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ❯ lib/auth-safety.test.ts (29 tests | 1 failed) 2590ms
+   × preserves a real signed OAuth authorization query through SIWE login 19ms
+(node:2085698) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2085773) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2085920) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  lib/auth-safety.test.ts > preserves a real signed OAuth authorization query through SIWE login
+AssertionError: expected 400 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 400
+
+ ❯ lib/auth-safety.test.ts:175:25
+    173|   const message = createSiweMessage({ address: testWallet.address, cha…
+    174|   const result = await f.post("/api/auth/siwe/verify", { message, sign…
+    175|   expect(result.status).toBe(200);
+       |                         ^
+    176|   const next = await result.json();
+    177|   expect(next.redirect).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 8 passed (9)
+      Tests  1 failed | 112 passed (113)
+   Start at  17:20:08
+   Duration  9.49s (tests 76%, import 22%, transform 2%)
+
+    Isolate  9 workers spawned · ~254ms startup each (spawn + environment, per file)
+             at least ~508ms faster with isolate: false — reuses workers across files instead of one per file
+

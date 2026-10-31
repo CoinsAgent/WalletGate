@@ -1,0 +1,87 @@
+
+ RUN  v5.0.0 /home/ubuntu/WalletGate
+
+ ❯ app/client-test/oauth-token.test.ts (19 tests | 19 failed) 136ms
+   ❯ OAuth token shell script (19)
+     × obtains tokens without stdin through the selection flow 79ms
+     × obtains tokens without stdin through the consent flow 6ms
+     × obtains tokens without stdin through the callback flow 1ms
+     × requires OAUTH_COOKIE_FILE before network access 5ms
+     × requires OAUTH_CLIENT_ID before network access 1ms
+     × rejects a callback with mismatched state before token exchange 12ms
+     × rejects a callback with duplicate state before token exchange 5ms
+     × rejects a callback with missing code before token exchange 0ms
+     × rejects a callback with duplicate code before token exchange 5ms
+     × rejects a callback with OAuth error before token exchange 1ms
+     × rejects the unsupported redirect https://untrusted.example/oauth/consent 1ms
+     × rejects the unsupported redirect /unsupported-step 4ms
+     × stops authorization loops after five continuation requests 1ms
+     × reports /api/auth/oauth2/authorize failures with HTTP 500 and stops the flow 1ms
+     × reports /api/auth/oauth2/token failures with HTTP 400 and stops the flow 0ms
+     × reports /api/auth/oauth2/userinfo failures with HTTP 401 and stops the flow 0ms
+     × reports invalid JSON-object responses: application/json 0ms
+     × reports invalid JSON-object responses: text/plain 0ms
+     × rejects a UserInfo response without a subject 11ms
+stderr | lib/auth-safety.test.ts
+2026-10-31T09:18:35.144Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ❯ lib/auth-safety.test.ts (29 tests | 1 failed) 5191ms
+   × preserves a real signed OAuth authorization query through SIWE login 27ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 20 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  lib/auth-safety.test.ts > preserves a real signed OAuth authorization query through SIWE login
+AssertionError: expected 400 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 400
+
+ ❯ lib/auth-safety.test.ts:175:25
+    173|   const message = createSiweMessage({ address: testWallet.address, cha…
+    174|   const result = await f.post("/api/auth/siwe/verify", { message, sign…
+    175|   expect(result.status).toBe(200);
+       |                         ^
+    176|   const next = await result.json();
+    177|   expect(next.redirect).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/20]⎯
+
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > obtains tokens without stdin through the selection flow
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > obtains tokens without stdin through the consent flow
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > obtains tokens without stdin through the callback flow
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > requires OAUTH_COOKIE_FILE before network access
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > requires OAUTH_CLIENT_ID before network access
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects a callback with mismatched state before token exchange
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects a callback with duplicate state before token exchange
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects a callback with missing code before token exchange
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects a callback with duplicate code before token exchange
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects a callback with OAuth error before token exchange
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects the unsupported redirect https://untrusted.example/oauth/consent
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects the unsupported redirect /unsupported-step
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > stops authorization loops after five continuation requests
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > reports /api/auth/oauth2/authorize failures with HTTP 500 and stops the flow
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > reports /api/auth/oauth2/token failures with HTTP 400 and stops the flow
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > reports /api/auth/oauth2/userinfo failures with HTTP 401 and stops the flow
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > reports invalid JSON-object responses: application/json
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > reports invalid JSON-object responses: text/plain
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects a UserInfo response without a subject
+Error: listen EPERM: operation not permitted 127.0.0.1
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/20]⎯
+
+
+ Test Files  2 failed | 7 passed (9)
+      Tests  20 failed | 93 passed (113)
+   Start at  17:18:30
+   Duration  10.53s (tests 55%, import 40%, transform 4%)
+
+    Isolate  9 workers spawned · ~466ms startup each (spawn + environment, per file)
+             at least ~933ms faster with isolate: false — reuses workers across files instead of one per file
+

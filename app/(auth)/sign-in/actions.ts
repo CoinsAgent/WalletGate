@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "../../lib/auth";
+import { auth } from "../../../lib/auth";
 
 function base64url(bytes: Uint8Array) {
 	return btoa(String.fromCharCode(...bytes))

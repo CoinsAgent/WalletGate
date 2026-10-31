@@ -1,0 +1,66 @@
+
+ RUN  v5.0.0 /home/ubuntu/WalletGate
+
+stderr | lib/auth-safety.test.ts
+2026-10-31T10:13:35.985Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/auth-safety.test.ts > denies password signup without creating a session 86ms
+ ✓ lib/auth-safety.test.ts > denies anonymous valid dynamic registration without persisting credentials 25ms
+ ✓ lib/auth-safety.test.ts > valid signed SIWE establishes a usable session 156ms
+ ✓ lib/auth-safety.test.ts > otherwise valid stored password credentials cannot authenticate 175ms
+ ✓ lib/auth-safety.test.ts > POST /sign-in/social cannot create access even with an existing SIWE session 57ms
+ ✓ lib/auth-safety.test.ts > GET /callback/github?code=valid-code&state=state cannot create access even with an existing SIWE session 35ms
+ ✓ lib/auth-safety.test.ts > GET /passkey/generate-authenticate-options cannot create access even with an existing SIWE session 25ms
+ ✓ lib/auth-safety.test.ts > POST /passkey/verify-authentication cannot create access even with an existing SIWE session 28ms
+ ✓ lib/auth-safety.test.ts > POST /passkey/verify-registration cannot create access even with an existing SIWE session 16ms
+ ✓ lib/auth-safety.test.ts > POST /sign-in/sso cannot create access even with an existing SIWE session 31ms
+ ✓ lib/auth-safety.test.ts > GET /sso/callback/sso?code=valid-code&state=state cannot create access even with an existing SIWE session 36ms
+ ✓ lib/auth-safety.test.ts > GET /sso/callback?code=valid-code&state=state cannot create access even with an existing SIWE session 39ms
+ ✓ lib/auth-safety.test.ts > POST /sso/saml2/sp/acs/sso cannot create access even with an existing SIWE session 28ms
+ ✓ lib/auth-safety.test.ts > POST /two-factor/verify-totp cannot create access even with an existing SIWE session 33ms
+ ✓ lib/auth-safety.test.ts > POST /two-factor/verify-otp cannot create access even with an existing SIWE session 28ms
+ ✓ lib/auth-safety.test.ts > POST /two-factor/verify-backup-code cannot create access even with an existing SIWE session 26ms
+ ✓ lib/auth-safety.test.ts > POST /admin/impersonate-user cannot create access even with an existing SIWE session 37ms
+ ✓ lib/auth-safety.test.ts > POST /electron/token cannot create access even with an existing SIWE session 47ms
+ ✓ lib/auth-safety.test.ts > POST /electron/transfer-user cannot create access even with an existing SIWE session 27ms
+ ✓ lib/auth-safety.test.ts > POST /device/token cannot create access even with an existing SIWE session 44ms
+ ✓ lib/auth-safety.test.ts > GET /verify-email?token=signed-email-token&callbackURL=/dashboard cannot create access even with an existing SIWE session 27ms
+ ✓ lib/auth-safety.test.ts > server API calls use the same independent-login enforcement 4ms
+ ✓ lib/auth-safety.test.ts > denies anonymous /oauth2/register through handler and Next HTTP wrapper 89ms
+ ✓ lib/auth-safety.test.ts > denies anonymous /oauth2/create-client through handler and Next HTTP wrapper 39ms
+ ✓ lib/auth-safety.test.ts > denies anonymous /admin/oauth2/create-client through handler and Next HTTP wrapper 19ms
+ ✓ lib/auth-safety.test.ts > existing configured client completes authorization code, tokens and UserInfo 151ms
+ ✓ lib/auth-safety.test.ts > server-only administrative client creation also denies missing authentication 5ms
+ ✓ lib/auth-safety.test.ts > rejects a real signed passkey assertion that succeeds in a labeled upstream control 63ms
+stdout | lib/auth-safety.test.ts > preserves a real signed OAuth authorization query through SIWE login
+continuation diagnostic http://localhost:3000/api/auth/oauth2/continue 404 
+
+ × lib/auth-safety.test.ts > preserves a real signed OAuth authorization query through SIWE login 113ms
+   → Authorization could not continue.
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  lib/auth-safety.test.ts > preserves a real signed OAuth authorization query through SIWE login
+Error: Authorization could not continue.
+ ❯ loginWithWallet lib/wallet-login.ts:32:29
+     30|     if (continueOAuth) {
+     31|       const next = await continueOAuth();
+     32|       if (next.error) throw new Error(next.error.message || "Authoriza…
+       |                             ^
+     33|       const data = next.data as { redirect?: unknown; url?: unknown } …
+     34|       if (data?.redirect === true && typeof data.url === "string") ret…
+ ❯ lib/auth-safety.test.ts:194:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 28 passed (29)
+   Start at  18:13:33
+   Duration  4.09s (tests 81%, import 14%, transform 5%)
+

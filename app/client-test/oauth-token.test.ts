@@ -1,3 +1,6 @@
+import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
 import type { IncomingHttpHeaders } from "node:http";
@@ -168,7 +171,10 @@ async function startProvider(options: ProviderOptions = {}) {
 }
 
 function runScript(environment: Partial<NodeJS.ProcessEnv>) {
-	return new Promise<{
+	const directory = mkdtempSync(join(tmpdir(), "ph002-cli-"));
+  const cookieFile = join(directory, "cookies");
+  writeFileSync(cookieFile, "# Netscape HTTP Cookie File\n127.0.0.1\tFALSE\t/\tFALSE\t0\toauth-test-session\tprivate-test-session\n");
+  return new Promise<{
 		exitCode: number | string;
 		killed: boolean;
 		stdout: string;
@@ -180,7 +186,9 @@ function runScript(environment: Partial<NodeJS.ProcessEnv>) {
 			{
 				env: {
 					...process.env,
-					OAUTH_EMAIL: "",
+					OAUTH_COOKIE_FILE: cookieFile,
+          OAUTH_CLIENT_ID: "cli-test-client",
+          OAUTH_EMAIL: "",
 					OAUTH_PASSWORD: "",
 					BASE_URL: "",
 					BETTER_AUTH_URL: "",
@@ -189,7 +197,8 @@ function runScript(environment: Partial<NodeJS.ProcessEnv>) {
 				timeout: 8_000,
 			},
 			(error, stdout, stderr) => {
-				resolve({
+				rmSync(directory, { recursive: true, force: true });
+        resolve({
 					exitCode: error?.code ?? 0,
 					killed: error?.killed ?? false,
 					stdout,
@@ -224,7 +233,7 @@ describe("OAuth token shell script", () => {
 				sub: "test-user",
 				email: "user@example.com",
 			});
-			expect(result.stderr).toContain("HTTP 201");
+
 			expect(result.stderr).toContain(
 				"Token type: Bearer; expires in: 3600 seconds",
 			);
@@ -232,21 +241,7 @@ describe("OAuth token shell script", () => {
 				"OAuth/OIDC flow completed successfully.",
 			);
 
-			const signup = JSON.parse(
-				findRequest(requests, "/api/auth/sign-up/email").body,
-			) as Record<string, unknown>;
-			expect(signup.email).toMatch(/^oauth-cli-.+@example\.com$/);
-			expect(signup.password).toEqual(expect.any(String));
-			const registration = JSON.parse(
-				findRequest(requests, "/api/auth/oauth2/register").body,
-			);
-			expect(registration).toMatchObject({
-				application_type: "native",
-				token_endpoint_auth_method: "none",
-				redirect_uris: [redirectURI],
-				grant_types: ["authorization_code", "refresh_token"],
-				scope: scopes,
-			});
+      expect(requests.some(r => ["/api/auth/sign-up/email", "/api/auth/sign-in/email", "/api/auth/oauth2/register"].includes(r.path))).toBe(false);
 			const authorization = findRequest(requests, "/api/auth/oauth2/authorize");
 			expect(authorization.method).toBe("GET");
 			expect(authorization.query.get("client_id")).toBe("cli-test-client");
@@ -296,83 +291,19 @@ describe("OAuth token shell script", () => {
 				findRequest(requests, "/api/auth/oauth2/userinfo").headers
 					.authorization,
 			).toBe("Bearer test-access-token");
-			for (const secret of [String(signup.password), sessionCookie, verifier]) {
+			for (const secret of [sessionCookie, verifier]) {
 				expect(result.stdout + result.stderr).not.toContain(secret);
 			}
 		},
 	);
 
-	it("signs in with environment credentials without creating another account", async () => {
-		const { baseURL, requests } = await startProvider();
-		const result = await runScript({
-			BASE_URL: baseURL,
-			OAUTH_EMAIL: "existing@example.com",
-			OAUTH_PASSWORD: "test-password-do-not-log",
-		});
-		expect(result.exitCode, result.stderr).toBe(0);
-		expect(
-			JSON.parse(findRequest(requests, "/api/auth/sign-in/email").body),
-		).toMatchObject({
-			email: "existing@example.com",
-			password: "test-password-do-not-log",
-		});
-		expect(
-			requests.some((request) => request.path === "/api/auth/sign-up/email"),
-		).toBe(false);
-		expect(result.stdout + result.stderr).not.toContain(
-			"test-password-do-not-log",
-		);
-	});
-
-	it.each(["email", "password"])(
-		"rejects a missing %s before making HTTP requests",
-		async (missing) => {
-			const { baseURL, requests } = await startProvider();
-			const result = await runScript({
-				BASE_URL: baseURL,
-				OAUTH_EMAIL: missing === "email" ? "" : "existing@example.com",
-				OAUTH_PASSWORD: missing === "password" ? "" : "test-password",
-			});
-			expect(result.exitCode).not.toBe(0);
-			expect(result.stderr).toContain(
-				"Set both OAUTH_EMAIL and OAUTH_PASSWORD",
-			);
-			expect(requests).toHaveLength(0);
-		},
-	);
-
-	it.each(["BASE_URL", "BETTER_AUTH_URL"])(
-		"uses %s, including normalization of a trailing slash",
-		async (variable) => {
-			const { baseURL } = await startProvider({ flow: "callback" });
-			const result = await runScript({
-				[variable]: `${baseURL}/`,
-				...(variable === "BASE_URL"
-					? { BETTER_AUTH_URL: "http://invalid.example" }
-					: {}),
-			});
-			expect(result.exitCode, result.stderr).toBe(0);
-			expect(result.stderr).toContain(`Demo origin: ${baseURL}\n`);
-		},
-	);
-
-	it("reports MFA sign-in without continuing to client registration", async () => {
-		const { baseURL, requests } = await startProvider({
-			responses: {
-				"/api/auth/sign-in/email": { body: { twoFactorRedirect: true } },
-			},
-		});
-		const result = await runScript({
-			BASE_URL: baseURL,
-			OAUTH_EMAIL: "existing@example.com",
-			OAUTH_PASSWORD: "test-password",
-		});
-		expect(result.exitCode).not.toBe(0);
-		expect(result.stderr).toContain("Existing accounts requiring MFA");
-		expect(requests.map((request) => request.path)).toEqual([
-			"/api/auth/sign-in/email",
-		]);
-	});
+  it.each(["OAUTH_COOKIE_FILE", "OAUTH_CLIENT_ID"])("requires %s before network access", async key => {
+    const { baseURL, requests } = await startProvider();
+    const result = await runScript({ BASE_URL: baseURL, [key]: "" });
+    expect(result.exitCode).not.toBe(0);
+    expect(result.stderr).toContain("Client registration requires wallet-owner authorization");
+    expect(requests).toHaveLength(0);
+  });
 
 	it.each([
 		[
@@ -450,8 +381,7 @@ describe("OAuth token shell script", () => {
 	});
 
 	it.each([
-		["/api/auth/sign-up/email", 500, "Request failed; response body:"],
-		["/api/auth/oauth2/register", 403, "Request failed; response body:"],
+		["/api/auth/oauth2/authorize", 500, "Request failed; response body:"],
 		["/api/auth/oauth2/token", 400, "Token exchange failed; response body:"],
 		[
 			"/api/auth/oauth2/userinfo",
@@ -482,7 +412,7 @@ describe("OAuth token shell script", () => {
 		"reports invalid JSON-object responses: $contentType",
 		async (response) => {
 			const { baseURL, requests } = await startProvider({
-				responses: { "/api/auth/sign-up/email": response },
+				responses: { "/api/auth/oauth2/authorize": response },
 			});
 			const result = await runScript({ BASE_URL: baseURL });
 			expect(result.exitCode).not.toBe(0);

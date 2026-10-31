@@ -1,0 +1,11 @@
+$ next typegen && tsc --noEmit --incremental false
+Generating route types...
+✓ Types generated successfully
+lib/auth-safety.test.ts(27,135): error TS2345: Argument of type 'undefined' is not assignable to parameter of type 'UserProvisioningSource'.
+lib/auth-safety.test.ts(128,52): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Type '{ client_name: string; application_type: "native"; redirect_uris: string[]; token_endpoint_auth_method: "none"; grant_types: string[]; response_types: string[]; scope: string; }' is not assignable to type '{ redirect_uris?: string[] | undefined; scope?: string | undefined; client_name?: string | undefined; client_uri?: string | undefined; logo_uri?: string | undefined; contacts?: string[] | undefined; ... 22 more ...; metadata?: Record<...> | undefined; }'.
+      Types of property 'response_types' are incompatible.
+        Type 'string[]' is not assignable to type '"code"[]'.
+          Type 'string' is not assignable to type '"code"'.
+[ELIFECYCLE] Command failed with exit code 2.

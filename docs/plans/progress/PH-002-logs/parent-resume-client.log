@@ -1,0 +1,11 @@
+
+ RUN  v5.0.0 /home/ubuntu/WalletGate
+
+(node:2104227) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+ Test Files  2 passed (2)
+      Tests  30 passed (30)
+   Start at  18:15:18
+   Duration  20.32s (tests 86%, import 11%, transform 3%)
+

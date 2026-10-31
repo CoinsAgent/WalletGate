@@ -1,55 +1,42 @@
 ---
 name: phase-plan-exec
-description: Plan exactly one highest-priority WalletGate sprint, persist its full Phase/Task plan in docs/PLANS.md, ask the human Yes/No, and execute only after an explicit Yes. Use for sprint planning, continuation, and execution; never auto-start subsequent phases.
+description: Deliver WalletGate's Product Contract through Coverage, one sprint, evidence and handoff. Plan or resume the highest-priority unfinished Phase with all Tasks, require explicit Yes before execution, and never auto-start another sprint.
 ---
 
-# Phase Plan & Execute — one sprint at a time
+# Contract → Coverage → Sprint → Evidence → Handoff → Next Sprint
 
-## User experience
+Use the existing controller and the three existing Skills. Read [docs/SPRINT_WORKFLOW.md](../../../../docs/SPRINT_WORKFLOW.md) for commands and record schemas. Assessments are optional historical evidence, never mandatory recurring stages.
 
-The command for a terminal user is:
+## Interactive workflow
 
-```bash
-python3 scripts/phase-plan-exec.py
-```
+- Run `python3 scripts/phase-plan-exec.py plan`. It reuses unfinished work before generating a new Phase and persists all Tasks in `docs/PLANS.md`.
+- Show Phase ID, task count and plan link; ask **Execute this sprint? Yes / No** and stop.
+- Only a new explicit **Yes for that sprint** authorizes `python3 scripts/phase-plan-exec.py execute --yes`. Planning must never pass `--yes`. No, silence and ambiguous answers authorize no execution.
+- `status` derives completed Sprint count, current Phase/status, completed/remaining Tasks, Coverage and next action from repository files.
+- `next` is an explicit user action: validate completion evidence, archive the existing plan, then plan one new sprint and ask Yes/No. Never invoke it automatically after execution. READY_FOR_REVIEW means evidence is ready, not human acceptance or approval of open policies.
+- Interrupted RUNNING work can resume via `execute` with a new Yes. Preserve completed work and its initial product snapshot.
+- For a tooling-upgrade request, change the tooling within the user's authorized scope; do not launch a product sprint merely because this Skill was named.
 
-It reuses an unfinished sprint if present, otherwise:
-1. Generates a **Top 1 Phase plus all necessary Tasks** from the Product Contract, assessment reports and current repository.
-2. Persists the complete scope and Task list in `docs/PLANS.md` with a stable Phase ID and Task IDs.
-3. Presents the plan and asks **Execute this sprint? [Yes/No]**.
-4. **Yes:** execute Tasks in dependency order, test and record progress; stop at `READY_FOR_REVIEW`, `BLOCKED`, or `PAUSED`.
-5. **No, blank or missing response:** do not execute; keep the plan `PENDING_EXECUTION`.
+## Planning worker (`OUTPUT_MODE=BODY_ONLY`)
 
-When invoked interactively as `$phase-plan-exec` in Codex chat:
-- First run `python3 scripts/phase-plan-exec.py plan`. A non-TTY run prints the pending confirmation.
-- Show the Phase ID, Task count, and `docs/PLANS.md`; ask the user **"Execute this sprint? Yes / No"**. Stop and wait.
-- On the user's **new explicit Yes for this sprint**, run `python3 scripts/phase-plan-exec.py execute --yes`; then report its real result.
-- On **No** or ambiguous response, do not run execution. A later Yes can resume the pending sprint.
-- Never call `--yes` during planning, or infer approval from historical conversations.
-- `python3 scripts/phase-plan-exec.py status` reads the active state; `... next` archives a `READY_FOR_REVIEW` sprint and plans the next, again asking Yes/No. Never auto-start the next sprint.
+Do not invoke either planner/controller script, write files, execute tests that write to the project, or implement tasks in this mode. Return only a Markdown body beginning `# Phase Priority Proposal`.
 
-An existing proposal can be selected without regenerating:
-```bash
-python3 scripts/phase-plan-exec.py plan --proposal docs/plans/proposals/<proposal-file>.md
-```
+Read sources in priority order:
 
-## Worker mode: generating the Phase proposal
+1. `AGENTS.md` and approved `docs/PRODUCT_UNDERSTANDING_CONTRACT.md`.
+2. `docs/CONTRACT_COVERAGE.md`, current `docs/PLANS.md`, archived plans, and previous `docs/plans/progress/` evidence **including Handoffs**.
+3. Current code, tests and lockfile; relevant assessment findings only as historical evidence.
 
-When the low-level planner `scripts/run-phase-planner.py` invokes Codex with `OUTPUT_MODE=BODY_ONLY`, **do not run either script**; that would recurse. Read sources and return only the Markdown report body, starting with `# Phase Priority Proposal`.
+Reconcile Contract revisions against stable Coverage IDs. Keep IDs for unchanged requirements; add IDs for new/split requirements and retain superseded rows as RETIRED with successor links. Do not renumber the ledger or carry verification across changed acceptance criteria. Extract current, stable, testable obligations; Contract §5 decisions stay unapproved. Downgrade verification when relevant implementation or test assumptions change.
 
-**Authority and evidence:**
-1. `AGENTS.md` and approved `docs/PRODUCT_UNDERSTANDING_CONTRACT.md` govern requirements.
-2. Existing `docs/PLANS.md` and `docs/plans/history/*.md` document active and completed sprints.
-3. Current code/tests/lockfile establish implementation reality.
-4. The supplied (or latest relevant) Contract Compliance Report and Technical Feasibility Assessment are historical evidence; revalidate material stale findings.
+Resume incomplete Tasks before proposing another Phase. Select **only the highest-priority unfinished Phase**, ranking critical blockers, authentication safety, product value and verifiable delivery. Reuse PH-001's validated approaches unless relevant source, dependency, Contract assumptions or runtime observations changed. Prefer production implementation to repeated feasibility work. Research needs a **specific documented blocker**, reproducible findings and fingerprinted relevant inputs; repeat it only with new relevant evidence, never a renamed objective or another report alone. Unresolved decisions are BLOCKED, not permission to invent a policy.
 
-Do not automatically rerun the other two assessment skills. Never reinterpret a technology limitation as permission to weaken the Product Contract.
+Decompose **all necessary Tasks** in dependency order, covering every acceptance criterion. Each Task needs ID, goal, dependencies, deliverable, scope, verification strategy/command and expected evidence. Implementation must deliver product code and acceptance tests; prototypes/documents alone cannot complete it.
 
-**Select one Phase, not three:** rank all remaining product gaps and technical prerequisites internally, prioritizing unfinished current work, critical blockers, authentication safety, product value, and verifiable progress. Output the single highest-priority unfinished Phase, including all acceptance criteria, explicit in/out scope, technical dependencies, and security/architecture decision gates.
+Use provisional IDs `C01`, `C01-T01`, etc.; the controller assigns permanent PH IDs. Include the `json sprint-plan` block defined in the workflow document within Dependency and Coverage Check. Use a stable semantic `objective_key`, Coverage requirement IDs and explicit acceptance IDs (use the ledger's acceptance IDs when completing a whole requirement). Never claim commands were run during planning.
 
-**Fully decompose all Tasks:** topologically order every necessary Task including research, security-negative tests, implementation, regression verification and documentation as appropriate. Every phase acceptance criterion must map to at least one Task. Each Task needs an ID, goal, dependencies, deliverable, scope, verification command/strategy and recorded evidence. Use provisional IDs `C01`, `C01-T01`, etc., for new proposals; the sprint controller assigns stable `PH-001`, `PH-001-T01`, etc. Reuse existing identities for an existing sprint.
+Output these exact headings in order:
 
-**Report structure:** exact headings, in order:
 - `# Phase Priority Proposal`
 - `## Baseline`
 - `## Top 1 Phase`
@@ -57,20 +44,18 @@ Do not automatically rerun the other two assessment skills. Never reinterpret a 
 - `## Dependency and Coverage Check`
 - `## Approval Gate`
 
-In the Approval Gate write exactly `PROPOSAL_ONLY — NO IMPLEMENTATION AUTHORIZED`. This is a pre-execution planning artifact; the sprint controller later asks for explicit Yes. If the prerequisite research is impossible, mark it `BLOCKED`; do not fabricate executable tasks or test results.
+Use `### C01 — <title>` and `### C01-T01 — <task>` headings. In Approval Gate write `PROPOSAL_ONLY — NO IMPLEMENTATION AUTHORIZED`. The runner owns metadata and immutable proposal publication.
 
-Do not include YAML metadata, choose filenames, write project files, invoke a publisher, execute tests that change the repository, or implement anything in worker mode. The runner owns timestamping and immutable proposal publication.
+## Execution worker (after Yes)
 
-## Execution and stop rules
+Execute the current scope in dependency order. Read prior progress first; retain completed work, reproduce material evidence when assumptions changed, and continue unfinished Tasks. Implement production functionality for implementation sprints. Run relevant tests, repair failures within scope, and record **actual** commands, exit codes, observations, hashed artifacts/logs and acceptance-to-task mappings in the existing `docs/plans/progress/<phase-id>.md` file.
 
-After an actual Yes, the sprint controller invokes a *separate* Codex execution with workspace-write access. Respect `docs/PLANS.md` as the current sprint scope, not as higher authority than Product Contract v1.1.
+Maintain one `json sprint-evidence` block in that file, preserving earlier narrative and run records. Include proposed Coverage changes with acceptance mappings, code/test references and reasons. The controller validates and applies them after successful completion. Research cannot mark product requirements VERIFIED. VERIFIED requires all requirement acceptance checks, production source, tests and actual successful evidence.
 
-- Execute only this sprint's Tasks, in dependency order; create tests and record commands, actual outcomes, and evidence in `docs/plans/progress/<phase-id>.md`.
-- Routine implementation decisions and test repairs can proceed automatically within the agreed scope.
-- Never silently settle unresolved wallet identity, OAuth security, migration, or ownership policies.
-- Never modify the Product Contract or the sprint's `docs/PLANS.md`, touch production data, deploy, commit, push, or start the next Phase.
-- If a material product, security, architecture, or permission decision is needed, report `BLOCKED`. If work is incomplete due to execution limits, report `PAUSED`.
-- Only report `READY_FOR_REVIEW` when all acceptance criteria have actual verification evidence; do not claim human acceptance.
+Include concise Handoff fields: delivered functionality; reusable code and test evidence; technical decisions and limitations; remaining Contract gaps; recommended next objective. The controller appends them as a **Handoff section in the same progress file**; add a Handoff yourself on a worker stop when possible. Do not create a separate handoff system.
 
-This is a **human Yes/No execution gate**, not cryptographic or OS-level authorization. Never promise the instructions prevent all out-of-scope edits; use isolated worktrees/sandbox controls when greater protection is required.
+- READY_FOR_REVIEW: every Task and criterion has actual acceptance evidence; implementation includes verifiable changed product code; research includes its specific blocker, reproducible commands and findings. A final status line alone is insufficient.
+- BLOCKED: an unresolved product/security/architecture/permission decision or unavailable prerequisite prevents progress. Preserve partial delivery and exact unblock needed. Do not infer approval.
+- PAUSED: incomplete due to execution limits or failed evidence validation. Preserve work for resume.
 
+Never edit the approved Contract, current plan, immutable proposals/assessments, production state or historical evidence. Append progress without rewriting prior history. Do not commit, push, deploy, start another Phase, or add approval stages. Prefer supported Better Auth APIs over upstream modifications. This Yes/No gate and evidence validation provide workflow checks, not OS isolation or independent proof that worker claims are true.

@@ -71,7 +71,7 @@ export function OAuthPlayground({
 			setTransaction(undefined);
 			setExchangeAttempted(false);
 			const proof = await createOAuthProof();
-			const id = clientId ?? (await registerTestClient());
+			const id = clientId?.trim() || (await registerTestClient());
 			setClientId(id);
 			const nextTransaction = {
 				...proof,
@@ -139,6 +139,11 @@ export function OAuthPlayground({
 						<CardDescription>{consentStatus}</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-4">
+          <label className="block text-sm">Configured OAuth client ID
+            <input aria-label="Configured OAuth client ID" className="ml-2 border p-2" value={clientId ?? ""} disabled={busy || !!transaction} onChange={event => setClientId(event.target.value)} />
+          </label>
+          <p className="text-sm">Client registration requires wallet-owner authorization. You can use an existing configured client.</p>
+
 						<p className="font-medium">SIWE Client Test Playground</p>
 						{user && (
 							<p className="break-all text-sm">Authorizing as {user.name}</p>

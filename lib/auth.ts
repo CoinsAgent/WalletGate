@@ -1,3 +1,4 @@
+import { enforceWalletLogin } from "./auth-entry-policy.ts";
 import { DatabaseSync } from "node:sqlite";
 import { electron } from "@better-auth/electron";
 import { NodeSqliteDialect } from "@better-auth/kysely-adapter/node-sqlite-dialect";
@@ -88,6 +89,7 @@ const authOptions = {
 	appName: "Better Auth Demo",
 	database,
 	telemetry: { enabled: false },
+	hooks: { before: enforceWalletLogin },
 	user: {
 		additionalFields: {
 			scimDemoRole: {
@@ -108,7 +110,7 @@ const authOptions = {
 		},
 	},
 	emailAndPassword: {
-		enabled: true,
+		enabled: false,
 		requireEmailVerification: false,
 		autoSignIn: true,
 		async sendResetPassword({ user, url }) {
@@ -147,7 +149,6 @@ const authOptions = {
 		bearer(),
 		admin(),
 		multiSession(),
-		nextCookies(),
 		stripe({
 			stripeClient: new Stripe(process.env.STRIPE_KEY || "sk_test_"),
 			stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET!,
@@ -313,7 +314,7 @@ const authOptions = {
 			loginPage: "/sign-in",
 			consentPage: "/oauth/consent",
 			allowDynamicClientRegistration: true,
-			allowUnauthenticatedClientRegistration: true,
+			allowUnauthenticatedClientRegistration: false,
 			scopes: [
 				"openid",
 				"profile",
@@ -415,6 +416,7 @@ export const auth = betterAuth({
 			authOptions,
 			{ shouldMutateListDeviceSessionsEndpoint: true },
 		),
+		nextCookies(),
 	],
 });
 

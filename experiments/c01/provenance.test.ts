@@ -1,7 +1,7 @@
 import { createHash, generateKeyPairSync, sign } from "node:crypto";
 import { expect, it } from "vitest";
 import { setup, wallets } from "./harness";
-import { exchangeCode } from "../../app/client-test-siwe/oauth-flow";
+import { exchangeCode } from "../../app/(auth)/sign-in/oauth-flow";
 
 it.each([false, true])("persists trusted provenance and rejects forged or legacy sessions with cookie cache=%s", async (cookieCache) => {
   const h = await setup(true, { provenance: true, enforce: true, cookieCache });

@@ -9,7 +9,7 @@ export interface EthereumProvider {
 	}) => Promise<unknown>;
 }
 
-interface SIWEClient {
+export interface SIWEClient {
 	nonce: () => Promise<{
 		data?: { nonce: string } | null;
 		error?: { message?: string } | null;
@@ -50,10 +50,10 @@ export async function signInWithWallet(
 		address,
 		chainId,
 		domain: new URL(origin).host,
-		uri: new URL("/client-test-siwe", origin).href,
+		uri: new URL("/sign-in", origin).href,
 		version: "1",
 		nonce: nonce.data.nonce,
-		statement: "Sign in to the Better Auth SIWE client test.",
+		statement: "Sign in to WalletGate.",
 		issuedAt: new Date(),
 		expirationTime: new Date(Date.now() + 5 * 60 * 1000),
 	});
@@ -71,6 +71,8 @@ export async function signInWithWallet(
 	if (verification.error) {
 		throw new Error(verification.error?.message || "Wallet sign-in failed.");
 	}
+	const redirect = z.object({ redirect: z.literal(true), url: z.string().min(1) }).safeParse(verification.data);
+	if (redirect.success) return redirect.data;
 	return z
 		.object({
 			success: z.literal(true),

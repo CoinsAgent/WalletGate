@@ -13,7 +13,7 @@ import { createAuthMiddleware, getAuthoritativeSessionFromCtx, APIError } from "
 import { privateKeyToAccount } from "viem/accounts";
 import { createSiweMessage } from "viem/siwe";
 import { createDemoSIWEPlugin } from "../../lib/siwe";
-import { startAuthorization, submitConsent, exchangeCode, fetchUserInfo, registerTestClient } from "../../app/client-test-siwe/oauth-flow";
+import { startAuthorization, submitConsent, exchangeCode, fetchUserInfo, registerTestClient } from "../../app/(auth)/sign-in/oauth-flow";
 import { createLocalJWKSet, jwtVerify } from "jose";
 import { getCurrentAuthEndpointContext } from "@better-auth/core/context";
 import { siwe } from "better-auth/plugins";

@@ -4,8 +4,7 @@
 # Run against a started demo whose BETTER_AUTH_URL matches BASE_URL:
 #   BASE_URL=http://170.106.176.163 bash app/client-test/oauth-token.sh
 # Default origin: BASE_URL, then BETTER_AUTH_URL, then http://localhost:3000.
-# By default each run creates a test user and a public OAuth client in the demo.
-# To use an existing account instead, export both OAUTH_EMAIL and OAUTH_PASSWORD.
+# Supply OAUTH_COOKIE_FILE from wallet sign-in and an existing OAUTH_CLIENT_ID.
 # Requires Bash, cURL, jq, OpenSSL, and Node.js. No browser/callback server needed.
 # Progress and HTTP diagnostics go to stderr; tokens and UserInfo go to stdout.
 
@@ -25,10 +24,9 @@ done
 base_url="${BASE_URL:-${BETTER_AUTH_URL:-http://localhost:3000}}"
 base_url="${base_url%/}"
 redirect_uri='http://127.0.0.1:8765/callback'
-if [[ -n "${OAUTH_EMAIL:-}" && -z "${OAUTH_PASSWORD:-}" ]] ||
-	[[ -z "${OAUTH_EMAIL:-}" && -n "${OAUTH_PASSWORD:-}" ]]; then
-	log 'Set both OAUTH_EMAIL and OAUTH_PASSWORD, or leave both unset to create a test account.'
-	exit 1
+if [[ -z "${OAUTH_CLIENT_ID:-}" || -z "${OAUTH_COOKIE_FILE:-}" || ! -r "${OAUTH_COOKIE_FILE:-}" ]]; then
+  log 'SIWE wallet sign-in and an existing configured client are required. Set OAUTH_COOKIE_FILE and OAUTH_CLIENT_ID. Client registration requires wallet-owner authorization.'
+  exit 1
 fi
 
 # Keep session cookies between requests, and delete temporary files on exit.
@@ -71,40 +69,10 @@ request_json() {
 
 log "Demo origin: $base_url"
 
-# 1. Authenticate normally through the demo API. Creating a new test account
-# uses the demo's automatic sign-in; existing credentials use email sign-in.
-if [[ -n "${OAUTH_EMAIL:-}" ]]; then
-	log "Signing in as $OAUTH_EMAIL"
-	auth_path='/api/auth/sign-in/email'
-	email="$OAUTH_EMAIL"
-	password="$OAUTH_PASSWORD"
-else
-	auth_path='/api/auth/sign-up/email'
-	email="oauth-cli-$(openssl rand -hex 8)@example.com"
-	password=$(openssl rand -hex 24)
-	log "Creating test account: $email"
-fi
-auth_body=$(jq -n --arg email "$email" --arg password "$password" \
-	'{email: $email, password: $password, name: "OAuth CLI Test"}')
-authentication=$(request_json POST "$auth_path" "$auth_body")
-unset password auth_body
-if ! user_id=$(printf '%s' "$authentication" | jq -er '.user.id | strings | select(length > 0)'); then
-	log 'Sign-in did not return a user. Existing accounts requiring MFA need a completed session; use a fresh test account for this script.'
-	exit 1
-fi
-log "Authenticated user: $user_id"
-
-# 2. Register a public native client. HTTP loopback callbacks are allowed for
-# native clients. PKCE binds the code exchange; no client secret is required.
-registration_body=$(jq -n --arg redirect_uri "$redirect_uri" '{
-	client_name: "CLI OAuth Test", application_type: "native",
-	redirect_uris: [$redirect_uri], token_endpoint_auth_method: "none",
-	grant_types: ["authorization_code", "refresh_token"], response_types: ["code"],
-	scope: "openid profile email offline_access"
-}')
-registration=$(request_json POST '/api/auth/oauth2/register' "$registration_body")
-client_id=$(printf '%s' "$registration" | jq -er '.client_id | strings | select(length > 0)')
-log "Registered client: $client_id"
+# Use the supplied wallet session and configured client; never provision either.
+cp -- "$OAUTH_COOKIE_FILE" "$work_dir/cookies"
+client_id="$OAUTH_CLIENT_ID"
+log "Using configured client: $client_id"
 
 # 3. Generate a fresh PKCE verifier, SHA-256 base64url challenge, and state.
 verifier=$(openssl rand -hex 32)

@@ -7,7 +7,7 @@ import { hexToString, isHex } from "viem";
 import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
 import { createSiweMessage, parseSiweMessage } from "viem/siwe";
 import { describe, expect, it, vi } from "vitest";
-import { createDemoSIWEPlugin } from "../../lib/siwe";
+import { createDemoSIWEPlugin } from "../../../lib/siwe";
 import type { OAuthFetch } from "./oauth-flow";
 import {
 	exchangeCode,
@@ -67,6 +67,7 @@ describe("SIWE client-test sign-in", () => {
 	it("signs a real SIWE message without email and completes code, token, and UserInfo requests", async () => {
 		const { auth, client, headers, account, provider, api } = await setup();
 		const user = await signInWithWallet(provider, origin, api);
+		if ("redirect" in user) throw new Error("Unexpected OAuth continuation");
 		expect(user.walletAddress).toBe(account.address);
 		expect(user.chainId).toBe(1);
 		const session = await auth.api.getSession({ headers });
@@ -97,7 +98,7 @@ describe("SIWE client-test sign-in", () => {
 			address: account.address,
 			domain: "localhost:3000",
 			chainId: 1,
-			uri: `${origin}/client-test-siwe`,
+			uri: `${origin}/sign-in`,
 		});
 		// The plugin consumes the nonce; the exact same signed message cannot replay.
 		const replay = await client.siwe.verify({
@@ -142,7 +143,7 @@ describe("SIWE client-test sign-in", () => {
 		expect(tokens.refresh_token).toBeTruthy();
 		expect(tokens.id_token).toBeTruthy();
 		expect(await fetchUserInfo(tokens.access_token, request)).toMatchObject({
-			sub: user.id,
+			sub: "redirect" in user ? "unexpected-redirect" : user.id,
 			name: account.address,
 		});
 	});
@@ -175,7 +176,7 @@ describe("SIWE client-test sign-in", () => {
 			address: account.address,
 			chainId: 1,
 			domain: "localhost:3000",
-			uri: "https://other.example/client-test-siwe",
+			uri: "https://other.example/sign-in",
 			version: "1",
 			nonce: nonce.data!.nonce,
 		});

@@ -1,0 +1,20 @@
+
+ RUN  v5.0.0 /home/ubuntu/WalletGate
+
+stderr | lib/auth-safety.test.ts
+2026-10-31T09:12:54.495Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ ✓ lib/auth-safety.test.ts > denies password signup without creating a session 30ms
+ ↓ lib/auth-safety.test.ts > denies anonymous valid dynamic registration without persisting credentials
+ ✓ lib/auth-safety.test.ts > valid signed SIWE establishes a usable session 84ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed | 1 skipped (3)
+   Start at  17:12:52
+   Duration  1.82s (tests 76%, import 21%, transform 3%)
+

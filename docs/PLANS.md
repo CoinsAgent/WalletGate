@@ -1,10 +1,10 @@
 <!-- phase-plan-exec:managed -->
 # WalletGate Sprint Plan
 
-- **Phase ID:** `PH-001`
+- **Phase ID:** `PH-002`
 - **Status:** `READY_FOR_REVIEW`
-- **Source proposal:** `docs/plans/proposals/2026-10-31T00-58-34.373009Z-22e4fc8d-phase-priority.md`
-- **Task count:** 8
+- **Source proposal:** `docs/plans/proposals/2026-10-31T09-08-39.642825Z-cb5f9082-phase-priority.md`
+- **Task count:** 5
 
 The status above is authoritative. Proposal-derived readiness notes below were written **before** execution approval. A Yes authorizes this sprint's existing scope only; it does not resolve open product decisions.
 
@@ -14,216 +14,215 @@ The status above is authoritative. Proposal-derived readiness notes below were w
 
 ## Baseline
 
-The authority is [Product Understanding Contract v1.1](docs/PRODUCT_UNDERSTANDING_CONTRACT.md), together with `AGENTS.md` and `.agents/skills/phase-plan-exec/SKILL.md`. Public wallet-address identity, SIWE-only end-user authentication, distinct client IDs, and wallet-authorized client management remain binding requirements. Contract §5 implementation decisions remain unapproved.
+Authority: `AGENTS.md`, the approved [Product Contract v1.1](docs/PRODUCT_UNDERSTANDING_CONTRACT.md), the phase-plan-exec skill, and [Sprint Workflow](docs/SPRINT_WORKFLOW.md).
 
-**Verified repository state:**
+**Verified planning observations:**
 
-- `docs/PLANS.md` and `docs/plans/history/` do not exist. There is no recorded active or completed sprint to resume.
-- The existing [phase proposal](docs/plans/proposals/2026-10-30T06-45-47.426427Z-e1650238-phase-priority.md) proposes **PH-001 — Supported identity architecture proof**, with eight tasks. It records `approved: false`; it provides no execution authorization. This candidate retains those provisional identities and bounded research scope.
-- The worktree is clean. Current HEAD differs from the assessments’ recorded revision, but comparison against that revision shows no changes under `lib/`, `app/`, `package.json`, `pnpm-lock.yaml`, or the Product Contract.
-- Locked versions include Better Auth/core/OAuth provider **1.7.11**, viem **2.57.10**, and Next.js **16.3.4**. `node_modules` is absent. Installed versions and runtime behavior are unknown.
+- `docs/PLANS.md` is absent. The archived [PH-001 plan](docs/plans/history/PH-001.md) is `READY_FOR_REVIEW`.
+- The entire available progress record, including its earlier interruptions, final completion record, structured evidence, and Handoff, was reviewed. Its final record supersedes the earlier blockers and marks all eight Tasks complete (`docs/plans/progress/PH-001.md:298`).
+- Read-only SHA-256 checks matched all 12 unique artifact/log references in PH-001’s structured task evidence. This confirms retained artifact integrity; it does not independently reproduce the recorded executions.
+- PH-001 records two successful final 36-test experiment runs, 18 SIWE regressions, and parent-observed success for 35 OAuth regressions. Its Handoff recommends production authentication safety work (`docs/plans/progress/PH-001.md:989`).
+- The current Contract, `lib/auth.ts`, `lib/siwe.ts`, and lockfile hashes match PH-001’s recorded inputs. There is no relevant changed-input basis for repeating its architecture research.
+- Repository `node_modules` is absent. The lockfile resolves Better Auth/core/OAuth provider 1.7.11, viem 2.57.10, and Next.js 16.3.4; current installed runtime behavior is unknown.
+- The worktree contains existing workflow changes, the archived plan, and the deletion of the active plan. These are existing state, not changes made during this planning session.
 
-**Supplied historical evidence:**
+Current production conflicts remain visible:
 
-| Report | Relevant findings | Verification limits |
-| --- | --- | --- |
-| [Contract compliance](docs/assessments/2026-10-30T01-23-40.381602Z-aeb940c4-contract-compliance.md) | Non-SIWE login and open registration conflict with requirements; session provenance and address subjects are unestablished | Unreviewed static assessment; no executed tests |
-| [Technical feasibility](docs/assessments/2026-10-30T02-12-49.882089Z-6b47ae5b-technical-feasibility.md) | Supported hooks offer candidate integration points; ordinary claim callbacks cannot replace public subjects in the inspected provider version | Unreviewed exact-package source investigation; no runtime proof |
-
-Material application findings were rechecked:
-
-| Observation | Current source evidence |
+| Finding | Source evidence |
 | --- | --- |
-| Password authentication and passkeys remain enabled | `lib/auth.ts:110–120,145` |
-| Unauthenticated client registration remains enabled | `lib/auth.ts:312–316` |
-| Authentication route delegates without adding wallet-owner authorization | `app/api/auth/[...all]/route.ts:25–40` |
-| Wallet-session display relies on linked SIWE accounts | `app/client-test-siwe/wallet-client.tsx:48–51` |
-| Account selection lists device sessions without a visible provenance filter | `app/(auth)/oauth/select-account/page.tsx:12–29` |
-| Local SIWE verifier checks URI origin and signature, without complete local grammar/time validation | `lib/siwe.ts:16–33` |
-| Existing test expects UserInfo subject to equal internal user ID | `app/client-test-siwe/siwe-login.test.ts:141–147` |
-| SQLite, MySQL, and Turso configuration branches exist | `lib/auth.ts:41–78` |
-| Root test discovery excludes a separate experiment directory | `vitest.config.ts:5` |
+| Password signup and login are enabled | `lib/auth.ts:110` |
+| Passkey and SSO plugins are configured | `lib/auth.ts:145`, `lib/auth.ts:195` |
+| Unauthenticated registration is explicitly enabled | `lib/auth.ts:315` |
+| The authentication wrapper delegates to Better Auth without a wallet authorization gate | `app/api/auth/[...all]/route.ts:25` |
+| The main sign-in page offers password signup and passkey login | `app/(auth)/sign-in/page.tsx:44`, `app/(auth)/sign-in/_components/sign-in.tsx:42` |
+| Existing production-oriented tests expect successful password authentication | `lib/auth.test.ts:54` |
+| Playground helpers automatically register clients | `app/client-test-siwe/oauth-flow.ts:97`, `app/client-test/oauth-flow.ts:97` |
 
-The feasibility report attributes fixed public-subject behavior to published `@better-auth/oauth-provider@1.7.11`, specifically `dist/utils-vIo_wPv5.mjs:815–818` and `dist/introspect-B-5vOvYK.mjs:13–51,1230–1263,1399–1426`. This remains **historical source evidence**, not independently reproduced runtime behavior in this planning session.
+Both supplied historical assessments were reviewed. The [compliance report](docs/assessments/2026-10-30T01-23-40.381602Z-aeb940c4-contract-compliance.md) establishes historical source conflicts; the [feasibility report](docs/assessments/2026-10-30T02-12-49.882089Z-6b47ae5b-technical-feasibility.md) documents supported configuration and extension mechanisms in published 1.7.11 packages. Both remain unreviewed historical evidence. PH-001 subsequently demonstrated bounded runtime approaches, without approving production identity or lifecycle policies.
 
-**Priority inference:** A supported identity architecture remains the highest-priority unresolved prerequisite. Subject representation affects user persistence, session provenance, ownership references, and existing grants. Implementing those capabilities before proving the architecture risks incompatible identity models.
+**Coverage reconciliation:** The approved Contract hash matches the ledger. Preserve WG-001 through WG-013 and their existing acceptance IDs. No requirement renumbering, retirement, or acceptance change is proposed. Coverage currently has zero VERIFIED product requirements; research completion supplies no product verification.
 
-No files were modified, scripts invoked, dependencies installed, or tests executed for this proposal.
+**Resume decision:** No incomplete PH-001 Task remains in the final evidence. Its research review status does not authorize production architecture choices. The candidate below therefore addresses the highest-priority unfinished production safety objective.
+
+No files were modified, controller scripts invoked, packages installed, or tests executed during planning.
 
 ## Top 1 Phase
 
-### PH-001 — Supported identity architecture proof
+### PH-002 — Close unapproved login and anonymous registration entry points
 
-**Candidate status:** Unapproved proposal; execution prerequisites are unmet.
+**Kind:** Implementation  
+**Objective key:** `close-unapproved-authentication-and-anonymous-registration`  
+**Coverage:** WG-004 and WG-008  
+**Task count:** Five
 
-**Objective:** Prove or falsify a supported architecture that derives consistent public wallet-address subjects and trustworthy session provenance from validated SIWE, then document its lifecycle and ownership consequences.
+**Objective:** Enforce the approved SIWE-only boundary for new end-user authentication, deny anonymous OAuth client creation, and keep a usable wallet sign-in entry point with executable production acceptance tests.
 
-**Why this phase:** It continues the existing unfinished research proposal and addresses the principal framework uncertainty identified by the supplied feasibility report. The known password-login and open-registration conflicts remain unresolved security gaps; completing this research does not make the current application compliant.
-
-**Observable deliverables:** An isolated executable experiment suite, exact-version source references, recorded runtime results, a lifecycle/ownership impact matrix, and a supported architecture verdict with explicit outstanding decisions.
+**Priority rationale:** These are explicit current configuration conflicts with P2 and P5. They expose authentication and persistent client-creation capabilities. Closing them has immediate safety value and does not require selecting canonical subjects, migrating identities, or approving session and ownership policies.
 
 **Prerequisites:**
 
-- A new explicit Yes for this specific sprint after the controller persists its concrete scope.
-- A separate writable disposable checkout, dependency retrieval, and disposable database access.
-- Experimental assumptions documented before use: address representation, chain fixtures, wallet type, session lifecycle, and legacy-record treatment.
-- No production credentials or external email, payment, or SSO side effects.
-- Production policy decisions remain outside experimental authorization.
+- A persisted plan and a new explicit Yes for this specific sprint.
+- A writable isolated execution environment with exact locked dependencies and disposable SQLite storage.
+- Loopback-listener permission for existing OAuth regression tests.
+- No production credentials, live databases, or external email, payment, SSO, or RPC side effects.
+- Supported Better Auth configuration, plugin composition, and extension points; no dependency upgrades or upstream patches.
 
-**In scope:** Supported-hook investigation; disposable prototype implementation; subject, provenance, and security-negative experiments; reference/adapter analysis; reproducibility and decision documentation.
+**Reuse from PH-001:** Adapt its persistent SQLite setup, signed EOA fixtures, cleanup discipline, and negative-control techniques. Production tests must exercise production configuration. Do not copy the experiment’s lowercase identity IDs, chain allowlist, five-minute verification window, strict revocation rule, or session markers as approved policy.
 
-**Out of scope:** Application authentication/UI changes; production client management; live migrations or resets; dependency upgrades; upstream patches; provider replacement; service-account binding implementation; deployment; conformance certification; Product Contract changes.
+**Scope boundaries:** This phase restricts new authentication and anonymous creation. Public address subjects, strict SIWE validation, legacy-session treatment, accepted session reuse, grant revocation, wallet switching, owner representation, and authenticated client management remain separate unresolved requirements. Ordinary session retrieval is not reclassified as a new login.
 
-**Acceptance criteria:**
-
-| ID | Criterion |
+| Acceptance ID | Required product outcome |
 | --- | --- |
-| PH-001-AC1 | Exact-version baseline and supported integration points are reproducible; helper-based and application-equivalent persistence results are distinguished. |
-| PH-001-AC2 | Address-subject customization receives an executed verdict across two wallets, two clients, initial issuance, refresh, and UserInfo, including normalization and concurrency. |
-| PH-001-AC3 | Server-controlled SIWE provenance receives an executed verdict across session persistence and relevant user-authorization/grant boundaries, including negative cases. |
-| PH-001-AC4 | Relevant Contract §5 decisions, existing-data references, token roles, ownership implications, and adapter limitations have explicit evidence or blockers. |
-| PH-001-AC5 | Experiments have documented commands, assertions, actual outcomes, and a clean rerun; baseline application regressions are accounted for. |
-| PH-001-AC6 | The decision package identifies a supported candidate or reproducible no-go, separates experimental assumptions from production approvals, and maps every criterion to evidence. |
+| WG-004-A1 | Exposed password, passkey, SSO, and alternate independent login routes cannot establish end-user access. Tests use otherwise valid credentials or representative successful fixtures where applicable, assert no usable new session, and demonstrate that valid SIWE still works. The main login entry uses SIWE and preserves supported authorization continuation. |
+| WG-008-A1 | Every exposed unauthenticated client-creation endpoint denies registration. Tests submit valid client metadata, assert no new client records or credentials, and cover missing credentials, invalid credentials, and misleading client-supplied identity fields. Existing configured-client OAuth behavior remains usable. |
 
-A reproducible no-go may satisfy this **research** phase. Missing experiments caused by unavailable resources do not count as a technical no-go or completed verification.
+Disabling anonymous registration does not establish wallet-owner authorization for remaining authenticated management routes. WG-009 remains BLOCKED.
 
 ## All Tasks for Top 1 Phase
 
-All tasks below are proposed future work. Commands are verification instructions, not executed results. Experiment paths are proposed suite locations in the disposable checkout.
+All paths and verification commands below describe proposed execution work.
 
-### PH-001-T01 — Define the experiment charter and decision ledger
+### PH-002-T01 — Establish production acceptance fixtures and endpoint coverage
 
-- **Goal:** Bound the research without silently selecting production identity or security policies.
-- **Dependencies:** Explicit sprint authorization.
-- **Scope:** Contract §5; canonicalization; internal IDs; chains and EOA/ERC-1271 boundaries; wallet linking; session freshness, switching, revocation and legacy sessions; existing grants; owner references; registration modes; truthful claims.
-- **Deliverable:** A charter and ledger listing candidate assumptions, evidence required, consequences, approval status, and stop conditions for each relevant decision.
-- **Verification strategy:** Trace each Contract §5 item to an experiment or an explicit exclusion. Label EOA fixtures and alternative casing/lifecycle fixtures as experimental. Identify facts requiring human decisions before dependent work.
-- **Recorded evidence:** Completed decision checklist and reviewed scope boundaries.
-- **Gate:** Any unresolved decision that cannot be represented safely as a disposable experiment is `BLOCKED`; do not adopt it as policy.
+- **Goal:** Make both requirements testable against the actual application configuration.
+- **Dependencies:** Sprint approval and execution environment.
+- **Scope:** Inventory configured authentication and client-creation endpoints, their HTTP methods, relevant Next.js wrappers, and server API entry points actually exposed by application routes. Include password signup/login, passkey, SSO callbacks, two-factor completion, impersonation, and session-transfer capabilities for classification.
+- **Deliverable:** `lib/auth-safety.test.ts`, reusable disposable-storage fixtures under `lib/`, and an endpoint-to-acceptance matrix in sprint progress.
+- **Implementation approach:** Adapt PH-001’s persistent SQLite harness. Instantiate the production auth configuration rather than a reduced plugin list or helper defaults that silently enable other login methods. Isolate external integrations and clean up every database.
+- **Verification:** `pnpm exec vitest run lib/auth-safety.test.ts --reporter=verbose`.
+- **Expected evidence:** Exact versions, fixture setup/cleanup results, covered routes and methods, valid request controls, and initial failing assertions demonstrating the current conflicts. Final acceptance requires these assertions to pass after enforcement.
+- **Boundary:** Classify existing-session reuse separately under WG-005. If classification requires an unresolved product decision, record the exact blocker rather than inventing a lifecycle rule.
+- **Acceptance mapping:** WG-004-A1, WG-008-A1.
 
-### PH-001-T02 — Establish the isolated exact-version harness
+### PH-002-T02 — Enforce SIWE-only independent authentication
 
-- **Goal:** Make subsequent findings reproducible against the locked stack and persistent storage.
-- **Dependencies:** T01; writable disposable environment and dependency access.
-- **Scope:** Explicit experiment Vitest configuration, fresh SQLite persistence matching the application’s configured adapter path, schema setup/teardown, and isolated environment variables. Document differences from `getTestInstance` in existing SIWE tests.
-- **Deliverable:** Runnable experiment harness with deterministic cleanup and no external-service side effects.
+- **Goal:** Prevent configured non-SIWE mechanisms from independently creating end-user access.
+- **Dependencies:** PH-002-T01.
+- **Scope:** `lib/auth.ts`, supported endpoint restrictions or local enforcement modules, affected authentication wrappers, and corresponding client integrations.
+- **Deliverable:** Production enforcement plus acceptance tests for the complete independent-login inventory.
+- **Implementation approach:** Disable password authentication and remove or restrict independent passkey and SSO authentication through supported APIs. Close exposed impersonation or alternate session-creation shortcuts that would independently authenticate without SIWE. Resolve client API/type references affected by plugin changes.
+- **Verification:** `pnpm exec vitest run lib/auth-safety.test.ts lib/auth.test.ts --reporter=verbose`.
+- **Expected evidence:** Valid password credentials fail; passkey and SSO authentication endpoints are unavailable or denied before establishing access; alternate independent session creation fails; no denial leaves a usable cookie/token or new session row. A genuinely signed SIWE request still creates a usable session.
+- **Test maintenance:** Replace production tests that require forbidden password login. Retain separately constructed upstream negative-control fixtures when clearly labeled; they do not prove production compliance.
+- **Boundary:** Do not migrate users, approve old sessions, introduce provenance fields, or change address representation.
+- **Acceptance mapping:** WG-004-A1.
+
+### PH-002-T03 — Deny anonymous OAuth client creation
+
+- **Goal:** Close every anonymous client-creation path without relying on browser behavior or CORS.
+- **Dependencies:** PH-002-T02.
+- **Scope:** OAuth provider configuration, exposed creation routes, and `lib/auth-safety.test.ts`.
+- **Deliverable:** Production registration restrictions and persistent-state acceptance tests.
+- **Implementation approach:** Disable `allowUnauthenticatedClientRegistration`; verify the exact-version managed creation endpoints also require authentication. Cover any application wrapper identified in T01. Do not introduce initial-access-token registration or a new authorization mechanism.
+- **Verification:** `pnpm exec vitest run lib/auth-safety.test.ts --reporter=verbose`.
+- **Expected evidence:** Well-formed creation requests fail without authentication, with stale/invalid cookies, with arbitrary bearer tokens, and with forged owner metadata. Client counts remain unchanged and no credentials are returned. Test through the application HTTP boundary as well as the underlying handler where necessary.
+- **Positive control:** Seed an existing client through disposable test setup and verify discovery and a normal authorization-code flow remain available. Fixture provisioning is not a production registration policy.
+- **Boundary:** Do not certify authenticated registration, ownership isolation, or protected DCR. An unexpected bypass requires production enforcement within scope or an explicit BLOCKED record.
+- **Acceptance mapping:** WG-008-A1.
+
+### PH-002-T04 — Keep the login and playground entry points usable
+
+- **Goal:** Align user-facing entry points with the enforced restrictions.
+- **Dependencies:** PH-002-T03.
+- **Scope:** Main sign-in components, affected client plugin consumers, wallet sign-in helper, both OAuth playgrounds, and registration-dependent CLI instructions.
+- **Deliverable:** A wallet-only main login entry, tested continuation handling, and clear registration-denial behavior.
+- **Implementation approach:** Reuse the existing signed-wallet flow and supported SIWE/OAuth continuation mechanism. Remove active password/signup/passkey/SSO login offers. Preserve validated local return destinations and authorization query state. Handle missing wallet, rejected signature, verification failure, and retry with a fresh nonce.
+- **Registration behavior:** Playground and CLI entry points must report that registration requires authorization, or use an already configured client. They must not gain a public provisioning endpoint or silently restore anonymous registration.
+- **Verification:** `pnpm exec vitest run lib/wallet-login.test.ts --reporter=verbose`, with proposed tests for rendered login choices, wallet-flow behavior, continuation, and registration errors.
+- **Expected evidence:** SIWE is the offered login method; successful wallet login continues the intended authorization; unsafe return destinations are rejected; denied registration produces actionable behavior.
+- **Boundary:** Do not claim complete mobile wallet discovery or WG-012 verification. Do not infer current-session provenance from linked wallets.
+- **Acceptance mapping:** WG-004-A1, WG-008-A1.
+
+### PH-002-T05 — Complete regressions, coverage evidence, and Handoff
+
+- **Goal:** Demonstrate the delivered restrictions and retain reviewable evidence for every Task.
+- **Dependencies:** PH-002-T04.
+- **Scope:** Relevant production tests, affected existing fixtures, type verification, and the assigned phase’s progress record.
+- **Deliverable:** Passing acceptance/regression results, changed production source, one structured sprint-evidence record, proposed Coverage updates, and Handoff.
 - **Verification commands:**
-
-  ```sh
-  node --version
-  pnpm --version
-  pnpm install --frozen-lockfile
-  pnpm list better-auth @better-auth/core @better-auth/oauth-provider viem --depth 0
-  git diff --exit-code -- package.json pnpm-lock.yaml
-  ```
-
-  Demonstrate fresh database creation, disposal, and recreation.
-- **Recorded evidence:** Runtime/package versions, package integrity references, commands and exit codes, database configuration, and isolation checks.
-- **Gate:** Installation, runtime, or persistence incompatibility is `BLOCKED`. Do not upgrade dependencies automatically.
-
-### PH-001-T03 — Reproduce baseline subjects and trace supported hooks
-
-- **Goal:** Establish an executed control case before evaluating customization.
-- **Dependencies:** T02.
-- **Scope:** Real signed SIWE through provider handlers; user/session creation ordering; subject resolution; reserved-claim handling; UserInfo lookup; refresh issuance; documented request and database hooks.
-- **Deliverable:** Baseline tests and an exact-version integration-point map.
-- **Verification command:**
-
-  ```sh
-  pnpm exec vitest run --config experiments/c01/vitest.config.ts experiments/c01/baseline.test.ts --reporter=verbose
-  ```
-
-  Verify ID Token signatures using JWKS and validate issuer, audience, nonce, and subject. Exercise ordinary subject claim overrides as controls. Record differences between test helpers and persistent execution.
-- **Recorded evidence:** Installed source paths/lines, redacted protocol results, hook ordering, assertions, and failures.
-- **Gate:** No monkey-patching, package edits, or JWT-response rewriting as an identity solution. Unsupported customization must be reported.
-
-### PH-001-T04 — Test verified address identity and subject consistency
-
-- **Goal:** Prove or falsify address-based internal IDs through supported extension points.
-- **Dependencies:** T03; documented experimental address/chain fixtures.
-- **Scope:** Identity derived only after successful SIWE validation; two wallets and two clients; repeat login; casing variants; concurrent first login; interleaved requests; initial and refreshed identity surfaces.
-- **Deliverable:** Subject experiment suite and a supported-candidate/no-go verdict.
-- **Verification command:**
-
-  ```sh
-  pnpm exec vitest run --config experiments/c01/vitest.config.ts experiments/c01/subject.test.ts --reporter=verbose
-  ```
-
-  Assert deterministic subjects across clients, ID Token/UserInfo equality, correct refreshed behavior, and no cross-request wallet leakage. Reject identity substitution through names, emails, ENS labels, supplied IDs, or unverified wallet fields. Preserve distinct client IDs and machine-token roles.
-- **Recorded evidence:** Verified claims, persisted identity/account rows, concurrency outcomes, negative assertions, and adapter behavior.
-- **Gate:** If refreshed ID Tokens are not issued, record that limitation and verify existing refreshed surfaces. Address-ID success does not approve production internal IDs or migration.
-
-### PH-001-T05 — Test trustworthy provenance and grant enforcement
-
-- **Goal:** Determine whether supported mechanisms can persist trusted SIWE provenance and enforce experimental lifecycle rules.
-- **Dependencies:** T03 and T04 verdict; documented session fixtures.
-- **Scope:** Provenance creation after successful verification; persistence/retrieval; configured cache behavior; account selection; authorization and consent continuation; code exchange; refresh; bearer identity use; renewal, switching, expiry and revocation.
-- **Deliverable:** Provenance suite and boundary matrix.
-- **Verification command:**
-
-  ```sh
-  pnpm exec vitest run --config experiments/c01/vitest.config.ts experiments/c01/provenance.test.ts --reporter=verbose
-  ```
-
-  Test forged fields, wallet-linked password/passkey sessions, legacy sessions, alternate creation routes and impersonation where exposed, concurrent wallets, and previously issued codes/refresh grants under each experimental rule. Keep application authentication separate from end-user provenance.
-- **Recorded evidence:** Persisted fields, redacted session/grant traces, expected denials, and unsupported enforcement points.
-- **Gate:** Diagnostic research may continue after a T04 no-go, but cannot establish a viable combined architecture. Production freshness, revocation, switching, and legacy-grant policies remain unapproved.
-
-### PH-001-T06 — Assess lifecycle, adapter, and ownership consequences
-
-- **Goal:** Identify the data and authorization consequences of the candidate architecture.
-- **Dependencies:** T04 and T05 results.
-- **Scope:** Users, accounts/wallets, sessions, clients, consents, codes, tokens, and enabled-plugin references. Compare internal-user ownership with server-derived wallet references. Examine session registration, initial-access-token registration, and administrative exceptions.
-- **Deliverable:** Reference inventory, lifecycle tests, adapter matrix, and transition alternatives.
-- **Verification strategy:** Run `experiments/c01/lifecycle.test.ts` through the explicit experiment configuration. Seed a legacy random-ID user, related grants, and two applications. Assert collision/reference behavior and identify ownership-retention and invalidation requirements. Document proposed dry-run and rollback invariants without performing a live transition.
-- **Recorded evidence:** Fixture queries, schema/source references, failed invariants, and SQLite/MySQL/Turso classifications as executed, source-inspected, or unverified.
-- **Gate:** No live migration, reset, ownership transfer, co-management policy, administrative exception, or protected-DCR policy is approved by this task.
-
-### PH-001-T07 — Consolidate security-negative and regression verification
-
-- **Goal:** Ensure candidate success cannot depend on accepting invalid authentication or silently changing application behavior.
-- **Dependencies:** T03–T06.
-- **Scope:** Combined experiment suite; relevant existing SIWE/OAuth tests; strict-validation experiments through supported callbacks; clean rerun and scope review.
-- **Deliverable:** Reproducible verification record with failures classified.
-- **Verification strategy:** Cover wrong signer, domain and URI; missing/malformed required fields; wrong version; invalid dates; expiration/not-before; nonce replay and concurrent consumption; nonce burning after invalid attempts; forged provenance; alternate-login and cross-wallet leakage. Use explicitly labeled time/chain fixtures rather than selecting production policy.
-
-  ```sh
-  pnpm exec vitest run --config experiments/c01/vitest.config.ts --reporter=verbose
-  pnpm exec vitest run --config app/client-test-siwe/vitest.config.ts
-  pnpm exec vitest run --config app/client-test/vitest.config.ts
-  ```
-
-  Compare existing-suite results against the unchanged baseline, recreate disposable storage, and rerun the experiments. Review the checkout diff for unexpected application or lockfile changes.
-- **Recorded evidence:** Commands, exit codes, assertions, clean-rerun results, baseline/new failure classification, and remaining limitations.
-- **Gate:** A security-negative failure prevents a positive architecture verdict unless resolved within the approved experimental scope. Unavailable resources remain incomplete work.
-
-### PH-001-T08 — Produce the reviewable architecture decision package
-
-- **Goal:** Make the research outcome independently assessable.
-- **Dependencies:** T01–T07 results.
-- **Scope:** Experiment documentation, evidence index, compatibility matrix, recommendation, alternatives, and outstanding approvals.
-- **Deliverable:** A complete supported-candidate or reproducible-no-go package.
-- **Verification strategy:** Map every acceptance criterion to executed evidence or an explicit unresolved blocker. Check documented commands against actual rerun records. Separate source inspection, executed observations, inference, and unknowns. Confirm production files, approved contract, and immutable assessments were preserved.
-- **Recorded evidence:** Coverage table, reproducibility instructions, limitations, decision ledger, and final scope review.
-- **Gate:** Research completion and production architecture acceptance are separate human decisions. Do not begin implementation or another phase.
+  - `pnpm exec vitest run lib/auth-safety.test.ts lib/wallet-login.test.ts lib/auth.test.ts --reporter=verbose`
+  - `pnpm exec vitest run --config app/client-test-siwe/vitest.config.ts`
+  - `pnpm exec vitest run --config app/client-test/vitest.config.ts`
+  - `pnpm exec vitest run --config vitest.config.ts`
+  - `pnpm run typecheck`
+  - `git diff --check`
+- **Expected evidence:** Actual commands, working directory, exit codes, assertion counts, durable logs and SHA-256 values, production artifact hashes, and acceptance-to-task mappings. Record and repair failures without discarding earlier observations.
+- **Coverage:** Propose VERIFIED for WG-004 or WG-008 only when its complete acceptance criterion has production source, tests, and successful actual evidence. Preserve other statuses and limitations.
+- **Handoff:** Record delivered functionality, reusable fixtures, supported integration choices, session/ownership limits, remaining Coverage gaps, and a recommended next objective without starting it.
+- **Stop conditions:** Missing resources or unresolved failures prevent completion. An unresolved product/security decision produces BLOCKED; partial execution retains its evidence.
+- **Acceptance mapping:** WG-004-A1, WG-008-A1.
 
 ## Dependency and Coverage Check
 
-**Dependency order:** Approval and environment → T01 → T02 → T03 → T04 → T05 → T06 → T07 → T08.
+Dependency order: approval and environment → T01 → T02 → T03 → T04 → T05.
 
-A T04 failure permits bounded diagnostic work in T05–T07, with its limitations preserved. Infrastructure failure does not justify skipping experiments and declaring completion.
+| Coverage requirement | Acceptance | Covering Tasks | Completion limit |
+| --- | --- | --- | --- |
+| WG-004 | WG-004-A1 | T01, T02, T04, T05 | New independent authentication; WG-005 lifecycle policy remains unresolved |
+| WG-008 | WG-008-A1 | T01, T03, T04, T05 | Anonymous creation; WG-009 wallet-owner management remains unresolved |
 
-| Acceptance criterion | Covering tasks |
-| --- | --- |
-| PH-001-AC1 — Reproducible baseline | T01, T02, T03, T07 |
-| PH-001-AC2 — Address-subject verdict | T03, T04, T07 |
-| PH-001-AC3 — Provenance verdict | T03, T05, T07 |
-| PH-001-AC4 — Lifecycle and policy coverage | T01, T04, T05, T06, T08 |
-| PH-001-AC5 — Reproducibility and regressions | T02, T07, T08 |
-| PH-001-AC6 — Reviewable decision package | T01, T06, T08 |
+WG-002, WG-005, WG-009, and WG-013 remain BLOCKED. WG-003’s validation gaps remain PARTIAL; preserving valid SIWE is a regression control, not full SIWE verification. This phase does not certify general OIDC interoperability or complete wallet UX.
 
-**Current execution constraints:** No sprint authorization, no installed dependencies, and a read-only environment. These constrain execution, not preparation of this candidate.
+The following inputs fingerprint the relevant current baseline. Their unchanged values support reuse of PH-001 rather than another feasibility sprint. This is an implementation proposal; no research blocker is asserted.
 
-**Technical unknowns:** Supported validated-context propagation, deterministic-ID persistence, concurrency, provenance storage, refresh enforcement, and adapter compatibility require experiments.
+```json sprint-plan
+{
+  "kind": "implementation",
+  "objective_key": "close-unapproved-authentication-and-anonymous-registration",
+  "requirements": ["WG-004", "WG-008"],
+  "acceptance": ["WG-004-A1", "WG-008-A1"],
+  "inputs": {
+    "docs/PRODUCT_UNDERSTANDING_CONTRACT.md": "e7105be4084e2620494274feeb6faaa7b8265e71420fe18051b4f1ea9eacba71",
+    "lib/auth.ts": "a735360f38ec8c9c4103d90a1f7e2ec439134546a0130e071211416c3de0a91b",
+    "lib/siwe.ts": "5ec5b1569362d13025f6b95ed4ac8a99cec09167732ea689e870945dec9d22ac",
+    "lib/auth-client.ts": "b2d106731725b159ae199fcece454b1f083e63ad3b0e15d4354a9b7947db99f3",
+    "app/api/auth/[...all]/route.ts": "032b93c627944b4d48d7a59f2ed8dd65ef97240cf74b25f9ee28c73f95030312",
+    "pnpm-lock.yaml": "8cf4e9073142d5eb6cef1825a6e8eaea94dfa347103529ca71ec77b24af037e0",
+    "experiments/c01/harness.ts": "8e4c5f96b51b8ab4a9d6d09090af800a2830123c434e85d9e624734a8b2406f9"
+  },
+  "tasks": [
+    {
+      "id": "PH-002-T01",
+      "goal": "Establish production acceptance fixtures and endpoint coverage",
+      "depends_on": [],
+      "deliverable": "Persistent production-configured acceptance fixtures, lib/auth-safety.test.ts, and endpoint coverage matrix",
+      "verification": "pnpm exec vitest run lib/auth-safety.test.ts --reporter=verbose; record initial failures and require final passing assertions after enforcement",
+      "acceptance": ["WG-004-A1", "WG-008-A1"]
+    },
+    {
+      "id": "PH-002-T02",
+      "goal": "Enforce SIWE-only independent authentication",
+      "depends_on": ["PH-002-T01"],
+      "deliverable": "Production non-SIWE login restrictions and valid-SIWE acceptance controls",
+      "verification": "pnpm exec vitest run lib/auth-safety.test.ts lib/auth.test.ts --reporter=verbose",
+      "acceptance": ["WG-004-A1"]
+    },
+    {
+      "id": "PH-002-T03",
+      "goal": "Deny anonymous OAuth client creation",
+      "depends_on": ["PH-002-T02"],
+      "deliverable": "Production registration restrictions with HTTP denials, unchanged-client-state assertions, and existing-client controls",
+      "verification": "pnpm exec vitest run lib/auth-safety.test.ts --reporter=verbose",
+      "acceptance": ["WG-008-A1"]
+    },
+    {
+      "id": "PH-002-T04",
+      "goal": "Keep login and playground entry points usable under the enforced restrictions",
+      "depends_on": ["PH-002-T03"],
+      "deliverable": "Wallet-only login entry, safe continuation, registration-denial handling, and lib/wallet-login.test.ts",
+      "verification": "pnpm exec vitest run lib/wallet-login.test.ts --reporter=verbose",
+      "acceptance": ["WG-004-A1", "WG-008-A1"]
+    },
+    {
+      "id": "PH-002-T05",
+      "goal": "Complete regressions, coverage evidence, and Handoff",
+      "depends_on": ["PH-002-T04"],
+      "deliverable": "Verified production changes, durable command evidence, acceptance mappings, proposed Coverage updates, and Handoff",
+      "verification": "Run targeted acceptance tests, both client-test configurations, the root Vitest suite, pnpm run typecheck, and git diff --check; record actual outcomes and artifact hashes",
+      "acceptance": ["WG-004-A1", "WG-008-A1"]
+    }
+  ]
+}
+```
 
-The eight tasks cover the bounded research phase. Newly discovered work outside its scope requires proposal revision. `READY_FOR_REVIEW` requires actual evidence for all research criteria; it does not establish product compliance or human acceptance. Unresolved material decisions requiring intervention produce `BLOCKED`; incomplete execution produces `PAUSED`.
+Any later proposal to repeat research must identify a specific documented blocker, fingerprint relevant inputs, and explain which changed input invalidates prior findings. A renamed objective or additional report is insufficient.

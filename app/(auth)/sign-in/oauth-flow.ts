@@ -67,6 +67,9 @@ async function requestJSON(
 	});
 	const body: unknown = await response.json();
 	if (!response.ok) {
+		if (path === "/api/auth/oauth2/register" && [401, 403].includes(response.status)) {
+			throw new Error("Client registration requires wallet-owner authorization. Use an already configured client or contact the operator.");
+		}
 		const error = z
 			.object({
 				error_description: z.string().optional(),

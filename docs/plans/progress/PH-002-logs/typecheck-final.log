@@ -1,0 +1,14 @@
+$ next typegen && tsc --noEmit --incremental false
+Generating route types...
+✓ Types generated successfully
+lib/auth-safety.test.ts(27,44): error TS2554: Expected 2 arguments, but got 1.
+lib/auth-safety.test.ts(85,87): error TS2322: Type '{ cookie?: undefined; authorization?: undefined; "Content-Type": string; } | { cookie: string; authorization?: undefined; "Content-Type": string; } | { authorization: string; cookie?: undefined; "Content-Type": string; } | { ...; }' is not assignable to type 'HeadersInit | undefined'.
+  Type '{ cookie?: undefined; authorization?: undefined; "Content-Type": string; }' is not assignable to type 'HeadersInit | undefined'.
+    Type '{ cookie?: undefined; authorization?: undefined; "Content-Type": string; }' is not assignable to type 'undefined'.
+lib/auth-safety.test.ts(91,52): error TS7006: Parameter 'cookie' implicitly has an 'any' type.
+lib/auth-safety.test.ts(128,52): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Type '{ client_name: string; application_type: string; redirect_uris: string[]; token_endpoint_auth_method: string; grant_types: string[]; response_types: string[]; scope: string; }' is not assignable to type '{ redirect_uris?: string[] | undefined; scope?: string | undefined; client_name?: string | undefined; client_uri?: string | undefined; logo_uri?: string | undefined; contacts?: string[] | undefined; ... 22 more ...; metadata?: Record<...> | undefined; }'.
+      Types of property 'application_type' are incompatible.
+        Type 'string' is not assignable to type '"web" | "native" | undefined'.
+[ELIFECYCLE] Command failed with exit code 2.
