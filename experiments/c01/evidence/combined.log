@@ -1,0 +1,166 @@
+
+ RUN  v5.0.0 /tmp/walletgate-ph001-vdmfwf21
+
+stderr | experiments/c01/provenance.test.ts > persists trusted provenance and rejects forged or legacy sessions with cookie cache=false
+2026-10-31T01:14:03.578Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/provenance.test.ts > persists trusted provenance and rejects forged or legacy sessions with cookie cache=false
+2026-10-31T01:14:03.607Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stdout | experiments/c01/provenance.test.ts > persists trusted provenance and rejects forged or legacy sessions with cookie cache=false
+{"cookieCache":false,"forgedInputRejected":true,"legacyAndPasswordDenied":true,"alternateSessionUntrusted":true}
+
+ ✓ experiments/c01/provenance.test.ts > persists trusted provenance and rejects forged or legacy sessions with cookie cache=false 411ms
+stderr | experiments/c01/provenance.test.ts > persists trusted provenance and rejects forged or legacy sessions with cookie cache=true
+2026-10-31T01:14:03.842Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/provenance.test.ts > persists trusted provenance and rejects forged or legacy sessions with cookie cache=true
+2026-10-31T01:14:03.858Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stdout | experiments/c01/provenance.test.ts > persists trusted provenance and rejects forged or legacy sessions with cookie cache=true
+{"cookieCache":true,"forgedInputRejected":true,"legacyAndPasswordDenied":true,"alternateSessionUntrusted":true}
+
+ ✓ experiments/c01/provenance.test.ts > persists trusted provenance and rejects forged or legacy sessions with cookie cache=true 238ms
+stderr | experiments/c01/provenance.test.ts > rechecks provenance at consent continuation, code exchange, refresh, expiry and renewal
+2026-10-31T01:14:04.108Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+ ✓ experiments/c01/provenance.test.ts > rechecks provenance at consent continuation, code exchange, refresh, expiry and renewal 149ms
+stderr | experiments/c01/provenance.test.ts > does not bless admin impersonation or session switching; denies alternate session at OIDC boundary
+2026-10-31T01:14:04.217Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/provenance.test.ts > does not bless admin impersonation or session switching; denies alternate session at OIDC boundary
+2026-10-31T01:14:04.256Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=false
+2026-10-31T01:14:04.316Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=false
+2026-10-31T01:14:04.354Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+ ✓ experiments/c01/provenance.test.ts > does not bless admin impersonation or session switching; denies alternate session at OIDC boundary 128ms
+stderr | experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=false
+2026-10-31T01:14:04.369Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=false
+2026-10-31T01:14:04.378Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stdout | experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=false
+{"enforce":false,"deletedSessionRefreshStatus":200,"userInfoStatus":200}
+
+stderr | experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=true
+2026-10-31T01:14:04.428Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=true
+2026-10-31T01:14:04.465Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+ ✓ experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=false 114ms
+stderr | experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=true
+2026-10-31T01:14:04.487Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stdout | experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=true
+{"enforce":true,"deletedSessionRefreshStatus":403,"userInfoStatus":403}
+
+ ✓ experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=true 108ms
+stderr | experiments/c01/lifecycle.test.ts > retains legacy random-ID ownership and grants; address-ID hook does not migrate existing users
+2026-10-31T01:14:05.738Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/lifecycle.test.ts > retains legacy random-ID ownership and grants; address-ID hook does not migrate existing users
+2026-10-31T01:14:05.798Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stdout | experiments/c01/lifecycle.test.ts > retains legacy random-ID ownership and grants; address-ID hook does not migrate existing users
+{"legacySubjectRemainsRandom":true,"applicationOwners":2,"foreignKeys":{"foreign_keys":1},"mutation":"update rejected: FOREIGN KEY constraint failed","tables":["user","session","account","verification","passkey","walletAddress","jwks","oauthClient","oauthResource","oauthClientResource","oauthRefreshToken","oauthAccessToken","oauthConsent","oauthClientAssertion"],"userReferenceTables":["session","account","passkey","walletAddress","oauthClient","oauthRefreshToken","oauthAccessToken","oauthConsent"]}
+
+ ✓ experiments/c01/lifecycle.test.ts > retains legacy random-ID ownership and grants; address-ID hook does not migrate existing users 303ms
+stdout | experiments/c01/lifecycle.test.ts > keeps machine grants separate from wallet end-user identity
+{"machineTokenIssued":true,"userIdToken":false,"userInfoDenied":400}
+
+ ✓ experiments/c01/lifecycle.test.ts > fails closed on a pre-existing address-ID collision without granting the unrelated account 35ms
+ ✓ experiments/c01/lifecycle.test.ts > keeps machine grants separate from wallet end-user identity 66ms
+ ✓ experiments/c01/security.test.ts > strict supported callback rejects wrongDomain without creating identity or provenance 142ms
+ ✓ experiments/c01/security.test.ts > strict supported callback rejects wrongURI without creating identity or provenance 35ms
+ ✓ experiments/c01/security.test.ts > strict supported callback rejects missingURI without creating identity or provenance 35ms
+ ✓ experiments/c01/security.test.ts > strict supported callback rejects missingVersion without creating identity or provenance 31ms
+ ✓ experiments/c01/security.test.ts > strict supported callback rejects wrongVersion without creating identity or provenance 25ms
+ ✓ experiments/c01/security.test.ts > strict supported callback rejects missingIssuedAt without creating identity or provenance 21ms
+ ✓ experiments/c01/security.test.ts > strict supported callback rejects invalidIssuedAt without creating identity or provenance 24ms
+ ✓ experiments/c01/security.test.ts > strict supported callback rejects invalidExpiry without creating identity or provenance 21ms
+ ✓ experiments/c01/security.test.ts > strict supported callback rejects invalidNotBefore without creating identity or provenance 26ms
+ ✓ experiments/c01/security.test.ts > strict supported callback rejects expired without creating identity or provenance 25ms
+ ✓ experiments/c01/security.test.ts > strict supported callback rejects notYetValid without creating identity or provenance 20ms
+ ✓ experiments/c01/security.test.ts > strict supported callback rejects futureIssuedAt without creating identity or provenance 21ms
+ ✓ experiments/c01/security.test.ts > strict supported callback rejects invalidChain without creating identity or provenance 29ms
+ ✓ experiments/c01/security.test.ts > strict supported callback rejects duplicateField without creating identity or provenance 19ms
+ ✓ experiments/c01/security.test.ts > strict supported callback rejects trailingJunk without creating identity or provenance 22ms
+ ✓ experiments/c01/security.test.ts > strict supported callback rejects missingAddress without creating identity or provenance 25ms
+stdout | experiments/c01/security.test.ts > burns nonce on invalid signatures and consumes concurrent replay at most once
+{"invalidAttemptBurnsNonce":true,"concurrentReplayStatuses":[200,401]}
+
+stdout | experiments/c01/security.test.ts > reproduces weak application validator acceptance as a control, then proves strict callback rejects it
+{"candidate":false,"wrongVersionStatus":200}
+
+stdout | experiments/c01/security.test.ts > reproduces weak application validator acceptance as a control, then proves strict callback rejects it
+{"candidate":true,"wrongVersionStatus":401}
+
+ ✓ experiments/c01/security.test.ts > burns nonce on invalid signatures and consumes concurrent replay at most once 67ms
+ ✓ experiments/c01/security.test.ts > reproduces weak application validator acceptance as a control, then proves strict callback rejects it 56ms
+stderr | experiments/c01/subject.test.ts > derives lowercase address IDs from verified context for two wallets and two clients, including refreshed signed tokens
+2026-10-31T01:14:08.956Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/subject.test.ts > derives lowercase address IDs from verified context for two wallets and two clients, including refreshed signed tokens
+2026-10-31T01:14:08.960Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/subject.test.ts > derives lowercase address IDs from verified context for two wallets and two clients, including refreshed signed tokens
+2026-10-31T01:14:08.961Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/subject.test.ts > derives lowercase address IDs from verified context for two wallets and two clients, including refreshed signed tokens
+2026-10-31T01:14:08.962Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/subject.test.ts > derives lowercase address IDs from verified context for two wallets and two clients, including refreshed signed tokens
+2026-10-31T01:14:09.008Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/subject.test.ts > derives lowercase address IDs from verified context for two wallets and two clients, including refreshed signed tokens
+2026-10-31T01:14:09.033Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/subject.test.ts > derives lowercase address IDs from verified context for two wallets and two clients, including refreshed signed tokens
+2026-10-31T01:14:09.049Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/subject.test.ts > derives lowercase address IDs from verified context for two wallets and two clients, including refreshed signed tokens
+2026-10-31T01:14:09.059Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stdout | experiments/c01/subject.test.ts > derives lowercase address IDs from verified context for two wallets and two clients, including refreshed signed tokens
+{"verifiedAddressSubjects":true,"clients":4,"wallets":2,"casingAndChainReuse":true,"rows":[{"id":"0x7e5f4552091a69125d5dfcb7b8c2659029395bdf","name":"0x2B5AD5c4795c026514f8317c7a215E218DcCD6cF","emailVerified":0},{"id":"0x2b5ad5c4795c026514f8317c7a215e218dccd6cf","name":"0x2B5AD5c4795c026514f8317c7a215E218DcCD6cF","emailVerified":0}]}
+
+ ✓ experiments/c01/subject.test.ts > derives lowercase address IDs from verified context for two wallets and two clients, including refreshed signed tokens 420ms
+stdout | experiments/c01/subject.test.ts > records concurrent first-login behavior without cross-wallet leakage or duplicate identities
+{"firstLoginOutcomes":["fulfilled","rejected","fulfilled"],"uniqueUsers":2}
+
+ ✓ experiments/c01/subject.test.ts > rejects supplied IDs and wallet metadata; email and hostile ENS name do not choose identity 49ms
+ ✓ experiments/c01/subject.test.ts > records concurrent first-login behavior without cross-wallet leakage or duplicate identities 49ms
+stderr | experiments/c01/baseline.test.ts > creates durable schema, persists SIWE and proves baseline signed OIDC subjects; disposes and recreates storage
+2026-10-31T01:14:10.808Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/baseline.test.ts > creates durable schema, persists SIWE and proves baseline signed OIDC subjects; disposes and recreates storage
+2026-10-31T01:14:10.867Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stdout | experiments/c01/baseline.test.ts > creates durable schema, persists SIWE and proves baseline signed OIDC subjects; disposes and recreates storage
+{"iteration":0,"subjectRole":"random-internal-id","idSignatureVerified":true,"claimsOverrideIgnored":true,"refreshIdTokenIssued":true,"trace":["user:/siwe/verify","session:/siwe/verify"]}
+
+stderr | experiments/c01/baseline.test.ts > creates durable schema, persists SIWE and proves baseline signed OIDC subjects; disposes and recreates storage
+2026-10-31T01:14:10.963Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/baseline.test.ts > creates durable schema, persists SIWE and proves baseline signed OIDC subjects; disposes and recreates storage
+2026-10-31T01:14:10.980Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stdout | experiments/c01/baseline.test.ts > creates durable schema, persists SIWE and proves baseline signed OIDC subjects; disposes and recreates storage
+{"iteration":1,"subjectRole":"random-internal-id","idSignatureVerified":true,"claimsOverrideIgnored":true,"refreshIdTokenIssued":true,"trace":["user:/siwe/verify","session:/siwe/verify"]}
+
+ ✓ experiments/c01/baseline.test.ts > creates durable schema, persists SIWE and proves baseline signed OIDC subjects; disposes and recreates storage 512ms
+
+ Test Files  5 passed (5)
+      Tests  31 passed (31)
+   Start at  09:14:02
+   Duration  8.82s (import 57%, tests 42%, transform 1%)
+
+    Isolate  5 workers spawned · ~200ms startup each (spawn + environment, per file)
+             at least ~800ms faster with isolate: false — reuses workers across files instead of one per file
+

@@ -1,0 +1,65 @@
+
+ RUN  v5.0.0 /tmp/walletgate-ph001-vdmfwf21
+
+ ❯ app/client-test/oauth-token.test.ts (24 tests | 24 failed) 39ms
+   ❯ OAuth token shell script (24)
+     × obtains tokens without stdin through the selection flow 16ms
+     × obtains tokens without stdin through the consent flow 3ms
+     × obtains tokens without stdin through the callback flow 1ms
+     × signs in with environment credentials without creating another account 1ms
+     × rejects a missing email before making HTTP requests 1ms
+     × rejects a missing password before making HTTP requests 1ms
+     × uses BASE_URL, including normalization of a trailing slash 1ms
+     × uses BETTER_AUTH_URL, including normalization of a trailing slash 1ms
+     × reports MFA sign-in without continuing to client registration 2ms
+     × rejects a callback with mismatched state before token exchange 1ms
+     × rejects a callback with duplicate state before token exchange 1ms
+     × rejects a callback with missing code before token exchange 1ms
+     × rejects a callback with duplicate code before token exchange 0ms
+     × rejects a callback with OAuth error before token exchange 1ms
+     × rejects the unsupported redirect https://untrusted.example/oauth/consent 0ms
+     × rejects the unsupported redirect /unsupported-step 0ms
+     × stops authorization loops after five continuation requests 1ms
+     × reports /api/auth/sign-up/email failures with HTTP 500 and stops the flow 1ms
+     × reports /api/auth/oauth2/register failures with HTTP 403 and stops the flow 1ms
+     × reports /api/auth/oauth2/token failures with HTTP 400 and stops the flow 0ms
+     × reports /api/auth/oauth2/userinfo failures with HTTP 401 and stops the flow 0ms
+     × reports invalid JSON-object responses: application/json 1ms
+     × reports invalid JSON-object responses: text/plain 0ms
+     × rejects a UserInfo response without a subject 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 24 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > obtains tokens without stdin through the selection flow
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > obtains tokens without stdin through the consent flow
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > obtains tokens without stdin through the callback flow
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > signs in with environment credentials without creating another account
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects a missing email before making HTTP requests
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects a missing password before making HTTP requests
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > uses BASE_URL, including normalization of a trailing slash
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > uses BETTER_AUTH_URL, including normalization of a trailing slash
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > reports MFA sign-in without continuing to client registration
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects a callback with mismatched state before token exchange
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects a callback with duplicate state before token exchange
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects a callback with missing code before token exchange
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects a callback with duplicate code before token exchange
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects a callback with OAuth error before token exchange
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects the unsupported redirect https://untrusted.example/oauth/consent
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects the unsupported redirect /unsupported-step
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > stops authorization loops after five continuation requests
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > reports /api/auth/sign-up/email failures with HTTP 500 and stops the flow
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > reports /api/auth/oauth2/register failures with HTTP 403 and stops the flow
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > reports /api/auth/oauth2/token failures with HTTP 400 and stops the flow
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > reports /api/auth/oauth2/userinfo failures with HTTP 401 and stops the flow
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > reports invalid JSON-object responses: application/json
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > reports invalid JSON-object responses: text/plain
+ FAIL  app/client-test/oauth-token.test.ts > OAuth token shell script > rejects a UserInfo response without a subject
+Error: listen EPERM: operation not permitted 127.0.0.1
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/24]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  24 failed | 11 passed (35)
+   Start at  09:14:11
+   Duration  2.32s (import 45%, tests 43%, transform 11%, worker 1%)
+

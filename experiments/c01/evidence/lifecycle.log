@@ -1,0 +1,24 @@
+
+ RUN  v5.0.0 /tmp/walletgate-ph001-vdmfwf21
+
+stderr | experiments/c01/lifecycle.test.ts > retains legacy random-ID ownership and grants; address-ID hook does not migrate existing users
+2026-10-31T01:13:26.216Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/lifecycle.test.ts > retains legacy random-ID ownership and grants; address-ID hook does not migrate existing users
+2026-10-31T01:13:26.276Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stdout | experiments/c01/lifecycle.test.ts > retains legacy random-ID ownership and grants; address-ID hook does not migrate existing users
+{"legacySubjectRemainsRandom":true,"applicationOwners":2,"foreignKeys":{"foreign_keys":1},"mutation":"update rejected: FOREIGN KEY constraint failed","tables":["user","session","account","verification","passkey","walletAddress","jwks","oauthClient","oauthResource","oauthClientResource","oauthRefreshToken","oauthAccessToken","oauthConsent","oauthClientAssertion"],"userReferenceTables":["session","account","passkey","walletAddress","oauthClient","oauthRefreshToken","oauthAccessToken","oauthConsent"]}
+
+ ✓ experiments/c01/lifecycle.test.ts > retains legacy random-ID ownership and grants; address-ID hook does not migrate existing users 310ms
+ ✓ experiments/c01/lifecycle.test.ts > fails closed on a pre-existing address-ID collision without granting the unrelated account 41ms
+stdout | experiments/c01/lifecycle.test.ts > keeps machine grants separate from wallet end-user identity
+{"machineTokenIssued":true,"userIdToken":false,"userInfoDenied":400}
+
+ ✓ experiments/c01/lifecycle.test.ts > keeps machine grants separate from wallet end-user identity 68ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  09:13:24
+   Duration  1.57s (import 62%, tests 32%, transform 6%)
+

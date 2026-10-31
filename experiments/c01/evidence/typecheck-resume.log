@@ -1,0 +1,1 @@
+experiments/c01/harness.ts(82,45): error TS2339: Property 'sessionToken' does not exist on type 'unknown'.

@@ -1,0 +1,4 @@
+Command: pnpm exec tsc --noEmit --skipLibCheck --module esnext --moduleResolution bundler --target es2022 --esModuleInterop experiments/c01/*.ts
+Exit: 2
+experiments/c01/lifecycle.test.ts(8,46): error TS2554: Expected 2 arguments, but got 1.
+experiments/c01/lifecycle.test.ts(47,31): error TS2554: Expected 2 arguments, but got 1.

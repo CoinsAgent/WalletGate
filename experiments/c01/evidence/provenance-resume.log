@@ -1,0 +1,95 @@
+
+ RUN  v5.0.0 /tmp/walletgate-ph001-vdmfwf21
+
+stderr | experiments/c01/provenance.test.ts > persists trusted provenance and rejects forged or legacy sessions with cookie cache=false
+2026-10-31T01:17:57.451Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/provenance.test.ts > persists trusted provenance and rejects forged or legacy sessions with cookie cache=false
+2026-10-31T01:17:57.487Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stdout | experiments/c01/provenance.test.ts > persists trusted provenance and rejects forged or legacy sessions with cookie cache=false
+{"cookieCache":false,"forgedInputRejected":true,"legacyAndPasswordDenied":true,"alternateSessionUntrusted":true}
+
+ ✓ experiments/c01/provenance.test.ts > persists trusted provenance and rejects forged or legacy sessions with cookie cache=false 563ms
+stderr | experiments/c01/provenance.test.ts > persists trusted provenance and rejects forged or legacy sessions with cookie cache=true
+2026-10-31T01:17:57.833Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/provenance.test.ts > persists trusted provenance and rejects forged or legacy sessions with cookie cache=true
+2026-10-31T01:17:57.853Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stdout | experiments/c01/provenance.test.ts > persists trusted provenance and rejects forged or legacy sessions with cookie cache=true
+{"cookieCache":true,"forgedInputRejected":true,"legacyAndPasswordDenied":true,"alternateSessionUntrusted":true}
+
+ ✓ experiments/c01/provenance.test.ts > persists trusted provenance and rejects forged or legacy sessions with cookie cache=true 359ms
+stderr | experiments/c01/provenance.test.ts > rechecks provenance at consent continuation, code exchange, refresh, expiry and renewal
+2026-10-31T01:17:58.199Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+ ✓ experiments/c01/provenance.test.ts > rechecks provenance at consent continuation, code exchange, refresh, expiry and renewal 231ms
+stderr | experiments/c01/provenance.test.ts > does not bless admin impersonation or session switching; denies alternate session at OIDC boundary
+2026-10-31T01:17:58.367Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/provenance.test.ts > does not bless admin impersonation or session switching; denies alternate session at OIDC boundary
+2026-10-31T01:17:58.420Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+ ✓ experiments/c01/provenance.test.ts > does not bless admin impersonation or session switching; denies alternate session at OIDC boundary 192ms
+stderr | experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=false
+2026-10-31T01:17:58.512Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=false
+2026-10-31T01:17:58.563Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=false
+2026-10-31T01:17:58.591Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=false
+2026-10-31T01:17:58.606Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stdout | experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=false
+{"enforce":false,"deletedSessionRefreshStatus":200,"userInfoStatus":200}
+
+stderr | experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=true
+2026-10-31T01:17:58.685Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+ ✓ experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=false 169ms
+stderr | experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=true
+2026-10-31T01:17:58.752Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=true
+2026-10-31T01:17:58.801Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stdout | experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=true
+{"enforce":true,"deletedSessionRefreshStatus":403,"userInfoStatus":403}
+
+stderr | experiments/c01/provenance.test.ts > checks device-list targets, real set-active switching and bearer authorization with cache=false
+2026-10-31T01:17:58.883Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+ ✓ experiments/c01/provenance.test.ts > records issued-grant retention versus experimental strict enforcement=true 198ms
+stderr | experiments/c01/provenance.test.ts > checks device-list targets, real set-active switching and bearer authorization with cache=false
+2026-10-31T01:17:58.964Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/provenance.test.ts > checks device-list targets, real set-active switching and bearer authorization with cache=false
+2026-10-31T01:17:58.987Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stdout | experiments/c01/provenance.test.ts > checks device-list targets, real set-active switching and bearer authorization with cache=false
+{"cookieCache":false,"actualDeviceSwitch":true,"mixedListDenied":true,"invalidTargetDenied":true,"bearerProvenanceDenied":true}
+
+stderr | experiments/c01/provenance.test.ts > checks device-list targets, real set-active switching and bearer authorization with cache=true
+2026-10-31T01:17:59.078Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+ ✓ experiments/c01/provenance.test.ts > checks device-list targets, real set-active switching and bearer authorization with cache=false 198ms
+stderr | experiments/c01/provenance.test.ts > checks device-list targets, real set-active switching and bearer authorization with cache=true
+2026-10-31T01:17:59.174Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/provenance.test.ts > checks device-list targets, real set-active switching and bearer authorization with cache=true
+2026-10-31T01:17:59.192Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stdout | experiments/c01/provenance.test.ts > checks device-list targets, real set-active switching and bearer authorization with cache=true
+{"cookieCache":true,"actualDeviceSwitch":true,"mixedListDenied":true,"invalidTargetDenied":true,"bearerProvenanceDenied":true}
+
+ ✓ experiments/c01/provenance.test.ts > checks device-list targets, real set-active switching and bearer authorization with cache=true 212ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  09:17:55
+   Duration  3.54s (tests 65%, import 30%, transform 5%)
+

@@ -1,0 +1,15 @@
+Exact installed package artifact fingerprints; source inspection, not tests.
+better-auth/core/oauth-provider/kysely-adapter 1.7.11; viem 2.57.10.
+7213cd98c9c1689c49ef82c2ee9c1b801dc35bf4ef43981ae1e926d778c4b86a  node_modules/better-auth/dist/plugins/siwe/index.mjs
+d3de7382ef018fb3c0bde00db0649006f25b39457202cc3407079d9f10f4a360  node_modules/better-auth/dist/plugins/siwe/parse-message.mjs
+1f386ad4f386b15d5e9bcd9ae53afef0a2cc93ca611886dee3f25b43eb9d855a  node_modules/better-auth/dist/db/with-hooks.mjs
+8bc9a326624e98dd4e12edfce5da4a5d0e0a6081b237921f16c2507970c37870  node_modules/@better-auth/core/dist/context/endpoint-context.mjs
+6501f6eb5229de8636dfe1e15524e766069a9e37db686be00d166187a386d59d  node_modules/@better-auth/oauth-provider/dist/introspect-B-5vOvYK.mjs
+d8cf6a2837e38d6c803a778fd9414f4a4721b1261bf53d6d04726dda1d42e9a8  node_modules/@better-auth/oauth-provider/dist/authorize-CtCi8mAs.mjs
+f24636ccc0312135a1514c73e8aed7447429a1dd12055c9ee4f43c1dbb8b3629  node_modules/@better-auth/oauth-provider/dist/utils-vIo_wPv5.mjs
+8bf36fef25106d092a6ffd7a1f63873b54751b79ddf27f6bbd961307918f92d5  node_modules/@better-auth/oauth-provider/dist/oauth-DXiqbRzK.d.mts
+b5f033d42be5c229089639a83a25d2bf42d26273a3181abba0f558205e797dfa  node_modules/@better-auth/kysely-adapter/dist/index.mjs
+cd0b6c2cd0e1feb2b86e194078b084591128b32c43beaf49915b22c47d03b0d2  node_modules/viem/_esm/utils/siwe/parseSiweMessage.js
+4149869aaf06820cbac87fc45877ff7a9ce134e7a61d7b8a5484356122e619ad  node_modules/viem/_esm/utils/siwe/validateSiweMessage.js
+81045008dc71a4aeb9746619003b8c6ce44adbac981de47307cea421b31ac0af  snapshot/package.json
+8cf4e9073142d5eb6cef1825a6e8eaea94dfa347103529ca71ec77b24af037e0  snapshot/pnpm-lock.yaml

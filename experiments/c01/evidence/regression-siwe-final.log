@@ -1,0 +1,9 @@
+
+ RUN  v5.0.0 /tmp/walletgate-ph001-vdmfwf21
+
+
+ Test Files  2 passed (2)
+      Tests  18 passed (18)
+   Start at  09:18:21
+   Duration  3.34s (import 50%, tests 44%, transform 6%)
+

@@ -1,0 +1,42 @@
+
+ RUN  v5.0.0 /tmp/walletgate-ph001-vdmfwf21
+
+stderr | experiments/c01/subject.test.ts > derives lowercase address IDs from verified context for two wallets and two clients, including refreshed signed tokens
+2026-10-31T01:10:04.811Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/subject.test.ts > derives lowercase address IDs from verified context for two wallets and two clients, including refreshed signed tokens
+2026-10-31T01:10:04.814Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/subject.test.ts > derives lowercase address IDs from verified context for two wallets and two clients, including refreshed signed tokens
+2026-10-31T01:10:04.816Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/subject.test.ts > derives lowercase address IDs from verified context for two wallets and two clients, including refreshed signed tokens
+2026-10-31T01:10:04.817Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/subject.test.ts > derives lowercase address IDs from verified context for two wallets and two clients, including refreshed signed tokens
+2026-10-31T01:10:04.868Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/subject.test.ts > derives lowercase address IDs from verified context for two wallets and two clients, including refreshed signed tokens
+2026-10-31T01:10:04.880Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/subject.test.ts > derives lowercase address IDs from verified context for two wallets and two clients, including refreshed signed tokens
+2026-10-31T01:10:04.891Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stderr | experiments/c01/subject.test.ts > derives lowercase address IDs from verified context for two wallets and two clients, including refreshed signed tokens
+2026-10-31T01:10:04.906Z WARN [Better Auth]: oauth-provider: stripped reserved id-token claim name(s): sub. The AS owns these claim values.
+
+stdout | experiments/c01/subject.test.ts > derives lowercase address IDs from verified context for two wallets and two clients, including refreshed signed tokens
+{"verifiedAddressSubjects":true,"clients":4,"wallets":2,"casingAndChainReuse":true,"rows":[{"id":"0x7e5f4552091a69125d5dfcb7b8c2659029395bdf","name":"0x2B5AD5c4795c026514f8317c7a215E218DcCD6cF","emailVerified":0},{"id":"0x2b5ad5c4795c026514f8317c7a215e218dccd6cf","name":"0x2B5AD5c4795c026514f8317c7a215E218DcCD6cF","emailVerified":0}]}
+
+ ✓ experiments/c01/subject.test.ts > derives lowercase address IDs from verified context for two wallets and two clients, including refreshed signed tokens 413ms
+stdout | experiments/c01/subject.test.ts > records concurrent first-login behavior without cross-wallet leakage or duplicate identities
+{"firstLoginOutcomes":["fulfilled","rejected","fulfilled"],"uniqueUsers":2}
+
+ ✓ experiments/c01/subject.test.ts > rejects supplied IDs and wallet metadata; email and hostile ENS name do not choose identity 52ms
+ ✓ experiments/c01/subject.test.ts > records concurrent first-login behavior without cross-wallet leakage or duplicate identities 49ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  09:10:03
+   Duration  1.46s (import 52%, tests 42%, transform 6%)
+

@@ -1,0 +1,23 @@
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +401
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+[ERR_PNPM_META_FETCH_FAIL] GET https://mirrors.tencentyun.com/npm/pnpm: fetch failed
+
+   ╭───────────────────────────────────────────────╮
+   │                                               │
+   │      Update available! 11.1.1 → 12.15.0.      │
+   │     Changelog: https://pnpm.io/v/12.15.0      │
+   │   To update, run: corepack use pnpm@12.15.0   │
+   │                                               │
+   ╰───────────────────────────────────────────────╯
+
+[ERROR] fetch failed
+
+TypeError: fetch failed
+    at Object.processResponse (file:///home/ubuntu/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:102658:20)
+    at file:///home/ubuntu/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:103039:23
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)

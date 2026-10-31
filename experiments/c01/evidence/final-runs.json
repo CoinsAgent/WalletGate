@@ -1,0 +1,59 @@
+[
+  {
+    "name": "typecheck-final",
+    "command": [
+      "pnpm",
+      "exec",
+      "tsc",
+      "--noEmit",
+      "--skipLibCheck",
+      "--module",
+      "esnext",
+      "--moduleResolution",
+      "bundler",
+      "--target",
+      "es2022",
+      "--esModuleInterop",
+      "experiments/c01/baseline.test.ts",
+      "experiments/c01/harness.ts",
+      "experiments/c01/lifecycle.test.ts",
+      "experiments/c01/provenance.test.ts",
+      "experiments/c01/security.test.ts",
+      "experiments/c01/subject.test.ts",
+      "experiments/c01/vitest.config.ts"
+    ],
+    "exit_code": 0,
+    "storage_directories_before": [],
+    "storage_directories_after": []
+  },
+  {
+    "name": "combined-final",
+    "command": [
+      "pnpm",
+      "exec",
+      "vitest",
+      "run",
+      "--config",
+      "experiments/c01/vitest.config.ts",
+      "--reporter=verbose"
+    ],
+    "exit_code": 0,
+    "storage_directories_before": [],
+    "storage_directories_after": []
+  },
+  {
+    "name": "clean-rerun",
+    "command": [
+      "pnpm",
+      "exec",
+      "vitest",
+      "run",
+      "--config",
+      "experiments/c01/vitest.config.ts",
+      "--reporter=verbose"
+    ],
+    "exit_code": 0,
+    "storage_directories_before": [],
+    "storage_directories_after": []
+  }
+]

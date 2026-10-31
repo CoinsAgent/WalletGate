@@ -1,0 +1,6 @@
+PASS: 106 tracked files compared against HEAD in original and disposable checkouts; no mismatch.
+PASS: all 11 recorded upstream fingerprints match installed artifacts.
+PASS: unchanged SHA-256 bffec860366816d704f45c70c399f059cf2b4ae8b78ec28f79cebb19e5b9446f  docs/PLANS.md
+PASS: unchanged SHA-256 e7105be4084e2620494274feeb6faaa7b8265e71420fe18051b4f1ea9eacba71  docs/PRODUCT_UNDERSTANDING_CONTRACT.md
+PASS: unchanged SHA-256 22189720323ebeff42099ee70ec3843dace9367af62576f69442b4c8f6a2a7fe  docs/plans/proposals/2026-10-31T00-58-34.373009Z-22e4fc8d-phase-priority.md
+PASS: all durable experiment TypeScript inputs byte-identical to executed snapshot.
