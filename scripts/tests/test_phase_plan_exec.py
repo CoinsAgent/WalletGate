@@ -25,12 +25,12 @@ class WorkflowTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
-        for directory in ('docs/plans/proposals', 'docs/plans/history', 'docs/plans/progress', 'lib'):
+        for directory in ('docs/plans/proposals', 'docs/plans/history', 'docs/plans/progress', 'evidence/PH-001', 'lib'):
             (self.root / directory).mkdir(parents=True)
         self.write('docs/PRODUCT_UNDERSTANDING_CONTRACT.md', 'Contract v1')
         self.write('lib/product.ts', 'export const enabled = false;')
         self.write('lib/product.test.ts', 'acceptance tests')
-        self.write('docs/run.log', '1 test passed; exit 0')
+        self.write('evidence/PH-001/run.log', '1 test passed; exit 0')
         self.data = dict(contract_version='1', contract_sha256=state.digest(self.root/'docs/PRODUCT_UNDERSTANDING_CONTRACT.md'), requirements=[dict(id='WG-001',contract='P1',requirement='testable requirement',status='MISSING',acceptance=['WG-001-A1'],code=[],tests=[],evidence=[])])
         state.write_coverage(self.root, self.data)
         for key, value in dict(ROOT=self.root, PLAN=self.root/'docs/PLANS.md', HISTORY=self.root/'docs/plans/history',PROPOSALS=self.root/'docs/plans/proposals').items():
@@ -55,7 +55,7 @@ class WorkflowTests(unittest.TestCase):
 
     def evidence(self, plan=None):
         plan=plan or c.plan_spec(c.read_current()[2],'PH-001')
-        evidence=dict(phase='PH-001', tasks={t['id']:dict(status='COMPLETE',artifacts=[self.ref('lib/product.ts')],commands=[dict(command='run acceptance',exit_code=0,result='1 passed',log=self.ref('docs/run.log'))]) for t in plan['tasks']},acceptance={a:[t['id'] for t in plan['tasks'] if a in t['acceptance']] for a in plan['acceptance']},product_deliverables=[self.ref('lib/product.ts')],coverage_updates=[],handoff={k:'Specific result' for k in ('delivered','reusable','decisions_limitations','remaining_gaps','next_objective')})
+        evidence=dict(phase='PH-001', tasks={t['id']:dict(status='COMPLETE',artifacts=[self.ref('lib/product.ts')],commands=[dict(command='run acceptance',exit_code=0,result='1 passed',log=self.ref('evidence/PH-001/run.log'))]) for t in plan['tasks']},acceptance={a:[t['id'] for t in plan['tasks'] if a in t['acceptance']] for a in plan['acceptance']},product_deliverables=[self.ref('lib/product.ts')],coverage_updates=[],handoff={k:'Specific result' for k in ('delivered','reusable','decisions_limitations','remaining_gaps','next_objective')})
         return evidence
 
     def save_evidence(self, evidence):
@@ -182,7 +182,7 @@ class WorkflowTests(unittest.TestCase):
         self.create(); plan=c.plan_spec(c.read_current()[2],'PH-001')
         evidence=self.evidence(); evidence['acceptance']={}; self.save_evidence(evidence)
         with self.assertRaises(ValueError):state.completion(self.root,'PH-001',plan)
-        self.save_evidence(self.evidence());self.write('docs/run.log','tampered')
+        self.save_evidence(self.evidence());self.write('evidence/PH-001/run.log','tampered')
         with self.assertRaises(ValueError):state.completion(self.root,'PH-001',plan)
 
     def test_failed_test_rejects_completion(self):
@@ -227,7 +227,11 @@ class WorkflowTests(unittest.TestCase):
         self.assertTrue(path.read_bytes().startswith(before));self.assertEqual(path.read_text().count('## Handoff'),1)
 
     def archive(self):
-        self.create();self.save_evidence(self.evidence());c.update_status('READY_FOR_REVIEW')
+        self.create()
+        evidence = self.evidence()
+        if self.plan['kind'] == 'research':
+            evidence.update(findings='Specific provider gap reproduced', reproduction='run acceptance')
+        self.save_evidence(evidence); c.update_status('READY_FOR_REVIEW')
         c.PLAN.rename(c.HISTORY/'PH-001.md')
 
     def test_duplicate_phase_prevented_even_if_title_changes(self):
@@ -244,7 +248,8 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(self.create()[0],'PH-002')
 
     def test_next_refuses_missing_evidence(self):
-        self.create();c.update_status('READY_FOR_REVIEW')
+        self.create()
+        c.PLAN.write_text(c.PLAN.read_text().replace('PENDING_EXECUTION', 'READY_FOR_REVIEW'))
         with self.assertRaises(SystemExit):self.cli('next')
         self.assertTrue(c.PLAN.exists());self.assertFalse(list(c.HISTORY.glob('*')))
 
@@ -259,8 +264,76 @@ class WorkflowTests(unittest.TestCase):
         self.create();self.save_evidence(self.evidence());c.update_status('READY_FOR_REVIEW')
         output=self.cli('status')
         for text in ('Completed Sprints: 1','PH-001: READY_FOR_REVIEW','Completed Tasks (1/1)','Remaining Tasks (0)','MISSING=1','Next recommended action:'):self.assertIn(text,output)
-        self.write('docs/run.log','stale log')
+        self.write('lib/product.ts','changed after completion')
         self.assertIn('Completed Sprints: 0',self.cli('status'))
+
+    def test_ready_removes_only_phase_evidence_and_keeps_valid_completion(self):
+        self.create(); self.save_evidence(self.evidence())
+        (self.root/'evidence/PH-002').mkdir()
+        self.write('evidence/PH-002/keep.log', 'other phase')
+        self.write('evidence/PH-001/unreferenced.log', 'temporary diagnostic')
+        c.update_status('READY_FOR_REVIEW')
+        self.assertFalse((self.root/'evidence/PH-001').exists())
+        self.assertTrue((self.root/'evidence/PH-002/keep.log').exists())
+        self.assertTrue((self.root/'lib/product.test.ts').exists())
+        self.assertTrue(c.validated('PH-001', c.read_current()[2]))
+        with self.assertRaises(ValueError):
+            state.completion(self.root, 'PH-001', c.plan_spec(c.read_current()[2], 'PH-001'))
+        self.assertIn('Completed Sprints: 1', self.cli('status'))
+
+    def test_paused_blocked_and_failed_validation_preserve_evidence(self):
+        self.create(); self.save_evidence(self.evidence())
+        for status in ('PAUSED', 'BLOCKED'):
+            c.update_status(status)
+            self.assertTrue((self.root/'evidence/PH-001/run.log').exists())
+        self.write('evidence/PH-001/run.log', 'tampered')
+        with self.assertRaises(ValueError): c.update_status('READY_FOR_REVIEW')
+        self.assertEqual(c.read_current()[1], 'BLOCKED')
+        self.assertTrue((self.root/'evidence/PH-001/run.log').exists())
+
+    def test_cleanup_failure_does_not_mark_ready(self):
+        self.create()
+        with patch.object(c.shutil, 'which', return_value='/bin/codex'), \
+                patch.object(c, 'run', side_effect=self.worker()), \
+                patch.object(state.shutil, 'rmtree', side_effect=OSError('cleanup denied')):
+            c.execute(yes=True)
+        self.assertEqual(c.read_current()[1], 'PAUSED')
+        self.assertTrue((self.root/'evidence/PH-001/run.log').exists())
+
+    def test_completion_receipt_does_not_allow_changed_records_or_plan(self):
+        self.create(); self.save_evidence(self.evidence()); c.update_status('READY_FOR_REVIEW')
+        path = self.root/'docs/plans/progress/PH-001.md'
+        saved = path.read_text()
+        path.write_text(saved.replace('1 passed', 'invented result'))
+        self.assertFalse(c.validated('PH-001', c.read_current()[2]))
+        path.write_text(saved)
+        text = c.read_current()[2].replace('run acceptance', 'different acceptance')
+        self.assertFalse(c.validated('PH-001', text))
+
+    def test_cleanup_rejects_symlink_directory(self):
+        self.create(); self.save_evidence(self.evidence())
+        (self.root/'evidence/PH-001').rename(self.root/'keep')
+        (self.root/'evidence/PH-001').symlink_to(self.root/'keep', target_is_directory=True)
+        with self.assertRaises(ValueError): c.update_status('READY_FOR_REVIEW')
+        self.assertTrue((self.root/'keep/run.log').exists())
+        self.assertEqual(c.read_current()[1], 'PENDING_EXECUTION')
+
+    def test_legacy_logs_remain_live_hash_checks(self):
+        self.create()
+        self.write('docs/legacy.log', 'historical log')
+        evidence = self.evidence()
+        evidence['tasks']['PH-001-T01']['commands'][0]['log'] = self.ref('docs/legacy.log')
+        self.save_evidence(evidence); c.update_status('READY_FOR_REVIEW')
+        self.assertTrue((self.root/'docs/legacy.log').exists())
+        self.assertTrue(c.validated('PH-001', c.read_current()[2]))
+        self.write('docs/legacy.log', 'tampered')
+        self.assertFalse(c.validated('PH-001', c.read_current()[2]))
+
+    def test_recreated_temporary_log_is_hash_checked(self):
+        self.create(); self.save_evidence(self.evidence()); c.update_status('READY_FOR_REVIEW')
+        (self.root/'evidence/PH-001').mkdir()
+        self.write('evidence/PH-001/run.log', 'different result')
+        self.assertFalse(c.validated('PH-001', c.read_current()[2]))
 
     def test_assessments_optional(self):
         self.assertIsNone(planner.select_report(self.root/'absent','technical-feasibility','1',None,self.root))

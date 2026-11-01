@@ -15,9 +15,17 @@ python3 scripts/phase-plan-exec.py next
 
 `plan` reuses unfinished work. The terminal asks **Execute this sprint? [Yes/No]**; only the full Yes executes. Non-TTY planning leaves confirmation pending. In chat show the saved plan, ask Yes/No and stop. `--yes` is accepted only with `execute`; do not infer it from prior sessions. Interrupted RUNNING work can be resumed with a new Yes using `execute`; preserve its initial product snapshot. No other sprint starts automatically.
 
-`docs/PLANS.md` is the current Phase with all Tasks; `docs/plans/history/` retains completed plans when `next` is explicitly requested. `docs/plans/proposals/` retains immutable proposals. Evidence and Handoff stay together in `docs/plans/progress/<phase-id>.md`. PH-001's original plan and historical progress are preserved; its appended controller index describes historical runs, not newly executed tests.
+`docs/PLANS.md` is the current Phase with all Tasks; `docs/plans/history/` retains completed plans when `next` is explicitly requested. `docs/plans/proposals/` retains immutable proposals. Durable command summaries, artifact references, completion receipts and Handoff stay together in `docs/plans/progress/<phase-id>.md`. PH-001's original plan and historical progress are preserved; its appended controller index describes historical runs, not newly executed tests.
 
-`status` reads these files and Coverage. Completed Sprint counts require READY_FOR_REVIEW **and valid completion evidence**; no additional human-acceptance state is introduced. A status label alone cannot advance `next`. Missing or altered evidence requires reconciliation. A failed worker or invalid completion becomes PAUSED.
+`status` reads these files and Coverage. Completed Sprint counts require READY_FOR_REVIEW **and a valid completion record with unchanged retained artifacts**; no additional human-acceptance state is introduced. A status label alone cannot advance `next`. Missing or altered retained artifacts or changed completion records require reconciliation. Intentional removal of temporary evidence is covered by the controller receipt. A failed worker or invalid completion becomes PAUSED.
+
+## Temporary evidence lifecycle
+
+Store all newly generated phase logs, captures and temporary verification artifacts under the repository-root `evidence/<phase-id>/` directory. Keep production source/tests in their normal paths and command outcomes, limitations and Handoff in progress. `evidence/` is ignored by Git. RUNNING, PAUSED and BLOCKED phases retain their evidence for resume.
+
+Before setting READY_FOR_REVIEW, the controller validates live hashes and acceptance mappings, applies Coverage updates and appends Handoff. It saves a `json sprint-completion` receipt in progress, containing a fingerprint of the plan, evidence record and initial baseline plus the exact temporary artifact references validated. It then deletes only `evidence/<phase-id>/` and changes the status. Validation or cleanup failure prevents READY_FOR_REVIEW. Workers must not perform this cleanup themselves.
+
+`status` and `next` accept missing temporary files only when covered by a matching completion receipt; retained source/tests and historical logs outside `evidence/<phase-id>/` still require live hashes. The receipt is a record of prior validation, not independent proof of execution. Review uses retained summaries and current checks, and must not claim deleted logs were inspected. Plans, progress, Handoffs, Coverage, immutable proposals and assessment reports are retained. Legacy evidence stays at its existing paths; this policy does not bulk-delete historical files or change existing phase statuses.
 
 ## Coverage
 
@@ -67,7 +75,7 @@ The worker records real commands and artifacts; it must not fabricate results or
         "command": "<actual acceptance command>",
         "exit_code": 0,
         "result": "<observed assertions and test counts>",
-        "log": {"path": "docs/plans/progress/<durable-log>", "sha256": "<actual sha256>"}
+        "log": {"path": "evidence/PH-002/<log>", "sha256": "<actual sha256>"}
       }]
     }
   },
@@ -83,7 +91,7 @@ The worker records real commands and artifacts; it must not fabricate results or
   }],
   "handoff": {
     "delivered": "<functionality delivered>",
-    "reusable": "<code, tests and durable evidence paths>",
+    "reusable": "<code/test paths, command results and retained progress path>",
     "decisions_limitations": "<decisions, exclusions and unapproved policies>",
     "remaining_gaps": "<Coverage IDs and missing behavior>",
     "next_objective": "<recommended next objective, not authorization>"
@@ -95,7 +103,7 @@ For incomplete work use task status `PENDING`, `IN_PROGRESS`, `BLOCKED` or `COMP
 
 Implementation completion requires product source under `app/`, `lib/` or `components/` that changed since this sprint's durable `sprint-baseline` snapshot. Test/document-only delivery is rejected. If product code lives elsewhere in a future layout, extend this validator explicitly. Research completion instead requires `findings` and `reproduction` fields plus its planned specific blocker; a reproducible no-go can complete bounded research, unavailable resources cannot. Research cannot mark Coverage VERIFIED.
 
-The controller checks completion, validates scoped Coverage updates, appends an idempotent Handoff to this same file and sets READY_FOR_REVIEW. On partial work it retains Coverage and adds the available Handoff (or a conservative stop record). Do not edit Coverage directly in the execution worker. No approvals of unresolved policy are implied by these records.
+The controller checks completion, validates scoped Coverage updates, appends an idempotent Handoff to this same file, records the completion receipt, removes the phase's temporary evidence directory and sets READY_FOR_REVIEW. On partial work it retains Coverage and adds the available Handoff (or a conservative stop record). Do not edit Coverage directly in the execution worker. No approvals of unresolved policy are implied by these records.
 
 Hashes detect missing/changed recorded artifacts; they do not prove command execution or that tests assert every intended behavior. Worker-written records remain reviewable evidence, not cryptographic attestation. This gate is not hardened process isolation. Use an isolated checkout when stronger isolation is needed.
 
@@ -105,6 +113,6 @@ Hashes detect missing/changed recorded artifacts; they do not prove command exec
 python3 -m unittest discover -s scripts/tests -v
 ```
 
-Tests use isolated temporary repositories and a simulated execution worker. They exercise planning/persistence, dependency and acceptance mapping, status counts, Coverage validation, stale Contract detection, duplicate/research prevention, explicit confirmation, interrupted resume, product deliverables, hash failures and appended Handoffs. They do not invoke a live Codex worker or repeat PH-001 experiments.
+Tests use isolated temporary repositories and a simulated execution worker. They exercise planning/persistence, dependency and acceptance mapping, status counts, Coverage validation, stale Contract detection, duplicate/research prevention, explicit confirmation, interrupted resume, product deliverables, hash failures, appended Handoffs, phase-scoped cleanup, cleanup failures and completion validation after cleanup. They do not invoke a live Codex worker or repeat PH-001 experiments.
 
 Upgrade verification on 2026-10-31: `python3 -m unittest discover -s scripts/tests -q` passed **29 tests**; Skill `quick_validate.py` passed; `git diff --check` passed. Byte comparisons against HEAD confirmed the approved Contract and active PH-001 plan unchanged, and all original PH-001 progress preserved as an exact prefix. The live `status` command reported one completed research Sprint, 8/8 Tasks, and Coverage MISSING=2, PARTIAL=7, BLOCKED=4, VERIFIED=0. No live Codex worker, product tests or PH-001 experiments were executed during this tooling upgrade.

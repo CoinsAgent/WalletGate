@@ -52,6 +52,10 @@ There are **two** supported execution contexts:
 
 The script handles timestamps, metadata, unique names, and no-overwrite behavior. Do not write a report directly into `docs/assessments/`, assign metadata, alter past reports, or invoke the script's `run` mode from this skill.
 
+## Phase evidence lifecycle
+
+Phase execution stores temporary logs, captures and verification artifacts in `evidence/<phase-id>/`. The controller removes that directory when setting READY_FOR_REVIEW and retains progress, Handoff and a completion receipt in `docs/plans/progress/<phase-id>.md`. Treat the receipt as historical validation; do not claim to have inspected deleted logs or executed their commands. Recheck current source/tests within this assessment's read-only limits. Do not create, move or clean up phase evidence in an assessment. Immutable assessment reports remain in `docs/assessments/` and are not removed by phase cleanup.
+
 ## Restrictions
 
 Read-only investigation: no code/config/dependency changes, migrations, Git mutations, or implementation roadmap. No tests that write to the workspace unless explicitly authorized. Interactive runs may write only the one new report through the shared publisher; unattended `OUTPUT_MODE=BODY_ONLY` runs must not write files.

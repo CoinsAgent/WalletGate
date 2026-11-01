@@ -13,6 +13,9 @@
 # testing
 /coverage
 
+# Temporary phase verification evidence; cleaned at READY_FOR_REVIEW
+/evidence/
+
 # Python bytecode caches
 __pycache__/
 

@@ -79,6 +79,10 @@ No YAML front matter; the publisher owns reproducible report metadata.
 - **Interactive response:** Do not print the report body in the terminal or chat, or echo it through tools. After successful publication, return only a brief confirmation and a link to the generated Markdown file. If publication fails, report the failure concisely without claiming the report was saved or dumping its body. An explicit user instruction to avoid saving takes precedence over the default.
 - Never invoke the script's `run` mode from this skill; that would recursively launch another Codex session.
 
+## Phase evidence lifecycle
+
+Phase execution stores temporary logs, captures and verification artifacts in `evidence/<phase-id>/`. The controller removes that directory when setting READY_FOR_REVIEW and retains progress, Handoff and a completion receipt in `docs/plans/progress/<phase-id>.md`. Treat the receipt as historical validation; do not claim to have inspected deleted logs or executed their commands. Recheck current source/tests within this assessment's read-only limits. Do not create, move or clean up phase evidence in an assessment. Immutable assessment reports remain in `docs/assessments/` and are not removed by phase cleanup.
+
 ## Restrictions
 
 Read-only investigation. Do not change code, dependencies, configuration, contract, Git history, or past reports; do not produce an implementation roadmap. Interactive runs may write only the one new assessment report through the shared publisher; unattended `OUTPUT_MODE=BODY_ONLY` runs must not write files.

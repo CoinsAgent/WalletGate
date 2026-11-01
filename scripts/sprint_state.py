@@ -10,6 +10,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import shutil
 
 STATUSES = ('MISSING', 'PARTIAL', 'IMPLEMENTED', 'VERIFIED', 'BLOCKED', 'RETIRED')
 
@@ -103,10 +104,42 @@ def progress(root: Path, phase: str) -> tuple[Path, dict | None]:
     return path, block(path.read_text(), 'sprint-evidence') if path.exists() else None
 
 
-def completion(root: Path, phase: str, plan: dict, *, before: dict | None = None) -> dict:
+def evidence_directory(root: Path, phase: str) -> Path:
+    if not re.fullmatch(r'PH-\d{3}', phase):
+        raise ValueError('invalid phase evidence directory')
+    path = root / 'evidence' / phase
+    if (root / 'evidence').is_symlink() or path.is_symlink():
+        raise ValueError('phase evidence directory must not be a symlink')
+    return path
+
+
+def completion_fingerprint(evidence: dict, plan: dict, before: dict | None) -> str:
+    return hashlib.sha256(json.dumps(
+        {'evidence': evidence, 'plan': plan, 'before': before}, sort_keys=True
+    ).encode()).hexdigest()
+
+
+def completion(root: Path, phase: str, plan: dict, *, before: dict | None = None,
+               allow_released: bool = False) -> dict:
     _, evidence = progress(root, phase)
     if not evidence or evidence.get('phase') != phase:
         raise ValueError('missing matching sprint-evidence')
+    receipt = block((root / f'docs/plans/progress/{phase}.md').read_text(), 'sprint-completion') if allow_released else None
+    released = []
+    if receipt:
+        if receipt.get('fingerprint') != completion_fingerprint(evidence, plan, before):
+            raise ValueError('completion record changed after evidence cleanup')
+        released = receipt['released']
+
+    def check(ref: dict) -> None:
+        # Only validated temporary files may be absent. Product source/tests and
+        # legacy evidence outside the designated directory remain live checks.
+        prefix = f'evidence/{phase}/'
+        parts = Path(ref['path']).parts
+        if (ref in released and ref['path'].startswith(prefix) and
+                '..' not in parts and not (root / ref['path']).exists()):
+            return
+        artifact(root, ref)
     task_ids = {t['id'] for t in plan['tasks']}
     if set(evidence['tasks']) != task_ids:
         raise ValueError('evidence must cover every task exactly')
@@ -114,11 +147,11 @@ def completion(root: Path, phase: str, plan: dict, *, before: dict | None = None
         if task['status'] != 'COMPLETE' or not task.get('artifacts') or not task.get('commands'):
             raise ValueError('each task needs completed work, commands and artifacts')
         for ref in task['artifacts']:
-            artifact(root, ref)
+            check(ref)
         for command in task['commands']:
             if not command.get('command') or command['exit_code'] != 0 or not command.get('result'):
                 raise ValueError('completion needs successful commands and observed results')
-            artifact(root, command['log'])
+            check(command['log'])
     if set(evidence['acceptance']) != set(plan['acceptance']):
         raise ValueError('missing acceptance evidence')
     for criterion, tasks in evidence['acceptance'].items():
@@ -142,6 +175,23 @@ def completion(root: Path, phase: str, plan: dict, *, before: dict | None = None
     if not all(handoff.get(k) for k in ('delivered', 'reusable', 'decisions_limitations', 'remaining_gaps', 'next_objective')):
         raise ValueError('missing concise handoff fields')
     return evidence
+
+
+def release_evidence(root: Path, phase: str, plan: dict, *, before: dict | None = None) -> None:
+    """Validate live files, retain a completion receipt, then delete phase scratch."""
+    directory = evidence_directory(root, phase)
+    evidence = completion(root, phase, plan, before=before)
+    refs = [ref for task in evidence['tasks'].values()
+            for ref in [*task['artifacts'], *(c['log'] for c in task['commands'])]]
+    released = [ref for ref in refs if ref['path'].startswith(f'evidence/{phase}/')]
+    receipt = {'fingerprint': completion_fingerprint(evidence, plan, before), 'released': released}
+    path, _ = progress(root, phase)
+    text = path.read_text()
+    # A failed cleanup can be retried without duplicating the machine record.
+    text = re.sub(r'```json sprint-completion\n.*?\n```\n?', '', text, flags=re.S)
+    path.write_text(text + '\n' + fenced('sprint-completion', receipt))
+    if directory.exists():
+        shutil.rmtree(directory)
 
 
 def append_handoff(root: Path, phase: str, evidence: dict) -> None:

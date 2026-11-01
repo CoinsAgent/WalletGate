@@ -13,7 +13,7 @@ Use the existing controller and the three existing Skills. Read [docs/SPRINT_WOR
 - Show Phase ID, task count and plan link; ask **Execute this sprint? Yes / No** and stop.
 - Only a new explicit **Yes for that sprint** authorizes `python3 scripts/phase-plan-exec.py execute --yes`. Planning must never pass `--yes`. No, silence and ambiguous answers authorize no execution.
 - `status` derives completed Sprint count, current Phase/status, completed/remaining Tasks, Coverage and next action from repository files.
-- `next` is an explicit user action: validate completion evidence, archive the existing plan, then plan one new sprint and ask Yes/No. Never invoke it automatically after execution. READY_FOR_REVIEW means evidence is ready, not human acceptance or approval of open policies.
+- `next` is an explicit user action: validate the retained completion record and current source/test artifacts, archive the existing plan, then plan one new sprint and ask Yes/No. Never invoke it automatically after execution. READY_FOR_REVIEW means completion was validated and temporary evidence was removed, not human acceptance or approval of open policies.
 - Interrupted RUNNING work can resume via `execute` with a new Yes. Preserve completed work and its initial product snapshot.
 - For a tooling-upgrade request, change the tooling within the user's authorized scope; do not launch a product sprint merely because this Skill was named.
 
@@ -48,7 +48,9 @@ Use `### C01 — <title>` and `### C01-T01 — <task>` headings. In Approval Gat
 
 ## Execution worker (after Yes)
 
-Execute the current scope in dependency order. Read prior progress first; retain completed work, reproduce material evidence when assumptions changed, and continue unfinished Tasks. Implement production functionality for implementation sprints. Run relevant tests, repair failures within scope, and record **actual** commands, exit codes, observations, hashed artifacts/logs and acceptance-to-task mappings in the existing `docs/plans/progress/<phase-id>.md` file.
+Execute the current scope in dependency order. Read prior progress first; retain completed work, reproduce material evidence when assumptions changed, and continue unfinished Tasks. Implement production functionality for implementation sprints. Run relevant tests, repair failures within scope, and record **actual** commands, exit codes, observations, hashed artifact/log references and acceptance-to-task mappings in the existing `docs/plans/progress/<phase-id>.md` file.
+
+Store generated logs, captures and temporary verification artifacts only in `evidence/<phase-id>/`; keep production source and tests in their normal paths. Preserve this directory for RUNNING, PAUSED and BLOCKED phases. The controller validates live evidence, retains a `json sprint-completion` receipt in progress, and removes only this phase's evidence directory before setting READY_FOR_REVIEW. Do not delete evidence yourself or treat deleted logs as available for later inspection. Keep actual command results and limitations in progress/Handoff.
 
 Maintain one `json sprint-evidence` block in that file, preserving earlier narrative and run records. Include proposed Coverage changes with acceptance mappings, code/test references and reasons. The controller validates and applies them after successful completion. Research cannot mark product requirements VERIFIED. VERIFIED requires all requirement acceptance checks, production source, tests and actual successful evidence.
 
@@ -58,4 +60,4 @@ Include concise Handoff fields: delivered functionality; reusable code and test 
 - BLOCKED: an unresolved product/security/architecture/permission decision or unavailable prerequisite prevents progress. Preserve partial delivery and exact unblock needed. Do not infer approval.
 - PAUSED: incomplete due to execution limits or failed evidence validation. Preserve work for resume.
 
-Never edit the approved Contract, current plan, immutable proposals/assessments, production state or historical evidence. Append progress without rewriting prior history. Do not commit, push, deploy, start another Phase, or add approval stages. Prefer supported Better Auth APIs over upstream modifications. This Yes/No gate and evidence validation provide workflow checks, not OS isolation or independent proof that worker claims are true.
+Never edit the approved Contract, current plan, immutable proposals/assessments, production state or historical progress/completion records. Append progress without rewriting prior history. Do not commit, push, deploy, start another Phase, or add approval stages. Prefer supported Better Auth APIs over upstream modifications. This Yes/No gate and evidence validation provide workflow checks, not OS isolation or independent proof that worker claims are true.

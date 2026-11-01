@@ -48,7 +48,14 @@ def update_status(status: str) -> None:
     current = read_current()
     if current is None:
         die("no current sprint")
-    _, _, original = current
+    phase, _, original = current
+    if status == 'READY_FOR_REVIEW':
+        spec = plan_spec(original, phase)
+        if not spec:
+            raise ValueError('missing structured plan for evidence cleanup')
+        path, _ = state.progress(ROOT, phase)
+        baseline = state.block(path.read_text(), 'sprint-baseline') if path.exists() else None
+        state.release_evidence(ROOT, phase, spec, before=baseline['product'] if baseline else None)
     updated, count = STATUS_RE.subn(f"- **Status:** `{status}`", original, count=1)
     if count != 1:
         die("could not update sprint status")
@@ -214,6 +221,9 @@ current code, and existing progress. Resume unfinished tasks; reuse validated wo
 Read docs/SPRINT_WORKFLOW.md for the sprint-evidence JSON schema.
 Execute the complete task list IN DEPENDENCY ORDER. Create tests, verify them, fix within scope,
 and record actual progress and evidence in docs/plans/progress/{phase_id}.md.
+Store generated logs, captures and temporary verification artifacts only in evidence/{phase_id}/.
+Keep source and tests in their normal locations. The controller validates evidence, retains a completion
+receipt in progress, and deletes evidence/{phase_id}/ when setting READY_FOR_REVIEW; do not delete it yourself.
 Implement production functionality for implementation sprints; documents/prototypes alone cannot complete them.
 Record each task's status, actual commands, exit codes, observed results, hashed logs/artifacts,
 acceptance-to-task mapping, product deliverables, and proposed coverage_updates in sprint-evidence.
@@ -269,10 +279,11 @@ SPRINT_STATUS: PAUSED
             _, evidence = state.progress(ROOT, phase_id)
             if evidence and evidence.get('handoff'):
                 state.append_handoff(ROOT, phase_id, evidence)
-    except (ValueError, KeyError, TypeError) as error:
+        update_status(verdict)
+    except (ValueError, KeyError, TypeError, OSError) as error:
         print(f'Completion rejected: {error}')
         verdict = 'PAUSED'
-    update_status(verdict)
+        update_status(verdict)
     stopped_handoff(phase_id, verdict)
     print(f"Sprint {phase_id}: {verdict} (Codex exit {proc.returncode}). See docs/plans/progress/{phase_id}.md")
 
@@ -299,7 +310,8 @@ def validated(phase: str, text: str) -> bool:
             return False
         path, _ = state.progress(ROOT, phase)
         baseline = state.block(path.read_text(), 'sprint-baseline')
-        state.completion(ROOT, phase, spec, before=baseline['product'] if baseline else None)
+        state.completion(ROOT, phase, spec, before=baseline['product'] if baseline else None,
+                         allow_released=True)
         return True
     except (ValueError, KeyError, TypeError, OSError):
         return False
