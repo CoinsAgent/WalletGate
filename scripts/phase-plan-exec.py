@@ -225,6 +225,18 @@ Store generated logs, captures and temporary verification artifacts only in evid
 Keep source and tests in their normal locations. The controller validates evidence, retains a completion
 receipt in progress, and deletes evidence/{phase_id}/ when setting READY_FOR_REVIEW; do not delete it yourself.
 Implement production functionality for implementation sprints; documents/prototypes alone cannot complete them.
+Apply One Sprint = One Vertical Slice, End-to-End Acceptance, and No Layer-Only Delivery
+within the approved scope. Complete the actor/trigger-to-terminal-result production journey,
+including relevant denial/recovery checks. Unit and mocked component tests supplement rather
+than replace integration acceptance. Do not add independent outcomes or call a completed layer
+a delivered slice. Required integration/acceptance gaps leave the product delivery incomplete;
+preserve existing approved scope limits and explicitly recorded device/fixture deferrals.
+Read docs/deferred/ before changing related behavior. Keep explicitly DEFERRED cases in that
+durable directory with stable IDs, authorization/reason, missing acceptance, evidence links,
+Coverage limits and reopening/closure conditions. Link them from progress and Handoff.
+Do not reactivate parked work as the sprint aim or a supporting Task without an explicit user
+request for that case/behavior and approved scope. Preserve historical records and receipts.
+Do not recommend deferred cases as the next objective by default; choose eligible active work.
 Record each task's status, actual commands, exit codes, observed results, hashed logs/artifacts,
 acceptance-to-task mapping, product deliverables, and proposed coverage_updates in sprint-evidence.
 Include handoff fields: delivered, reusable, decisions_limitations, remaining_gaps, next_objective.

@@ -93,7 +93,7 @@ def main() -> int:
     prompt = f'''OUTPUT_MODE=BODY_ONLY
 Use the $phase-plan-exec skill in .agents/skills/phase-plan-exec/SKILL.md.
 Read AGENTS.md, the approved Product Contract, existing PLANS.md and docs/plans/history/ files if any,
-docs/CONTRACT_COVERAGE.md, ALL previous docs/plans/progress/ evidence and Handoffs,
+docs/CONTRACT_COVERAGE.md, docs/deferred/ and ALL previous docs/plans/progress/ evidence and Handoffs,
 docs/SPRINT_WORKFLOW.md (structured proposal schema), and current repository source.
 Resume unfinished work before generating a phase. Reuse PH-001's validated approaches;
 prefer production implementation over repeating feasibility. Research requires a specific
@@ -103,6 +103,17 @@ Use this historical feasibility report if available: {feasibility.relative_to(ro
 Optional focus: {args.focus or 'None'}
 Produce a candidate plan for ONLY the single highest-priority unfinished phase and ALL its tasks,
 including prerequisites, acceptance criteria, verifications and explicit approval gate.
+For new product sprints apply: One Sprint = One Vertical Slice; End-to-End Acceptance;
+No Layer-Only Delivery. Describe one actor/trigger, complete production path and observable
+terminal result, with positive and relevant negative end-to-end checks. All Tasks support that
+same slice across its required layers; narrow oversized behavior rather than deferring integration.
+Use kind implementation for new product delivery; investigation supports the slice or remains
+a separately requested assessment. Preserve legacy scopes and explicit device/fixture deferrals.
+Treat docs/deferred/ cases as parked work, not default next-phase/sprint aims or supporting Tasks.
+A general next/planning request, priority ranking or newly available prerequisite does not reopen
+a case. Only an explicit user request for the case/behavior permits planning it again, with the
+normal separate execution gate. Do not rename or investigate deferred work to bypass this rule;
+select an independent eligible slice or report that no eligible slice exists.
 Include exactly one json sprint-plan fenced block with stable objective_key, kind,
 coverage requirement IDs, acceptance IDs, all Tasks in dependency order, and relevant inputs.
 Use '## Top 1 Phase'; do not output additional phase proposals or a Top 3 roadmap.

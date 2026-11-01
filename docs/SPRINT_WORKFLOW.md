@@ -19,6 +19,26 @@ python3 scripts/phase-plan-exec.py next
 
 `status` reads these files and Coverage. Completed Sprint counts require READY_FOR_REVIEW **and a valid completion record with unchanged retained artifacts**; no additional human-acceptance state is introduced. A status label alone cannot advance `next`. Missing or altered retained artifacts or changed completion records require reconciliation. Intentional removal of temporary evidence is covered by the controller receipt. A failed worker or invalid completion becomes PAUSED.
 
+## Sprint delivery rules
+
+1. **One Sprint = One Vertical Slice.** Each new product sprint delivers one coherent, observable outcome for a user, application owner or standard RP. Include all required layers and supporting Tasks in that sprint. Multiple Tasks or Coverage requirements may support one slice; independent outcomes belong in separate sprints.
+2. **End-to-End Acceptance.** The plan identifies the actor, starting state/trigger, production path and observable terminal result, including relevant denial/recovery cases. Acceptance exercises the real integration boundaries: an actual browser for UI behavior, or actual API/protocol boundaries for a protocol-only slice. Unit tests and mocks supplement this evidence. Record fixture/device limits without claiming broader compatibility.
+3. **No Layer-Only Delivery.** A parser, persistence change, API, screen or investigation is a supporting Task, not a delivered product slice by itself. Narrow oversized work to a smaller complete behavior. Do not postpone the defining integration or acceptance to the next sprint and mark the current slice delivered.
+
+For example, accepting a legal field-like SIWE statement through authentication, consent and return to a standard RP is one slice; exposing parsed fields without integrating and verifying the login path is a layer-only task. The slice need not add a screen or touch every repository layer when the existing layers can be reused.
+
+Under Top 1 Phase, describe **Vertical slice** (actor, trigger, production path, result), **End-to-end acceptance** (positive/negative journeys and verification), and scope limits. Under Dependency and Coverage Check, map every Task to that slice. Use `kind: implementation` for new product sprints. Investigation can support the slice; separately requested research assessments do not count as product delivery. Legacy research plans and receipts remain valid under their original rules.
+
+Completion requires the slice's end-to-end acceptance as well as all Task evidence. Unavailable defining integration/checks leave the delivery BLOCKED/PAUSED. Explicit scope amendments and deferred checks must remain visible; they cannot silently remove the defining outcome or imply unexecuted acceptance passed. Preserve existing approved scopes, receipts and Product Contract decisions. These semantic review rules supplement the controller's structural/hash validation; the controller cannot prove a coherent slice from task counts or fingerprints.
+
+## Deferred cases
+
+Store every explicitly DEFERRED case in `docs/deferred/<stable-case-id>.md`, indexed in [docs/deferred/README.md](deferred/README.md). Record originating phase/tasks/acceptance, the explicit deferral authorization and reason, missing behavior/checks, historical evidence and its limits, affected Coverage, reopening conditions and closure criteria. Progress, Handoff and plans reference the durable case. Preserve historical plans/progress, immutable assessments and completion receipts when consolidating old cases; a directory entry may reference those records without altering their hashes. This directory is durable and outside `evidence/<phase-id>/` cleanup.
+
+Deferred cases are parked work and **must not become the default main aim of the next phase or sprint**. A general `next`, priority ranking, elapsed time or newly available prerequisite is not reactivation. Only an explicit user request naming a case or clearly requesting its deferred behavior makes it eligible for planning again; record that request and still obtain the sprint's explicit Yes before execution. Do not smuggle a parked case into a renamed objective, supporting Task or feasibility investigation. Choose an independent active slice if it depends on deferred work, or report the dependency/no eligible slice. Assessment findings may describe an unresolved deferred risk without reopening implementation.
+
+Deferral is distinct from a blocker and from successful acceptance. It does not weaken the Product Contract, resolve unapproved policy or upgrade Coverage. Never defer the defining integration merely to claim a completed vertical slice. Reviews check these boundaries without editing registry records. Do not retroactively change legacy completed scopes.
+
 ## Temporary evidence lifecycle
 
 Store all newly generated phase logs, captures and temporary verification artifacts under the repository-root `evidence/<phase-id>/` directory. Keep production source/tests in their normal paths and command outcomes, limitations and Handoff in progress. `evidence/` is ignored by Git. RUNNING, PAUSED and BLOCKED phases retain their evidence for resume.

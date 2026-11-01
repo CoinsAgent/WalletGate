@@ -54,6 +54,8 @@ The script handles timestamps, metadata, unique names, and no-overwrite behavior
 
 ## Phase evidence lifecycle
 
+Read relevant `docs/deferred/` records to distinguish parked cases from completed acceptance and active work. Deferral does not waive Contract requirements or prove compliance. Cite the case and current evidence where relevant; do not reactivate, prioritize for the next sprint, or modify these records during an assessment.
+
 Phase execution stores temporary logs, captures and verification artifacts in `evidence/<phase-id>/`. The controller removes that directory when setting READY_FOR_REVIEW and retains progress, Handoff and a completion receipt in `docs/plans/progress/<phase-id>.md`. Treat the receipt as historical validation; do not claim to have inspected deleted logs or executed their commands. Recheck current source/tests within this assessment's read-only limits. Do not create, move or clean up phase evidence in an assessment. Immutable assessment reports remain in `docs/assessments/` and are not removed by phase cleanup.
 
 ## Restrictions

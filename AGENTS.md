@@ -30,7 +30,7 @@ These statements are a quick index, not a replacement for the full Product Contr
 - `$contract-compliance`: inspect current code against approved requirements and produce a compliance report.
 - `$technical-feasibility`: investigate a **specific technical question** or specific findings from a compliance report; a previous compliance report is optional input, not a mandatory prerequisite.
 
-- `$phase-plan-exec`: plan one sprint (highest-priority unfinished Phase and **all** its Tasks), write `docs/PLANS.md`, and ask for explicit Yes/No before execution. No task execution without a current, explicit Yes. See `docs/SPRINT_WORKFLOW.md`.
+- `$phase-plan-exec`: plan one sprint delivering one vertical slice (highest-priority unfinished Phase and **all** its supporting Tasks), write `docs/PLANS.md`, and ask for explicit Yes/No before execution. No task execution without a current, explicit Yes. See `docs/SPRINT_WORKFLOW.md`.
 - `$phase-review`: review a completed phase; an explicit invocation authorizes committing and pushing its scoped delivery after a passing review. Use the phase's main aim as the commit subject and report only in chat, without generating files. This is separate from sprint execution.
 
 Skill manifests live at `.agents/skills/<skill-name>/SKILL.md`. For a requested assessment, use the relevant skill. Do not automatically run both skills for routine code changes.
@@ -55,6 +55,8 @@ Reports are generated under `docs/assessments/` with timestamped, immutable file
 ## Sprint execution boundary
 
 - The Product Contract governs product behavior; assessments and proposals are evidence, not permission to change it.
+- **One Sprint = One Vertical Slice; End-to-End Acceptance; No Layer-Only Delivery.** Deliver one observable product outcome through all required layers and verify the complete production journey in that sprint. Tasks may be organized by layer, but isolated parser/database/API/UI work is not a completed slice. Narrow the behavior instead of deferring its defining integration. Preserve approved historical scopes and explicit device/fixture limitations.
+- Keep all explicitly DEFERRED cases in `docs/deferred/`, indexed by stable case ID, with source authorization, reason, missing acceptance, evidence links, Coverage limits and reopening/closure conditions. Preserve historical records and receipts. Deferred cases are parked work, not default next-phase/sprint objectives or automatic supporting Tasks; a general `next` request does not reactivate them. Require an explicit user request for the case/behavior before planning it through the normal Yes/No gate. Deferral never means passed acceptance or waived product requirements.
 - Invoke `$phase-plan-exec` for one sprint at a time; it invokes `scripts/phase-plan-exec.py` to persist the task list in `docs/PLANS.md`.
 - After planning, ask the human **Execute this sprint? (Yes/No)** and stop. A missing, ambiguous, or negative answer means **do not execute**.
 - A new explicit **Yes** for that specific sprint permits `python3 scripts/phase-plan-exec.py execute --yes`. Never infer Yes from prior preferences or the mere existence of `docs/PLANS.md`.

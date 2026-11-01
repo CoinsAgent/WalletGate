@@ -81,6 +81,8 @@ No YAML front matter; the publisher owns reproducible report metadata.
 
 ## Phase evidence lifecycle
 
+Read relevant `docs/deferred/` records when the question intersects parked work. A specific investigation may examine a deferred case without reactivating implementation or making it the next sprint objective. Cite its status and limits; do not modify or reopen directory records in this read-only assessment. Explicit user reactivation and the normal sprint approval gate remain required for implementation.
+
 Phase execution stores temporary logs, captures and verification artifacts in `evidence/<phase-id>/`. The controller removes that directory when setting READY_FOR_REVIEW and retains progress, Handoff and a completion receipt in `docs/plans/progress/<phase-id>.md`. Treat the receipt as historical validation; do not claim to have inspected deleted logs or executed their commands. Recheck current source/tests within this assessment's read-only limits. Do not create, move or clean up phase evidence in an assessment. Immutable assessment reports remain in `docs/assessments/` and are not removed by phase cleanup.
 
 ## Restrictions
