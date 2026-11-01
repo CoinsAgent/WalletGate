@@ -31,6 +31,7 @@ These statements are a quick index, not a replacement for the full Product Contr
 - `$technical-feasibility`: investigate a **specific technical question** or specific findings from a compliance report; a previous compliance report is optional input, not a mandatory prerequisite.
 
 - `$phase-plan-exec`: plan one sprint (highest-priority unfinished Phase and **all** its Tasks), write `docs/PLANS.md`, and ask for explicit Yes/No before execution. No task execution without a current, explicit Yes. See `docs/SPRINT_WORKFLOW.md`.
+- `$phase-review`: review a completed phase; an explicit invocation authorizes committing and pushing its scoped delivery after a passing review. Use the phase's main aim as the commit subject and report only in chat, without generating files. This is separate from sprint execution.
 
 Skill manifests live at `.agents/skills/<skill-name>/SKILL.md`. For a requested assessment, use the relevant skill. Do not automatically run both skills for routine code changes.
 
