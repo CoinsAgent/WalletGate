@@ -236,7 +236,11 @@ SPRINT_STATUS: PAUSED
     try:
         with tempfile.TemporaryDirectory(prefix="walletgate-sprint-") as tmp:
             output = Path(tmp) / "result.txt"
-            proc = run(["codex", "exec", "--sandbox", "workspace-write", "--output-last-message", str(output), prompt])
+            proc = run([
+                "codex", "exec", "--sandbox", "workspace-write",
+                "-c", "sandbox_workspace_write.network_access=true",
+                "--output-last-message", str(output), prompt,
+            ])
             result = output.read_text(encoding="utf-8").strip() if output.exists() else ""
     except (OSError, KeyboardInterrupt):
         update_status('PAUSED')

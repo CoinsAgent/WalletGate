@@ -7,7 +7,7 @@ vi.mock("./email/send.ts", () => ({ sendDemoEmail: vi.fn() }));
 let fixture: Awaited<ReturnType<typeof nextHTTPFixture>>;
 let rp: StandardRP;
 beforeAll(async () => {
-  fixture = await nextHTTPFixture();
+  fixture = await nextHTTPFixture(vi);
   rp = await StandardRP.discover(fixture.issuer);
   console.log(JSON.stringify({ actualNextHTTP: true, disposableSQLite: true, clients: fixture.clients.length }));
 }, 180_000);

@@ -35,22 +35,21 @@ Statuses: MISSING, PARTIAL, IMPLEMENTED (acceptance pending), VERIFIED, BLOCKED,
       ],
       "acceptance_description": "Exercise discovery, authorization, signed tokens and UserInfo with an independent standard RP.",
       "code": [
+        "lib/auth.ts",
         "app/.well-known/openid-configuration/route.ts",
-        "app/.well-known/oauth-authorization-server/route.ts",
-        "app/api/auth/[...all]/route.ts",
-        "lib/auth.ts"
+        "app/api/auth/[...all]/route.ts"
       ],
       "tests": [
         "lib/oidc-discovery.test.ts",
         "lib/oidc-rp.integration.test.ts",
-        "lib/oidc-http-fixture.ts",
-        "examples/oidc-rp.ts"
+        "tests/wallet-login.spec.ts"
       ],
       "evidence": [
         "docs/plans/progress/PH-001.md",
-        "docs/plans/progress/PH-004.md"
+        "docs/plans/progress/PH-004.md",
+        "docs/plans/progress/PH-005.md"
       ],
-      "reason": "PH-004 local interoperability acceptance: configured issuer discovery and both metadata routes served by actual isolated Next.js HTTP; independent fetch/jose RP with two seeded clients completes authorization-code/S256 PKCE, fresh SIWE, consent, signed ID Token/JWKS verification, bearer UserInfo and refresh with consistent subjects. Protocol negatives pass. Final acceptance 74/74, root 175/175 and typecheck pass. Bound to local development-server runtime and disposable SQLite, not deployment/security certification or wallet-address subjects."
+      "reason": "Revalidated independent standard RP using actual Next HTTP: final browser 24/24 covers both seeded clients, code/PKCE, state, JWKS signed-token verification and bearer UserInfo; root 201/201 includes discovery/RP refresh and protocol negatives. Desktop and mobile use fresh SIWE. Seeded clients do not authorize owner registration; deployment and wallet-address subjects remain separate gaps."
     },
     {
       "id": "WG-002",
@@ -108,24 +107,23 @@ Statuses: MISSING, PARTIAL, IMPLEMENTED (acceptance pending), VERIFIED, BLOCKED,
       "code": [
         "lib/auth.ts",
         "lib/auth-entry-policy.ts",
-        "lib/wallet-login.ts",
         "lib/siwe.ts",
-        "lib/oauth-login-client.ts",
-        "lib/auth-client.ts"
+        "app/(auth)/sign-in/_components/sign-in.tsx"
       ],
       "tests": [
         "lib/auth-safety.test.ts",
-        "lib/auth.test.ts",
         "lib/wallet-login.test.ts",
-        "lib/oidc-rp.integration.test.ts"
+        "lib/oidc-rp.integration.test.ts",
+        "tests/wallet-login.spec.ts"
       ],
       "evidence": [
         "docs/plans/progress/PH-001.md",
         "docs/plans/progress/PH-002.md",
         "docs/plans/progress/PH-003.md",
-        "docs/plans/progress/PH-004.md"
+        "docs/plans/progress/PH-004.md",
+        "docs/plans/progress/PH-005.md"
       ],
-      "reason": "PH-004 current production safety, wallet and signed-continuation controls pass: acceptance 74/74, sign-in 18/18, CLI 30/30 and root 175/175. Independent non-SIWE routes remain denied, while fresh SIWE works through actual Next HTTP. Session lifecycle/provenance policy remains outside scope."
+      "reason": "Final root 201/201, sign-in 18/18, client 30/30 and browser 24/24 pass: production independent non-SIWE entry points remain denied, fresh SIWE works and signed OAuth continuation remains bound. Tampered continuation creates no session. Session provenance/reuse/lifecycle remains outside this requirement slice."
     },
     {
       "id": "WG-005",
@@ -203,14 +201,16 @@ Statuses: MISSING, PARTIAL, IMPLEMENTED (acceptance pending), VERIFIED, BLOCKED,
       ],
       "tests": [
         "lib/auth-safety.test.ts",
-        "lib/oidc-rp.integration.test.ts"
+        "lib/oidc-rp.integration.test.ts",
+        "tests/wallet-login.spec.ts"
       ],
       "evidence": [
         "docs/plans/progress/PH-002.md",
         "docs/plans/progress/PH-003.md",
-        "docs/plans/progress/PH-004.md"
+        "docs/plans/progress/PH-004.md",
+        "docs/plans/progress/PH-005.md"
       ],
-      "reason": "PH-004 anonymous registration denied through actual Next HTTP with unchanged client count and no credentials, plus existing handler/Next/server-API production denials. Acceptance 74/74 and root 175/175 pass. Seeded clients are fixture setup, not wallet-owner registration approval."
+      "reason": "Final root 201/201 and browser 24/24 revalidate anonymous registration denial on exposed routes with unchanged stored client counts and no returned credentials; disabled/nonexistent admin creation route stays 404. Existing handler/server API denials remain passing; seeded fixture clients are not owner-policy approval."
     },
     {
       "id": "WG-009",
@@ -279,11 +279,25 @@ Statuses: MISSING, PARTIAL, IMPLEMENTED (acceptance pending), VERIFIED, BLOCKED,
       ],
       "acceptance_description": "Browser/mobile acceptance covers wallet discovery, connection, SIWE, consent, errors and return to a standard RP.",
       "code": [
-        "app/(auth)/sign-in/_components/sign-in.tsx"
+        "lib/wallet-discovery.ts",
+        "lib/wallet-login-flow.ts",
+        "lib/wallet-login.ts",
+        "lib/auth-client.ts",
+        "app/(auth)/sign-in/siwe-login.ts",
+        "app/(auth)/sign-in/_components/sign-in.tsx",
+        "app/(auth)/oauth/consent/consent-buttons.tsx",
+        "app/(auth)/oauth/consent/page.tsx"
       ],
-      "tests": [],
-      "evidence": [],
-      "reason": "Static baseline and bounded PH-001 research only; no product acceptance claimed. Contract §5 decisions remain unapproved."
+      "tests": [
+        "tests/wallet-login.spec.ts",
+        "lib/wallet-discovery.test.ts",
+        "lib/wallet-login-flow.test.ts",
+        "lib/wallet-login.test.ts"
+      ],
+      "evidence": [
+        "docs/plans/progress/PH-005.md"
+      ],
+      "reason": "PH-005 delivers production EIP-6963/legacy selection and separate connection/review/SIWE/consent flow. Final 24/24 desktop/mobile Chromium browser cases and 201/201 root regressions pass, including stale-attempt isolation, recovery and independent RP return. Injected fixture wallets and viewport emulation do not establish real wallet-app/device compatibility, remote pairing or full WG-012-A1; retain PARTIAL."
     },
     {
       "id": "WG-013",

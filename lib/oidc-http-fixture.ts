@@ -1,5 +1,5 @@
 // IdP-side test infrastructure. The independent RP imports none of this code.
-import { cpSync, mkdtempSync, rmSync, symlinkSync, existsSync } from "node:fs";
+import { cpSync, mkdtempSync, rmSync, symlinkSync, existsSync, writeFileSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { createServer } from "node:net";
@@ -8,9 +8,21 @@ import { once } from "node:events";
 import { getMigrations } from "better-auth/db/migration";
 import { createSiweMessage } from "viem/siwe";
 import { privateKeyToAccount } from "viem/accounts";
-import { vi } from "vitest";
+interface FixtureRuntime {
+  stubEnv(key: string, value: string): void;
+  unstubAllEnvs(): void;
+  resetModules(): void;
+}
+function nativeRuntime(): FixtureRuntime {
+  const saved = new Map<string, string | undefined>();
+  return {
+    stubEnv(key, value) { saved.set(key, process.env[key]); process.env[key] = value; },
+    unstubAllEnvs() { for (const [key, value] of saved) { if (value === undefined) delete process.env[key]; else process.env[key] = value; } },
+    resetModules() {},
+  };
+}
 
-export async function nextHTTPFixture() {
+export async function nextHTTPFixture(runtime: FixtureRuntime = nativeRuntime(), remoteSDKFixture = false, remoteRPCURLs?: string) {
   const root = process.cwd();
   const reservation = createServer();
   await new Promise<void>((resolve, reject) => { reservation.once("error", reject); reservation.listen(0, "127.0.0.1", resolve); });
@@ -41,24 +53,36 @@ export async function nextHTTPFixture() {
       await driver.init(); await driver.destroy();
     }
     rmSync(directory, { recursive: true, force: true });
-    vi.unstubAllEnvs();
+    runtime.unstubAllEnvs();
     console.log(JSON.stringify({ fixture: "oidc-http", serverStopped: true, disposableDirectoryRemoved: !existsSync(directory) }));
   }
 
   try {
     // Explicit allowlist: never copy .env, development databases, .git or .next.
-    for (const path of ["app", "lib", "components", "hooks", "public", "next.config.ts", "tsconfig.json", "package.json", "postcss.config.mjs"]) {
+    for (const path of ["app", "lib", "components", "hooks", "data", "public", "next.config.ts", "tsconfig.json", "package.json", "postcss.config.mjs"]) {
       if (existsSync(join(root, path))) cpSync(join(root, path), join(directory, path), { recursive: true });
+    }
+    if (remoteSDKFixture) {
+      cpSync(join(root, "tests/fixtures/metamask-sdk.ts"), join(directory, "metamask-sdk-fixture.ts"));
+      const configPath = join(directory, "next.config.ts");
+      const config = readFileSync(configPath, "utf8");
+      writeFileSync(configPath, config.replace("export default nextConfig;", `
+nextConfig.webpack = config => {
+  config.resolve.alias["@metamask/connect-evm"] = ${JSON.stringify(join(directory, "metamask-sdk-fixture.ts"))};
+  return config;
+};
+export default nextConfig;`));
     }
     symlinkSync(resolve(root, "node_modules"), join(directory, "node_modules"), "dir");
     const env = {
       DEMO_SQLITE_PATH: databasePath, BETTER_AUTH_URL: issuer,
       BETTER_AUTH_SECRET: "ph004-disposable-http-test-secret-at-least-32-characters",
       USE_MYSQL: "false", MYSQL_DATABASE_URL: "", TURSO_DATABASE_URL: "", TURSO_AUTH_TOKEN: "",
+      ...(remoteRPCURLs ? { NEXT_PUBLIC_METAMASK_RPC_URLS: remoteRPCURLs } : remoteSDKFixture ? { NEXT_PUBLIC_METAMASK_RPC_URLS: '{"0x1":"https://rpc.example.test"}' } : {}),
       SCIM_DEMO_ENABLED: "false", RESEND_API_KEY: "", STRIPE_SECRET_KEY: "",
     };
-    for (const [key, value] of Object.entries(env)) vi.stubEnv(key, value);
-    vi.resetModules();
+    for (const [key, value] of Object.entries(env)) runtime.stubEnv(key, value);
+    runtime.resetModules();
     ({ auth } = await import("./auth"));
     await (await getMigrations(auth.options)).runMigrations();
     const context = await auth.$context;

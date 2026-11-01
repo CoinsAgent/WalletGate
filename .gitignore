@@ -13,6 +13,9 @@
 # testing
 /coverage
 
+# Python bytecode caches
+__pycache__/
+
 # next.js
 /.next/
 /out/

@@ -51,3 +51,10 @@ export const authClient = createAuthClient({
 		},
 	},
 });
+
+/** Guided wallet/consent UI validates and owns navigation after each attempt.
+ * Better Auth 1.7.11 otherwise follows redirect responses before our guard. */
+export const walletAuthClient = createAuthClient({
+  disableDefaultFetchPlugins: true,
+  plugins: [siweClient(), walletOAuthProviderClient()],
+});

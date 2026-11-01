@@ -55,12 +55,12 @@ export default async function AuthorizePage({
 		: undefined;
 
 	return (
-		<div className="container mx-auto py-10">
+		<div className="container mx-auto px-4 py-10">
 			<h1 className="text-2xl font-bold mb-6 text-center">
 				Authorize Application
 			</h1>
 			<div className="min-h-screen bg-black text-white flex flex-col">
-				<div className="flex flex-col items-center justify-center max-w-2xl mx-auto px-4">
+				<div className="flex w-full min-w-0 flex-col items-center justify-center max-w-2xl mx-auto px-4">
 					<div className="flex items-center gap-8 mb-8">
 						<div className="w-16 h-16 border rounded-full flex items-center justify-center">
 							{clientDetails.logo_uri ? (
@@ -88,7 +88,7 @@ export default async function AuthorizePage({
 						</div>
 					</div>
 
-					<h1 className="text-3xl font-semibold text-center mb-8">
+					<h1 className="break-words text-3xl font-semibold text-center mb-8">
 						{clientDetails.client_name} is requesting access to your Better Auth
 						account
 					</h1>
@@ -97,8 +97,8 @@ export default async function AuthorizePage({
 						<CardContent className="p-6">
 							<div className="flex items-center justify-between p-4 bg-zinc-800 rounded-lg mb-6">
 								<div>
-									<div className="font-medium">{session?.user.name}</div>
-									<div className="text-zinc-400">{session?.user.email}</div>
+									<div className="break-all font-medium">{session?.user.name}</div>
+									<div className="break-all text-zinc-400">{session?.user.email}</div>
 								</div>
 								<ArrowUpRight className="h-5 w-5 text-zinc-400" />
 							</div>

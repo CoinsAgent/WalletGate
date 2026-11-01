@@ -1,4 +1,4 @@
-import { signInWithWallet, type EthereumProvider, type SIWEClient } from "../app/(auth)/sign-in/siwe-login";
+import { signInWithWallet, type EthereumProvider, type SIWEClient, type WalletAttempt } from "../app/(auth)/sign-in/siwe-login";
 
 const destinations = new Set(["/dashboard", "/device", "/client-test", "/sign-in"]);
 export function localLoginDestination(params: URLSearchParams) {
@@ -20,9 +20,9 @@ export function authorizationDestination(url: string, origin: string, params: UR
   throw new Error("Unsafe authorization destination.");
 }
 
-export async function loginWithWallet(provider: EthereumProvider | undefined, origin: string, client: SIWEClient, params: URLSearchParams, onMessage?: (message: string) => void) {
+export async function loginWithWallet(provider: EthereumProvider | undefined, origin: string, client: SIWEClient, params: URLSearchParams, onMessage?: (message: string) => void, attempt?: WalletAttempt) {
   if (!provider?.request) throw new Error("No Ethereum wallet found. Open this page with an Ethereum wallet available.");
-  const result = await signInWithWallet(provider, origin, client, onMessage);
+  const result = await signInWithWallet(provider, origin, client, onMessage, attempt);
   if ("redirect" in result) return authorizationDestination(result.url, origin, params);
   // A signed authorization query must be continued by the provider, never
   // silently discarded in favor of the dashboard.
@@ -31,7 +31,10 @@ export async function loginWithWallet(provider: EthereumProvider | undefined, or
 }
 
 export function walletLoginError(cause: unknown) {
-  return typeof cause === "object" && cause !== null && "code" in cause && cause.code === 4001
-    ? "Wallet request declined. Try signing in again."
-    : cause instanceof Error ? cause.message : "Wallet sign-in failed. Try again.";
+  const code = typeof cause === "object" && cause !== null && "code" in cause ? cause.code : undefined;
+  if (code === 4001) return "Wallet request declined. Try signing in again.";
+  if (code === 4100) return "Wallet permission is required. Connect again to allow access.";
+  if (code === 4200 || code === -32601) return "This wallet does not support the requested operation. Choose another wallet.";
+  if (code === 4900 || code === 4901) return "Wallet disconnected. Open your wallet and connect again.";
+  return cause instanceof Error ? cause.message : "Wallet sign-in failed. Try again.";
 }
