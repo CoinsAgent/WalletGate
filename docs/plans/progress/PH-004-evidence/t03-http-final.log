@@ -1,0 +1,35 @@
+
+ RUN  v5.0.0 /home/ubuntu/WalletGate
+
+(node:2359663) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+stderr | lib/oidc-rp.integration.test.ts
+2026-11-01T00:44:38.255Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stdout | lib/oidc-rp.integration.test.ts
+{"fixture":"oidc-http","serverReady":true,"issuer":"http://127.0.0.1:41665","childPid":2359699}
+
+stdout | lib/oidc-rp.integration.test.ts
+{"actualNextHTTP":true,"disposableSQLite":true,"clients":2}
+
+ ✓ lib/oidc-rp.integration.test.ts > completes independent client 0 discovery, PKCE, SIWE, signed tokens, UserInfo and refresh 7351ms
+ ✓ lib/oidc-rp.integration.test.ts > completes independent client 1 discovery, PKCE, SIWE, signed tokens, UserInfo and refresh 235ms
+ ✓ lib/oidc-rp.integration.test.ts > rejects a wrong PKCE verifier without returning tokens 112ms
+ ✓ lib/oidc-rp.integration.test.ts > rejects an unregistered redirect URI without following it or issuing a code 16ms
+ ✓ lib/oidc-rp.integration.test.ts > returns access_denied for denied consent and rejects callback state tampering 89ms
+ ✓ lib/oidc-rp.integration.test.ts > verifies signatures, issuer, audience and nonce at the independent RP 180ms
+ ✓ lib/oidc-rp.integration.test.ts > serves both discovery URLs through actual Next HTTP and keeps public registration closed 1191ms
+stdout | lib/oidc-rp.integration.test.ts
+{"fixture":"oidc-http","serverStopped":true,"disposableDirectoryRemoved":true}
+
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  08:44:36
+   Duration  24.43s (tests 98%, import 1%)
+

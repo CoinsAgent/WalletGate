@@ -6,7 +6,7 @@ Statuses: MISSING, PARTIAL, IMPLEMENTED (acceptance pending), VERIFIED, BLOCKED,
 
 | ID | Contract | Requirement | Status |
 | --- | --- | --- | --- |
-| WG-001 | §1, P6 | Self-hosted standard OAuth/OIDC IdP usable without frontend libraries | PARTIAL |
+| WG-001 | §1, P6 | Self-hosted standard OAuth/OIDC IdP usable without frontend libraries | VERIFIED |
 | WG-002 | §2, P1 | Public sub equals the verified canonical address across all clients and identity surfaces | BLOCKED |
 | WG-003 | P2 | Every new end-user login validates SIWE domain, signature, validity and single-use nonce | PARTIAL |
 | WG-004 | P2 | Non-SIWE routes cannot independently authenticate end users | VERIFIED |
@@ -29,22 +29,28 @@ Statuses: MISSING, PARTIAL, IMPLEMENTED (acceptance pending), VERIFIED, BLOCKED,
       "id": "WG-001",
       "contract": "§1, P6",
       "requirement": "Self-hosted standard OAuth/OIDC IdP usable without frontend libraries",
-      "status": "PARTIAL",
+      "status": "VERIFIED",
       "acceptance": [
         "WG-001-A1"
       ],
       "acceptance_description": "Exercise discovery, authorization, signed tokens and UserInfo with an independent standard RP.",
       "code": [
+        "app/.well-known/openid-configuration/route.ts",
+        "app/.well-known/oauth-authorization-server/route.ts",
         "app/api/auth/[...all]/route.ts",
         "lib/auth.ts"
       ],
       "tests": [
-        "app/client-test/oauth-flow.test.ts"
+        "lib/oidc-discovery.test.ts",
+        "lib/oidc-rp.integration.test.ts",
+        "lib/oidc-http-fixture.ts",
+        "examples/oidc-rp.ts"
       ],
       "evidence": [
-        "docs/plans/progress/PH-001.md"
+        "docs/plans/progress/PH-001.md",
+        "docs/plans/progress/PH-004.md"
       ],
-      "reason": "Static baseline and bounded PH-001 research only; no product acceptance claimed. Contract §5 decisions remain unapproved."
+      "reason": "PH-004 local interoperability acceptance: configured issuer discovery and both metadata routes served by actual isolated Next.js HTTP; independent fetch/jose RP with two seeded clients completes authorization-code/S256 PKCE, fresh SIWE, consent, signed ID Token/JWKS verification, bearer UserInfo and refresh with consistent subjects. Protocol negatives pass. Final acceptance 74/74, root 175/175 and typecheck pass. Bound to local development-server runtime and disposable SQLite, not deployment/security certification or wallet-address subjects."
     },
     {
       "id": "WG-002",
@@ -111,14 +117,15 @@ Statuses: MISSING, PARTIAL, IMPLEMENTED (acceptance pending), VERIFIED, BLOCKED,
         "lib/auth-safety.test.ts",
         "lib/auth.test.ts",
         "lib/wallet-login.test.ts",
-        "lib/siwe-validation.test.ts"
+        "lib/oidc-rp.integration.test.ts"
       ],
       "evidence": [
         "docs/plans/progress/PH-001.md",
         "docs/plans/progress/PH-002.md",
-        "docs/plans/progress/PH-003.md"
+        "docs/plans/progress/PH-003.md",
+        "docs/plans/progress/PH-004.md"
       ],
-      "reason": "PH-003 revalidation after SIWE integration changes: 111 combined acceptance tests, 164 root tests, 18 sign-in and 30 CLI tests pass. Production independent non-SIWE routes remain denied with no access/session side effects; valid SIWE login and signed OAuth continuation succeed. This does not approve session lifecycle/provenance policy."
+      "reason": "PH-004 current production safety, wallet and signed-continuation controls pass: acceptance 74/74, sign-in 18/18, CLI 30/30 and root 175/175. Independent non-SIWE routes remain denied, while fresh SIWE works through actual Next HTTP. Session lifecycle/provenance policy remains outside scope."
     },
     {
       "id": "WG-005",
@@ -195,13 +202,15 @@ Statuses: MISSING, PARTIAL, IMPLEMENTED (acceptance pending), VERIFIED, BLOCKED,
         "lib/auth-entry-policy.ts"
       ],
       "tests": [
-        "lib/auth-safety.test.ts"
+        "lib/auth-safety.test.ts",
+        "lib/oidc-rp.integration.test.ts"
       ],
       "evidence": [
         "docs/plans/progress/PH-002.md",
-        "docs/plans/progress/PH-003.md"
+        "docs/plans/progress/PH-003.md",
+        "docs/plans/progress/PH-004.md"
       ],
-      "reason": "PH-003 production-configured anonymous registration denials pass through handler, Next wrapper and server API with no client state/credentials. Combined acceptance 111/111 and root 164/164 pass after shared SIWE changes. Authenticated wallet-owner registration policy remains unresolved under WG-009."
+      "reason": "PH-004 anonymous registration denied through actual Next HTTP with unchanged client count and no credentials, plus existing handler/Next/server-API production denials. Acceptance 74/74 and root 175/175 pass. Seeded clients are fixture setup, not wallet-owner registration approval."
     },
     {
       "id": "WG-009",

@@ -1,0 +1,70 @@
+
+ RUN  v5.0.0 /home/ubuntu/WalletGate
+
+stderr | lib/oidc-discovery.test.ts > publishes anonymous openid-configuration metadata and reachable configured endpoints
+2026-11-01T00:05:19.121Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/oidc-discovery.test.ts > publishes anonymous oauth-authorization-server metadata and reachable configured endpoints
+2026-11-01T00:05:19.214Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ × lib/oidc-discovery.test.ts > publishes anonymous openid-configuration metadata and reachable configured endpoints 1097ms
+   → expected null to be 'public, max-age=15, stale-while-reval…' // Object.is equality
+stderr | lib/oidc-discovery.test.ts > does not derive the openid-configuration issuer from untrusted request headers
+2026-11-01T00:05:19.260Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+stderr | lib/oidc-discovery.test.ts > does not derive the oauth-authorization-server issuer from untrusted request headers
+2026-11-01T00:05:19.300Z ERROR [Better Auth]: Database schema mismatch
+
+  Missing tables
+    session, account, verification, walletAddress, organization, member, invitation, twoFactor, passkey, subscription, ssoProvider, deviceCode, jwks, oauthClient, oauthResource, oauthClientResource, oauthRefreshToken, oauthAccessToken, oauthConsent, oauthClientAssertion
+
+  help: Run `npx auth migrate` to add the missing tables and columns.
+
+ × lib/oidc-discovery.test.ts > publishes anonymous oauth-authorization-server metadata and reachable configured endpoints 49ms
+   → expected null to be 'public, max-age=15, stale-while-reval…' // Object.is equality
+ ✓ lib/oidc-discovery.test.ts > does not derive the openid-configuration issuer from untrusted request headers 40ms
+ ✓ lib/oidc-discovery.test.ts > does not derive the oauth-authorization-server issuer from untrusted request headers 38ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  lib/oidc-discovery.test.ts > publishes anonymous openid-configuration metadata and reachable configured endpoints
+ FAIL  lib/oidc-discovery.test.ts > publishes anonymous oauth-authorization-server metadata and reachable configured endpoints
+AssertionError: expected null to be 'public, max-age=15, stale-while-reval…' // Object.is equality
+
+- Expected:
+"public, max-age=15, stale-while-revalidate=15, stale-if-error=86400"
+
++ Received:
+null
+
+ ❯ lib/oidc-discovery.test.ts:21:49
+     19|   expect(response.status).toBe(200);
+     20|   expect(response.headers.get("content-type")).toContain("application/…
+     21|   expect(response.headers.get("cache-control")).toBe("public, max-age=…
+       |                                                 ^
+     22|   const metadata = await response.json();
+     23|   expect(metadata.issuer).toBe(testOrigin);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed (4)
+   Start at  08:05:17
+   Duration  1.94s (tests 77%, import 20%, transform 3%)
+

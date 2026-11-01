@@ -1,0 +1,16 @@
+cwd: /home/ubuntu/WalletGate
+command: node --input-type=module -e 'import net from "node:net"; const s=net.createServer(); s.on("error",e=>{console.error(e);process.exitCode=1}); s.listen(0,"127.0.0.1",()=>{console.log(s.address());s.close()})'
+exit_code: 1
+stdout:
+
+stderr:
+Error: listen EPERM: operation not permitted 127.0.0.1
+    at Server.setupListenHandle [as _listen2] (node:net:1912:21)
+    at listenInCluster (node:net:1991:12)
+    at node:net:2200:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:89:21) {
+  code: 'EPERM',
+  errno: -1,
+  syscall: 'listen',
+  address: '127.0.0.1'
+}

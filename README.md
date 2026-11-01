@@ -126,6 +126,11 @@ pnpm dev
 The app will be live at [http://localhost:3000](http://localhost:3000).
 Open it in your browser, and you’re good to go!
 
+### Standard OAuth/OIDC integration
+
+For standard client integration and the independent HTTP RP tests, see
+[OIDC integration](docs/OIDC_INTEGRATION.md).
+
 ### MySQL replay concurrency test
 
 The PH-003 independent-instance replay test runs against MySQL in

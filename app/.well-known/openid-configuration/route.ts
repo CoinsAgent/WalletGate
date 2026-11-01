@@ -1,18 +1,9 @@
-import { NextResponse } from "next/server";
+import { oauthProviderOpenIdConfigMetadata } from "@better-auth/oauth-provider";
 import { auth } from "@/lib/auth";
 
-export async function GET(): Promise<NextResponse> {
-	const config = await auth.api.getOpenIdConfig();
-	const headers = new Headers();
-	if (process.env.NODE_ENV === "development") {
-		headers.set("Access-Control-Allow-Methods", "GET");
-		headers.set("Access-Control-Allow-Origin", "*");
-		headers.set(
-			"Cache-Control",
-			"public, max-age=15, stale-while-revalidate=15, stale-if-error=86400",
-		);
-	}
-	return NextResponse.json(config, {
-		headers,
-	});
-}
+// Keep metadata, request context and cache headers owned by the provider.
+export const GET = oauthProviderOpenIdConfigMetadata(auth, {
+  headers: process.env.NODE_ENV === "development"
+    ? { "Access-Control-Allow-Methods": "GET", "Access-Control-Allow-Origin": "*" }
+    : undefined,
+});

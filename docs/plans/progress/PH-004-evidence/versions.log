@@ -1,0 +1,13 @@
+cwd: /home/ubuntu/WalletGate
+command: node --input-type=module -e 'import fs from "node:fs"; console.log("node",process.version); for (const p of ["better-auth","@better-auth/core","@better-auth/oauth-provider","next","viem","jose"]) console.log(p,JSON.parse(fs.readFileSync(`node_modules/${p}/package.json`,"utf8")).version)' 
+exit_code: 0
+stdout:
+node v22.22.1
+better-auth 1.7.11
+@better-auth/core 1.7.11
+@better-auth/oauth-provider 1.7.11
+next 16.3.4
+viem 2.57.10
+jose 6.2.3
+
+stderr:
