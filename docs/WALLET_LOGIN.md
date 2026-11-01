@@ -87,9 +87,13 @@ verify or navigate a later attempt.
 
 ### Physical-device checklist
 
-Status: **PENDING — not executed in this environment.** No physical Android
-Chrome/MetaMask device or versions are available. Browser fixture tests do not
-establish actual app-launch, relay operation or original-tab return behavior.
+Status: **DEFERRED — PH-005-D01; not executed.** The user confirms no physical
+Android Chrome/MetaMask device is available and authorizes closing PH-005 on its
+automated acceptance. The cases below remain required follow-up when a device
+is available. Browser fixtures and Chromium SDK launch checks do not establish
+installed-app approval or original-tab return on a real phone. See the
+[deferral record](plans/progress/PH-005.md#deferred-physical-device-acceptance)
+for scope, follow-up and closure criteria. WG-012 remains PARTIAL.
 
 Record Android version, device model, Chrome version, MetaMask version, IdP
 origin/TLS, configured network IDs/RPC service and test timestamp when executing:
@@ -105,7 +109,7 @@ origin/TLS, configured network IDs/RPC service and test timestamp when executing
 - Inspect network/deeplink metadata: no full authorization query, WalletGate
   session cookie, or resulting SIWE signature in navigation URLs.
 
-This checklist is acceptance pending, not device certification. Seeded RP clients
+This checklist is deferred acceptance, not device certification. Seeded RP clients
 remain test fixtures, not proof of wallet-owner-authorized registration.
 
 ### Real SDK app-launch regression

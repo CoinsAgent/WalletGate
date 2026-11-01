@@ -286,18 +286,21 @@ Statuses: MISSING, PARTIAL, IMPLEMENTED (acceptance pending), VERIFIED, BLOCKED,
         "app/(auth)/sign-in/siwe-login.ts",
         "app/(auth)/sign-in/_components/sign-in.tsx",
         "app/(auth)/oauth/consent/consent-buttons.tsx",
-        "app/(auth)/oauth/consent/page.tsx"
+        "app/(auth)/oauth/consent/page.tsx",
+        "lib/metamask-remote.ts"
       ],
       "tests": [
         "tests/wallet-login.spec.ts",
         "lib/wallet-discovery.test.ts",
         "lib/wallet-login-flow.test.ts",
-        "lib/wallet-login.test.ts"
+        "lib/wallet-login.test.ts",
+        "lib/metamask-remote.test.ts",
+        "tests/metamask-launch.spec.ts"
       ],
       "evidence": [
         "docs/plans/progress/PH-005.md"
       ],
-      "reason": "PH-005 delivers production EIP-6963/legacy selection and separate connection/review/SIWE/consent flow. Final 24/24 desktop/mobile Chromium browser cases and 201/201 root regressions pass, including stale-attempt isolation, recovery and independent RP return. Injected fixture wallets and viewport emulation do not establish real wallet-app/device compatibility, remote pairing or full WG-012-A1; retain PARTIAL."
+      "reason": "PH-005 automated delivery validated: 28/28 desktop/mobile controlled-wallet browser cases through real SIWE/consent/independent RP, 206/206 broad regressions, 18/18 sign-in, 30/30 client, 43/43 remote/flow checks, 2/2 actual pinned SDK Chromium launch checks and typecheck. Physical Android/Chrome/MetaMask acceptance is explicitly DEFERRED as PH-005-D01 because no device is available. App opening/approval/original-tab return and device-specific recoveries remain unverified; phase review readiness does not complete WG-012-A1 or certify mobile compatibility."
     },
     {
       "id": "WG-013",

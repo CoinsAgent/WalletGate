@@ -2,7 +2,7 @@
 # WalletGate Sprint Plan
 
 - **Phase ID:** `PH-005`
-- **Status:** `PAUSED`
+- **Status:** `READY_FOR_REVIEW`
 - **Source proposal:** `docs/plans/proposals/2026-11-01T01-50-10.467881Z-60317065-phase-priority.md`
 - **Task count:** 10
 
@@ -339,8 +339,8 @@ The following fingerprints identify relevant reviewed inputs, not executed accep
       "depends_on": [
         "PH-005-T08"
       ],
-      "deliverable": "Controlled SDK/transport boundary in isolated tests with no production bypass: no injected wallet, app-launch signal and return, real signature accepted by production SIWE, consent and independent RP; failures/retry/PKCE/state/continuation negatives. Retain existing discovery/security cases. Device checklist records OS, Chrome, MetaMask versions and actual outcomes; if no physical device is available explicitly leave that check pending.",
-      "verification": "pnpm exec playwright test --config playwright.wallet.config.ts; focused transport tests; real Android Chrome/MetaMask checklist when a device is available",
+      "deliverable": "Controlled remote SDK/transport browser journey through real server SIWE, consent and independent RP with negative cases; actual pinned SDK launch-request checks in Chromium profiles; retained physical-device checklist with PH-005-D01 explicitly DEFERRED because no device is available. Real installed-app opening/approval/return is outside this amended phase acceptance.",
+      "verification": "Existing passing full Playwright suite, focused connector/flow tests and actual pinned SDK Chromium launch checks; verify durable PH-005-D01 deferral and device checklist. No physical-device pass claimed.",
       "acceptance": [
         "PH-005-AC6",
         "PH-005-AC7",
@@ -357,7 +357,7 @@ The following fingerprints identify relevant reviewed inputs, not executed accep
       "depends_on": [
         "PH-005-T09"
       ],
-      "deliverable": "Reconciled ten-task sprint-evidence record, hashed logs/artifacts, connector dependency/source versions, support guide, updated handoff and proposed Coverage updates. Revalidate prior tasks affected by shared code changes. Keep WG-012 PARTIAL until complete acceptance and real-device evidence justify otherwise.",
+      "deliverable": "Reconciled ten-task evidence, hashed automated results, exact dependency/source versions, support guide, deferral PH-005-D01, Coverage limitation and handoff. Validate current retained artifacts against passing checks and initial baseline; WG-012 remains PARTIAL. Controller completion receipt and phase-evidence cleanup required for READY_FOR_REVIEW.",
       "verification": "Sequentially: pnpm exec playwright test --config playwright.wallet.config.ts; pnpm exec vitest run --config vitest.config.ts; pnpm exec vitest run --config app/\\(auth\\)/sign-in/vitest.config.ts; pnpm exec vitest run --config app/client-test/vitest.config.ts; pnpm run typecheck; git diff --check",
       "acceptance": [
         "PH-005-AC1",
@@ -385,8 +385,46 @@ The following fingerprints identify relevant reviewed inputs, not executed accep
       "PH-005-T09",
       "PH-005-T10"
     ],
-    "execution_approval": "pending explicit Yes for amended scope"
-  }
+    "execution_approval": "Original ten-task execution explicitly approved earlier; current user explicitly authorizes recording PH-005-D01 and closing the automated scope for review. No new implementation or deployment authorized.",
+    "device_acceptance_deferral": {
+      "reference": "PH-005-D01",
+      "previous_plan": {
+        "path": "docs/plans/progress/PH-005-before-device-deferral.md",
+        "sha256": "1320d826866e60770eeb227d8533f3f862025048649e0d43c4feb7aaef83f55e"
+      },
+      "authorization": "there is no  physical-phone to check , so could we record deferring case and make ph 005 ready for review ? is there any place to put the deferring case ?",
+      "scope": "Administrative closure of already-tested automated delivery; physical-device acceptance explicitly excluded and retained as follow-up."
+    }
+  },
+  "deferrals": [
+    {
+      "id": "PH-005-D01",
+      "status": "DEFERRED",
+      "reason": "User confirms no physical phone is available and requests recording the deferral and making PH-005 ready for review.",
+      "authorization": "there is no  physical-phone to check , so could we record deferring case and make ph 005 ready for review ? is there any place to put the deferring case ?",
+      "affected_tasks": [
+        "PH-005-T09",
+        "PH-005-T10"
+      ],
+      "affected_acceptance": [
+        "PH-005-AC6",
+        "PH-005-AC7",
+        "PH-005-AC8",
+        "PH-005-AC9"
+      ],
+      "deferred_checks": [
+        "Actual Android Chrome to installed MetaMask app launch, connection approval and return to the original Chrome tab.",
+        "Actual app SIWE signature approval, original-tab verification, consent and application callback.",
+        "Actual device connection/signature rejection, cancellation with a late approval, retry with fresh nonce, account/network changes and background/foreground recovery.",
+        "Actual device missing/blocked app, offline/relay loss, timeout, reload and browser-back recovery.",
+        "Device/browser/wallet versions and inspection of actual relay/deeplink metadata for absence of OAuth query, SIWE signature or WalletGate session data."
+      ],
+      "completed_evidence": "28/28 controlled desktop/mobile browser cases through real server SIWE and RP; 43/43 focused connector/flow checks; 2/2 actual pinned SDK external launch checks in Chromium profiles. These are not installed-app/device acceptance.",
+      "follow_up": "Execute the retained physical-device checklist when a compatible Android/Chrome/MetaMask device is available. Explicitly scope follow-up work before execution; do not auto-start another phase.",
+      "closure_criteria": "Record device model, Android/Chrome/MetaMask versions, test time, actual success and negative outcomes, and review the results before claiming physical-device compatibility or considering WG-012 VERIFIED.",
+      "coverage": "WG-012 remains PARTIAL; no Contract or identity/session/ownership policy changes."
+    }
+  ]
 }
 ```
 
@@ -440,3 +478,11 @@ Existing six-task evidence is historical. For the amended phase preserve the ini
 ## Amendment approval gate
 
 PROPOSAL_ONLY — NO IMPLEMENTATION AUTHORIZED for T07–T10. A new explicit Yes for amended PH-005 is required. Previous approvals applied to the original scope only.
+
+## Approved amendment — defer physical-device acceptance (PH-005-D01)
+
+The user confirms that no physical phone is available and explicitly requests recording the deferral and making PH-005 ready for review. This amendment supersedes the physical-device completion condition above and the earlier pending amendment approval note for administrative closeout only. All ten tasks remain; T09/T10 complete against their automated acceptance plus this durable deferral, not against a physical-device pass. Original plan retained in `docs/plans/progress/PH-005-before-device-deferral.md`; prior execution history and the immutable proposal remain unchanged.
+
+For PH-005-AC6–AC8, scoped acceptance consists of the executed controlled browser/adapter journeys and actual SDK Chromium launch-request evidence. Installed-app approval, actual device return and device-specific recovery are deferred as PH-005-D01. For PH-005-AC9, scoped acceptance requires those automated results, the retained device checklist and explicit DEFERRED status. The broader product requirement WG-012 remains PARTIAL. No physical-phone compatibility, deployment readiness, human acceptance or unresolved Product Contract policy is approved by READY_FOR_REVIEW.
+
+The authoritative deferral cases, reason, follow-up trigger and closure criteria are in `docs/plans/progress/PH-005.md` under **Deferred physical-device acceptance** and in the current sprint-evidence `deferrals` record. No next phase starts automatically.
