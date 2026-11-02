@@ -1,6 +1,0 @@
-docs/PLANS.md:44: trailing whitespace.
-+**Objective key:** `enforce-production-siwe-validation-and-replay-safety`  
-docs/PLANS.md:45: trailing whitespace.
-+**Primary requirement:** WG-003  
-docs/PLANS.md:46: trailing whitespace.
-+**Regression requirements:** WG-004, WG-008  

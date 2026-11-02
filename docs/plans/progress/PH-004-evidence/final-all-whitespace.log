@@ -1,8 +1,0 @@
-docs/PLANS.md:52: trailing whitespace.
-+**Kind:** `implementation`  
-docs/PLANS.md:53: trailing whitespace.
-+**Objective key:** `publish-issuer-discovery-and-standard-rp-flow`  
-docs/PLANS.md:54: trailing whitespace.
-+**Primary requirement:** WG-001  
-docs/PLANS.md:55: trailing whitespace.
-+**Regression requirements:** WG-004, WG-008  
